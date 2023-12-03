@@ -1,0 +1,1 @@
+export { excelExportFile } from "./asesoria";

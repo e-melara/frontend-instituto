@@ -1,0 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,400&display=swap");
+
+.router-link-active,
+.sidebar-title:hover,
+.router-link-exact-active {
+  background-color: rgba(115, 102, 255, 0.2) !important;
+}
+
+@import "style";
+@import "responsive";

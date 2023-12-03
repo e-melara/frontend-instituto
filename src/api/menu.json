@@ -1,0 +1,16 @@
+{
+  "data": [
+    {
+      "headTitle1": "General",
+      "headTitle2": "Menu principal",
+      "type": "headtitle"
+    },
+    {
+      "path": "pensum/list",
+      "title": "Pensum",
+      "icon": "git-pull-request",
+      "type": "link",
+      "active": false
+    }
+  ]
+}
