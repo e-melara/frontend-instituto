@@ -15,7 +15,7 @@ const toggleSideBar = () => {
 
 <template>
   <div class="logo-wrapper">
-    <Logo />
+    <!-- <Logo /> -->
     <div class="back-btn" @click="toggleSideBar">
       <vue-feather type="chevron-left"></vue-feather>
     </div>
@@ -29,7 +29,7 @@ const toggleSideBar = () => {
   </div>
   <div class="logo-icon-wrapper">
     <RouterLink to="/">
-      <img style="width: 30px" :src="logoIcon" alt="icon" class="img-fluid" />
+      <!-- <img style="width: 30px" :src="logoIcon" alt="icon" class="img-fluid" /> -->
     </RouterLink>
   </div>
   <Nav />

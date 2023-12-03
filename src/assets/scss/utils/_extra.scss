@@ -61,3 +61,8 @@ input {
     background-color: #2e3c4e;
   }
 }
+
+.page-header.close_icon {
+  margin-left: 60px !important;
+  width: calc(100% - 60px) !important;
+}

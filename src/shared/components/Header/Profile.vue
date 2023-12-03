@@ -25,7 +25,7 @@ const logout = () => {
         <img class="b-r-10" :src="profileImage" alt="profile image" />
       </div>
       <div class="media-body flex-grow-1 ms-3">
-        <span>{{ people?.persona?.nombres }} {{ people?.persona?.apellidos }}</span>
+        <span>{{ people?.persona?.nombre }}, {{ people?.persona?.apellido }}</span>
         <p class="mb-0 font-roboto arrow-configuration">
           {{ people?.perfil }} <vue-feather type="chevron-down" />
         </p>

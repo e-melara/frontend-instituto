@@ -20,16 +20,16 @@ export const useAuth = () => {
     {
       onSuccess(data) {
         // @ts-ignore
-        const { token, user } = data;
+        const { token } = data;
         queryClient.getQueryCache().clear();
         const decoded: any = jwtDecode(token);
+        const { perfil, persona, roles } = decoded;
         storage.setItemFn({ key: "token", value: token });
-        storage.setItemFn({ key: "persona", value: user });
+        storage.setItemFn({ key: "persona", value: persona });
         store.setDataUserLogin(
-          user as IUser,
-          decoded["perfil"],
-          decoded["roles"],
-          decoded["rutas"]
+          persona,
+          roles,
+          perfil,
         );
         router.replace({
           name: "home",
@@ -56,18 +56,18 @@ export const useAuth = () => {
         perfil: store.perfil
       }
     }),
-    isAdmin: computed(() => store.isAdmin),
+    // isAdmin: computed(() => store.isAdmin),
     isLoading: computed(() => isLoading.value),
     // functions
     loginFn,
     setData(token: string, user: IUser) {
       const decoded: any = jwtDecode(token);
-      store.setDataUserLogin(
-        user,
-        decoded["perfil"],
-        decoded["roles"],
-        decoded["rutas"]
-      );
+      const { perfil, persona, roles } = decoded;
+        store.setDataUserLogin(
+          persona,
+          roles,
+          perfil,
+        );
     },
     logout: () => {
       store.getLogout();

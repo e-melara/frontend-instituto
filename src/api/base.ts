@@ -64,12 +64,12 @@ authApi.interceptors.response.use(
 // functions
 // refresh Token
 const refreshAccessTokenFn = async () => {
-  return await authApi.get<ILoginResponse>("auth/refresh");
+  return await authApi.get<ILoginResponse>("refresh");
 };
 
 // login
 export const login = async (user: LoginInput) => {
-  return await authApi.post<ILoginResponse>("auth/login", user);
+  return await authApi.post<ILoginResponse>("login", user);
 };
 
 // me

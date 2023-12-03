@@ -10,7 +10,7 @@ export interface IUser {
 }
 
 export interface LoginInput {
-  usuario: string;
+  email: string;
   password: string;
 }
 export interface ILoginResponse {

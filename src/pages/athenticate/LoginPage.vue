@@ -5,7 +5,7 @@ import { toFormValidator } from "@vee-validate/zod";
 import { useForm, Field, ErrorMessage } from "vee-validate";
 
 // assets
-import loginImage from "@/assets/images/login/2.jpg";
+import loginImage from "@/assets/images/login/undraw_medicine_b-1-ol.svg";
 import logoImageLigth from "@/assets/images/logo/utla.png";
 import logoImageDark from "@/assets/images/logo/utla.png";
 
@@ -35,7 +35,7 @@ const { meta, handleSubmit } = useForm({
 
 const submit = handleSubmit(async (values) => {
   const params: LoginInput = {
-    usuario: values.usuario,
+    email: values.usuario,
     password: values.password,
   };
   await auth.loginFn(params);
@@ -47,20 +47,22 @@ onMounted(() => auth.logout());
   <div class="container-fluid">
     <div class="row">
       <div
-        class="col-xl-7 b-center bg-size vh-100 bg-image-opacity"
-        :style="{ backgroundImage: `url(${loginImage})` }"
+        class="col-xl-7" style="background-color: #837eff;"
+      >
+      <div class="b-center bg-size vh-100 bg-image-opacity col-xl-12" 
         style="
-          background-size: cover;
+          background-size: auto;
           background-position: center center;
-          display: block;
-        "
-      ></div>
+          background-repeat: no-repeat;
+        " :style="{ backgroundImage: `url(${loginImage})` }"></div>
+      </div>
       <div class="col-xl-5 p-0 vh-100">
         <div class="login-card">
           <div>
             <div>
               <a href="#" class="logo text-left">
-                <img
+                <!-- TODO: Aqui va ir el logo de la institucion -->
+                <!-- <img
                   style="width: 100px"
                   class="img-fluid for-light"
                   :src="logoImageLigth"
@@ -71,7 +73,7 @@ onMounted(() => auth.logout());
                   class="img-fluid for-dark"
                   :src="logoImageDark"
                   alt="looginpage"
-                />
+                /> -->
               </a>
             </div>
             <div class="login-main login-form-card">
