@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="card-body">
-      <Leyenda />
+      <Leyenda :carrera="carrera" />
       <List :keys="list.keys" :items="list.items" />
     </div>
   </div>
@@ -43,7 +43,7 @@ import { excelExportFile } from "@/exportacion";
 
 const pensum = usePensum();
 const router = useRouter();
-const { list, inscribir, studentEnrolled, viewBtnAsesoria } = toRefs(pensum);
+const { list, inscribir, studentEnrolled, viewBtnAsesoria, carrera } = toRefs(pensum);
 
 const clickDescargarFileExcel = () => {
   excelExportFile(inscribir.value);

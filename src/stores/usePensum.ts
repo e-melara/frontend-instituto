@@ -40,7 +40,7 @@ export const usePensumStore = defineStore("usePensumStore", () => {
   const pensumEnrolled = ref<PensumEnrolled>();
 
   const generatePensum = (pensum: PensumItem[] | undefined) => {
-    const order = groupBy(pensum, "ciclopens");
+    const order = groupBy(pensum, "semestre");
     const entries = toPairs(order);
 
     const keys = new Array<string>();
@@ -64,28 +64,12 @@ export const usePensumStore = defineStore("usePensumStore", () => {
     pensumEnrolled,
     open,
     // getters
+    carrera: computed(() => list.value?.carrera),
     enrolled: computed(() => !!list.value?.enrolled),
     pensumList: computed(() => generatePensum(list.value?.pensum)),
     pensumEnrolledGenerate: computed(() =>
       generatePensum(pensumEnrolled.value?.pensum.pensum)
     ),
-    // pensumList: computed(() => {
-    //   const order = groupBy(list.value?.pensum, "ciclopens");
-    //   const entries = toPairs(order);
-
-    //   const keys = new Array<string>();
-    //   const items = new Array<PensumItem[]>();
-
-    //   entries.forEach(([key, ...rest]) => {
-    //     keys.push(key);
-    //     items.push(rest[0]);
-    //   });
-
-    //   return {
-    //     keys,
-    //     items,
-    //   };
-    // }),
     asesoria: computed(() => {
       const response: IMateria[] = [];
       const order = groupBy(list.value?.inscribir, "codmate");

@@ -72,7 +72,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="d-flex" id="sidebar-menu">
+  <div class="d-flex" id="sidebar-menu" style="margin-top: 10px;">
     <ul class="sidebar-links custom-scrollbar" id="myDiv" style="margin: 0px">
       <li class="back-btn">
         <RouterLink to="/">
@@ -83,85 +83,12 @@ onUnmounted(() => {
           <i class="fa fa-angle-right pl-2" aria-hidden="true"></i>
         </div>
       </li>
-      <li v-for="(item, index) in rutas" :key="index" class="sidebar-list">
+      <li v-for="(item, index) in rutas" :key="index" class="sidebar-list py-2">
         <router-link :to="item.url" class="sidebar-link sidebar-title" exact>
           <vue-feather class="top" :type="item.icon" />
           <span>{{ item.nombre }}</span>
         </router-link>
       </li>
-      <!-- <li
-        v-for="(item, index) in menuItems"
-        :key="index"
-        class="sidebar-list"
-        :class="{
-          active: item.active,
-          'sidebar-main-title': item.type === 'headtitle',
-        }"
-      >
-        <div v-if="item.type === 'headtitle'">
-          <h6 class="lan-1">{{ item.headTitle1 }}</h6>
-          <p class="lan-2">{{ item.headTitle2 }}</p>
-        </div>
-        <label v-if="item.badgeType" :class="`badge badge-${item.badgeType}`">
-          {{ item.badgeValue }}
-        </label>
-        <a
-          class="sidebar-link sidebar-title"
-          v-if="item.type === 'sub'"
-          @click="setNavActive(item)"
-        >
-          <vue-feather :type="item.icon" class="top"></vue-feather>
-          <span>{{ item.title }}</span>
-          <div class="according-menu" v-if="item.children">
-            <vue-feather type="chevron-down" />
-          </div>
-        </a>
-        <RouterLink
-          :to="item.path || ''"
-          class="sidebar-link sidebar-title"
-          v-if="item.type === 'link'"
-          router-link-exact-active
-          exact
-          @click="hideSecondMenu"
-        >
-          <vue-feather class="top" :type="item.icon"></vue-feather>
-          <span>{{ item.title }}</span>
-          <vue-feather type="chevron-down" v-if="item.children" />
-        </RouterLink>
-        <ul
-          class="sidebar-submenu"
-          v-if="item.children"
-          :class="{ 'menu-open': item.active }"
-        >
-          <li
-            :class="{ active: children.active }"
-            v-for="(children, index) in item.children"
-            :key="index"
-          >
-            <a
-              @click="setNavActive(item)"
-              class="submenu-title"
-              v-if="children.type === 'sub'"
-            >
-              {{ children.title }}
-            </a>
-            <RouterLink
-              class="submenu-title"
-              :to="children.path || ''"
-              v-if="children.type === 'link'"
-              router-link-exact-active
-              exact
-              @click="hideSecondMenu"
-            >
-              {{ children.title }}
-              <i
-                class="fa fa-angle-right pull-right mt-1"
-                v-if="children.children"
-              ></i>
-            </RouterLink>
-          </li>
-        </ul>
-      </li> -->
     </ul>
   </div>
 </template>

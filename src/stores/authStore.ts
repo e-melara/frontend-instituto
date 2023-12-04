@@ -2,10 +2,11 @@ import { computed, ref } from "vue";
 import { defineStore } from "pinia";
 import type { IRuta } from "@/interfaces";
 
+import arrayRoutes from "@/utils/router";
 import { usePensumStore } from "./usePensum";
 
 export const useAuthStore = defineStore("useAuthStore", () => {
-  const rutas = ref<IRuta[]>([]);
+  const rutas = ref<IRuta[]>([...arrayRoutes]);
   const perfil = ref<string>("");
   const roles = ref<string[]>([]);
   const persona = ref<any>();

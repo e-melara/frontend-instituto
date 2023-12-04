@@ -2,9 +2,16 @@ export interface Pensum {
   uv: number;
   show: boolean;
   carnet: string;
+  carrera: ICarrera;
   pensum: PensumItem[];
   inscribir: Inscribir[];
   enrolled: SubjectEnrolled | null;
+}
+
+export interface ICarrera {
+  codigo: string;
+  nombre: string;
+  id: number;
 }
 
 export interface Student {
@@ -76,16 +83,15 @@ export interface IMateria {
 }
 
 export interface PensumItem {
-  id: string;
-  ciclopens: string;
-  codcarre: string;
-  nopensum: number;
-  nommate: string;
-  codmate: string;
-  univalora: number;
-  codprere: string;
-  plan: string;
-  status?: Status;
+  creditos: number;
+  semestre: string;
+  no_orden: number;
+  pensum_materia_id: number;
+  pensum_id: number;
+  materia_id: number;
+  nombre_materia: string;
+  codigo_materia: string;
+  requisitos: string;
 }
 
 export interface Subjects {

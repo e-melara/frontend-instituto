@@ -18,7 +18,7 @@ import { storeToRefs } from "pinia";
 
 const pensumAsynFn = async (carnet: string = "me"): Promise<Pensum> => {
   // @ts-ignore
-  return await authApi.get<Pensum>(`/pensum/${carnet}`);
+  return await authApi.get<Pensum>(`/alumno/${carnet}/pensum`);
 };
 
 const pensumAsyncSendFn = async (ids: number[] = []) => {
@@ -171,6 +171,7 @@ export const usePensum = () => {
     },
     // getters
     list: computed(() => pensumList.value),
+    carrera: computed(() => list.value?.carrera),
     viewBtnAsesoria: computed(() => {
       return (
         auth.roles.value.includes("ROLE_PENSUM_STUDENT_ASESORIA_VIEW") &&

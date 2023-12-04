@@ -1,4 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { toRefs } from "vue";
+
+// @ts-ignore
+import type { ICarrera } from "../../interfaces";
+
+interface Props {
+  carrera: ICarrera | undefined;
+}
+const props = defineProps<Props>();
+const { carrera } = toRefs(props);
+</script>
 
 <template>
   <div class="row">
@@ -23,6 +34,9 @@
     <div class="col d-flex justify-content-evenly align-items-center">
       <div class="item-subject reprobada"></div>
       <h5>Reprobadas</h5>
+    </div>
+    <div class="col-12" v-if="carrera">
+      <h2>{{ carrera.nombre }}</h2>
     </div>
   </div>
 </template>

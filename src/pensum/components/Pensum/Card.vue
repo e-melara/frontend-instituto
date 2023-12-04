@@ -1,20 +1,20 @@
 <template>
+  <!-- :class="getClassSubject(subject.status)" lo he quitado de section -->
   <section
     class="item-subject container-fluid"
-    :class="getClassSubject(subject.status)"
   >
     <header class="row">
       <div class="col-3">
-        <strong>{{ subject.nopensum }}</strong>
+        <strong>{{ subject.no_orden }}</strong>
       </div>
-      <div class="col-9">{{ subject.codmate }}</div>
+      <div class="col-9">{{ subject.codigo_materia }}</div>
     </header>
     <main class="row d-flex align-items-center justify-content-center">
-      {{ subject.nommate }}
+      {{ subject.nombre_materia }}
     </main>
     <article class="row">
-      <div class="col-6">{{ subject.codprere }}</div>
-      <div class="col-6">{{ subject.univalora }}</div>
+      <div class="col-6">{{ subject.requisitos === '0' ? 'Bachillerato' : subject.requisitos }}</div>
+      <div class="col-6">{{ subject.creditos }} UV</div>
     </article>
   </section>
 </template>

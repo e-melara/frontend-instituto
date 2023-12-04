@@ -75,4 +75,5 @@ export interface IRuta {
   name: string;
   nombre: string;
   url: string;
+  permissions?: string[];
 }

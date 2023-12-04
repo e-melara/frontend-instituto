@@ -11,7 +11,7 @@
           <td v-for="(item, index) in items" :key="index">
             <Card
               v-for="subject in item"
-              :key="subject.id"
+              :key="subject.pensum_materia_id"
               :subject="subject"
             />
           </td>
