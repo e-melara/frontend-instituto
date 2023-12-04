@@ -19,7 +19,6 @@ declare module '@vue/runtime-core' {
     BFormGroup: typeof import('bootstrap-vue-3')['BFormGroup']
     BFormSelect: typeof import('bootstrap-vue-3')['BFormSelect']
     BModal: typeof import('bootstrap-vue-3')['BModal']
-    BPagination: typeof import('bootstrap-vue-3')['BPagination']
     BRow: typeof import('bootstrap-vue-3')['BRow']
     BTable: typeof import('bootstrap-vue-3')['BTable']
     RouterLink: typeof import('vue-router')['RouterLink']

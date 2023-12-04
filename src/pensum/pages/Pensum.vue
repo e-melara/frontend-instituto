@@ -9,7 +9,7 @@ const auth = useAuth();
 const router = useRouter();
 
 onBeforeMount(() => {
-  if (auth.isAdmin.value) {
+  if (false) {
     router.replace({ name: "pensum-asesor" });
   } else {
     router.replace({ name: "pensum-student" });
