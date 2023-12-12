@@ -45,19 +45,19 @@ const { asesoria, subjects, studentEnrolled, subjetsEnrolled, status } =
   toRefs(pensum);
 
 const validarAsignacion = (args: any) => {
-  validarSubjects(args.item, args.codmate, args.nommate);
+  validarSubjects(args.item);
 };
 
 const handlerRemoveSubject = (codmate: string) => {
   removeSubjects(codmate);
 };
 const sendAsesoriaFn = () => {
-  sendAsesoria();
+  // sendAsesoria();
 };
 
 // getters
 const hasRole = computed(() =>
-  util.hasRole("ROLE_PENSUM_STUDENT_ASESORIA_CREAR")
+  util.hasRole("student.pensum.create")
 );
 </script>
 

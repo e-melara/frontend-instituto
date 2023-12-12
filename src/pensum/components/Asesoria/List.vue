@@ -49,18 +49,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(subject, index) in subjects" :key="subject.codmate">
+          <tr v-for="(subject, index) in subjects" :key="subject.id">
             <td>{{ index + 1 }}</td>
-            <td>{{ subject.codmate }}</td>
-            <td>{{ subject.nommate }}</td>
-            <td>{{ subject.item.dias }}</td>
-            <td>{{ subject.item.horas }}</td>
+            <td>{{ subject.materia.codigo }}</td>
+            <td>{{ subject.materia.nombre }}</td>
+            <td>{{ subject.horario.nombre }} {{ subject.horario.codigo }}</td>
+            <td>{{ subject.docente.nombre }} {{ subject.docente.apellido }}</td>
             <td>
               <button
               v-if="hasRol"
                 class="btn btn-secondary"
-                @click="clickRemoveItem(subject.codmate)"
-              >
+                @click="clickRemoveItem(subject.materia.codigo)">
                 x
               </button>
             </td>
@@ -85,10 +84,10 @@
 
 <script setup lang="ts">
 import { toRefs } from "vue";
-import type { Subjects } from "../../interfaces";
+import type { CargasAcademica } from "../../interfaces";
 
 interface Props {
-  subjects: Subjects[];
+  subjects: CargasAcademica[];
   hasRol: boolean
 }
 const props = defineProps<Props>();

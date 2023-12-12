@@ -1,28 +1,26 @@
-import type { Inscribir } from "@/pensum/interfaces";
+import type { CargasAcademica } from "@/pensum/interfaces";
 import Excel from "exceljs";
 import { saveAs } from "file-saver";
 
-export const excelExportFile = async (materias: Inscribir[]) => {
+export const excelExportFile = async (materias: CargasAcademica[]) => {
   const workbook = new Excel.Workbook();
   const worksheet = workbook.addWorksheet("Horario");
 
   const columns = [
     { key: "codmate", header: "Codigo" },
     { key: "nommate", header: "Materia" },
-    { key: "dias", header: "Dia" },
     { key: "horario", header: "Horario" },
-    { key: "aula", header: "Aula" },
+    { key: "docente", header: "Docente" },
   ];
 
   worksheet.columns = columns;
 
-  materias.forEach((materia) => {
+  materias.forEach((item) => {
     worksheet.addRow({
-      codmate: materia.codmate,
-      nommate: materia.materia.nommate,
-      dias: materia.dias,
-      horario: materia.hora,
-      aula: materia.aula,
+      codmate: item.materia.codigo,
+      nommate: item.materia.nombre,
+      horario: `${item.horario.codigo} - ${item.horario.nombre}`,
+      docente: `${item.docente.nombre} ${item.docente.apellido}`,
     });
   });
 

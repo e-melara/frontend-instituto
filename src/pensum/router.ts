@@ -22,13 +22,13 @@ export const PensumRoute: RouteRecordRaw = {
         rol: 'student.pensum.view'
       }
     },
-/*     {
+    {
       path: "asesoria",
       name: "pensum-asesoria",
       component: () => import("./pages/Asesoria.vue"),
       meta: {
-        rol: 'ROLE_PENSUM_STUDENT_ASESORIA_VIEW'
+        rol: 'student.pensum.create'
       }
-    }, */
+    },
   ],
 };

@@ -1,4 +1,4 @@
-import { orderBy } from "lodash";
+import { orderBy, map, filter } from "lodash";
 import { useRouter } from "vue-router";
 import { computed, onMounted, watch, ref } from "vue";
 import { useMutation, useQuery, useQueryClient } from "vue-query";
@@ -8,7 +8,7 @@ import { useUtil, useAuth } from "@/composables";
 
 import type {
   IHorarioAsesoria,
-  IMateria,
+  CargasAcademica,
   Pensum,
   Subjects,
   Subject,
@@ -32,8 +32,8 @@ export const usePensum = () => {
   const store = usePensumStore();
   const queryClient = useQueryClient();
 
-  const subjectsVisibles = ref<IMateria[]>([]);
-  const subjectsSeleccionadas = ref<Subjects[]>([]);
+  const subjectsVisibles = ref<CargasAcademica[]>([]);
+  const subjectsSeleccionadas = ref<CargasAcademica[]>([]);
 
   const { pensumList, asesoria, list, enrolled } = storeToRefs(store);
 
@@ -64,7 +64,7 @@ export const usePensum = () => {
       }
     });
   } else {
-    subjectsVisibles.value = asesoria.value;
+    subjectsVisibles.value = asesoria.value as CargasAcademica[];
   }
 
   const { isLoading: sendLoading, mutate } = useMutation(
@@ -102,21 +102,20 @@ export const usePensum = () => {
     util.setLoading(value);
   });
 
-  watch(asesoria, (values, oldValues) => {
-    if (oldValues.length === 0) {
+  watch(asesoria, (values: CargasAcademica[], oldValues: CargasAcademica[]) => {
+    if(oldValues.length === 0) {
       subjectsVisibles.value = values;
     }
   });
 
   watch(subjectsSeleccionadas, (subjects) => {
-    const ids = subjects.map((item) => {
-      return item.codmate;
+    const ids = map(subjects, function({ materia }) {
+      return materia.codigo;
     });
 
-    const visibleSubjects = asesoria.value.map((item) => {
-      return { ...item, visible: !ids.includes(item.codmate) };
+    subjectsVisibles.value = asesoria.value.map((item) => {
+      return { ...item, visible: !ids.includes(item.materia.codigo) };
     });
-    subjectsVisibles.value = visibleSubjects;
   });
 
   return {
@@ -126,66 +125,51 @@ export const usePensum = () => {
     },
     // actions
     sendAsesoria() {
-      const ids: number[] = [];
-      subjectsSeleccionadas.value.forEach(({ item: { id } }) => {
-        ids.push(id);
-      });
-      mutate(ids);
+      // const ids: number[] = [];
+      // subjectsSeleccionadas.value.forEach(({ item: { id } }) => {
+      //   ids.push(id);
+      // });
+      // mutate(ids);
     },
     validarSubjects: (
-      item: IHorarioAsesoria,
-      codmate: string,
-      nommate: string
+      item: CargasAcademica,
     ) => {
-      let validar = true;
-      const { dias, horas } = item;
-
       if (subjectsSeleccionadas.value.length >= 5) {
-        validar = false;
         util.showAlert({
           severity: "error",
           summary: "Error!",
           detail: "Solo puedes seleccionar una maximo de 5 materias",
         });
+        return;
       }
 
-      if (validar && subjectsSeleccionadas.value.length > 0) {
-        validar = !subjectsSeleccionadas.value.some(({ item: subject }) => {
-          return subject.dias === dias && subject.horas === horas;
-        });
-
-        if (!validar) {
-          util.showAlert({
-            severity: "error",
-            summary: "Error!",
-            detail: "Hay una materia ya seleccionada con este horario",
-          });
-        }
-      }
+      const validar = subjectsSeleccionadas.value.some((subject: CargasAcademica) => {
+        return subject.materia_id === item.materia_id;
+      });
 
       if (validar) {
-        const object = {
-          item,
-          codmate,
-          nommate: nommate,
-        };
-        subjectsSeleccionadas.value = [object, ...subjectsSeleccionadas.value];
+        util.showAlert({
+          severity: "error",
+          summary: "Error!",
+          detail: "Hay una materia ya seleccionada, y solo se puede seleccionar una vez",
+        });
+        return;
       }
+      subjectsSeleccionadas.value = [...subjectsSeleccionadas.value, item];
     },
     removeSubjects: (codmate: string) => {
-      subjectsSeleccionadas.value = subjectsSeleccionadas.value.filter(
-        (item) => {
-          return item.codmate !== codmate;
-        }
-      );
+      const subjects = filter(subjectsSeleccionadas.value, (item) => {
+        return item.materia.codigo !== codmate;
+      });
+      subjectsSeleccionadas.value = [...subjects];
     },
     // getters
     list: computed(() => pensumList.value),
     carrera: computed(() => list.value?.carrera),
     viewBtnAsesoria: computed(() => {
       return (
-        auth.roles.value.includes("ROLE_PENSUM_STUDENT_ASESORIA_VIEW") &&
-        list.value?.show
+        auth.roles.value.includes("student.pensum.view") && true
+        // list.value?.show
       );
     }),
     status: computed(() => list.value?.enrolled?.estado),
@@ -193,7 +177,7 @@ export const usePensum = () => {
     subjetsEnrolled: computed(() => store.enrolledSubjects),
     subjects: computed(() => subjectsSeleccionadas.value),
     inscribir: computed(() => {
-      return orderBy(list.value?.inscribir, ["codmate", "asc"]);
+      return list.value?.cargas_academicas || [];
     }),
     asesoria: computed(() =>
       subjectsVisibles.value.filter((item) => item.visible)

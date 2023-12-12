@@ -10,6 +10,7 @@ import type {
   PensumItem,
   PensumEnrolled,
   SubjectEnrolled,
+  CargasAcademica,
 } from "@/pensum/interfaces";
 import { authApi } from "@/api/base";
 
@@ -70,26 +71,13 @@ export const usePensumStore = defineStore("usePensumStore", () => {
     pensumEnrolledGenerate: computed(() =>
       generatePensum(pensumEnrolled.value?.pensum.pensum)
     ),
-    asesoria: computed(() => {
-      const response: IMateria[] = [];
-      const order = groupBy(list.value?.inscribir, "codmate");
-      toPairs(order).forEach(([key, ...array]) => {
-        const [data] = array;
-        response.push({
-          ...data[0].materia,
+    asesoria: computed<CargasAcademica[]>(() => {
+      return list.value?.cargas_academicas.map((item) => {
+        return {
+          ...item,
           visible: true,
-          horarios: data.map(
-            ({ codcarga: id, coddoc, dias, hora: horas, turno }) => ({
-              id,
-              coddoc,
-              dias,
-              horas,
-              turno,
-            })
-          ),
-        });
-      });
-      return response;
+        };
+      }) || [];
     }),
     enrolledSubjects: computed(() => {
       if (list.value?.enrolled) {

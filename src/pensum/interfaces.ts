@@ -4,8 +4,43 @@ export interface Pensum {
   carnet: string;
   carrera: ICarrera;
   pensum: PensumItem[];
+  cargas_academicas: CargasAcademica[];
   inscribir: Inscribir[];
   enrolled: SubjectEnrolled | null;
+}
+
+export interface CargasAcademica {
+  id:         number;
+  docente_id: number;
+  materia_id: number;
+  horario_id: number;
+  ciclo_id:   number;
+  visible?:    boolean;
+  horario: {
+    id:     number;
+    nombre: string;
+    codigo: string;
+  }
+  materia: {
+    nombre: string;
+    codigo: string;
+  }
+  docente: {
+    nombre:   string;
+    apellido: string;
+  };
+}
+
+export interface Docente {
+
+}
+
+export interface Horario {
+
+}
+
+export interface Materia {
+
 }
 
 export interface ICarrera {

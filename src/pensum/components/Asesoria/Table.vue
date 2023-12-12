@@ -14,40 +14,49 @@
       <table
         class="table b-table asesoria"
         role="table"
-        v-for="item in asesorias"
-        :key="item.codmate"
       >
         <thead role="rowgroup">
           <tr role="row">
             <th role="columnheader" width="150px" scope="col">
-              {{ item.codmate }}
+             Codigo de la materia
             </th>
             <th role="columnheader" scope="col">
-              {{ item.nommate }}
+              Nombre de la materia
             </th>
-            <th width="130px">
-              <span class="badge badge-light-success pull-right"
-                >{{ item.horarios?.length }} Horarios disponibles</span
-              >
+            <th role="columnheader" scope="col">
+              Nombre del docente
             </th>
+            <th role="columnheader" scope="col"></th>
           </tr>
         </thead>
-        <tbody>
-          <tr v-for="horario in item.horarios" :key="horario.id">
-            <td>DIA: {{ horario.dias }}</td>
-            <td>Horas: {{ horario.horas }}</td>
-            <td>
+        <tbody v-for="item in asesorias" :key="item.id">
+          <tr role="row">
+            <th role="columnheader" width="150px" scope="col">
+              {{ item.materia.codigo }}
+            </th>
+            <th role="columnheader" scope="col">
+              {{ item.materia.nombre }}
+            </th>
+            <th role="columnheader" scope="col">
+              {{ item.docente.nombre }} {{ item.docente.apellido  }}
+            </th>
+            <th>
               <button
               v-if="hasRol"
                 type="button"
-                class="pull-right btn btn-pill btn-success active"
-                @click="handlerSelection(horario, item)"
-              >
+                class="pull-right btn btn-pill btn-success active" @click="handlerSelection(item)">
                 Seleccionar
               </button>
-            </td>
+            </th>
           </tr>
         </tbody>
+        <tfoot>
+          <tr v-if="asesorias.length === 0">
+            <td colspan="4" class="text-center">
+              No hay materias para mostrar
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   </div>
@@ -55,10 +64,10 @@
 
 <script setup lang="ts">
 import { toRefs } from "vue";
-import type { IHorarioAsesoria, IMateria } from "@/pensum/interfaces";
+import type { IHorarioAsesoria, IMateria, CargasAcademica } from "@/pensum/interfaces";
 
 interface Props {
-  asesorias: IMateria[];
+  asesorias: CargasAcademica[];
   hasRol: boolean
 }
 
@@ -68,9 +77,8 @@ const props = defineProps<Props>();
 const { asesorias, hasRol } = toRefs(props);
 
 const handlerSelection = (
-  item: IHorarioAsesoria,
-  groupSelecction: IMateria
+  item: CargasAcademica
 ) => {
-  emits("validar", { item, codmate: groupSelecction.codmate, nommate: groupSelecction.nommate });
+  emits("validar", { item });
 };
 </script>
