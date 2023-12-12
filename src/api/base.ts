@@ -35,28 +35,12 @@ authApi.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    const errMessage = error.response.data.message as string;
-    if (errMessage.includes("not logged in") && !originalRequest._retry) {
+    if (error.response.status === 401 && !originalRequest._retry) {
+      window.localStorage.removeItem("token");
       originalRequest._retry = true;
-      await refreshAccessTokenFn();
-      return authApi(originalRequest);
+      window.location.href = "/login";
     }
-
-    if (error.response) {
-      const util = useUtil();
-      const {
-        data: { statusCode: status, message },
-      } = error.response;
-      if (status !== 401) {
-        util.showAlert({
-          severity: "error",
-          detail: message,
-          summary: "Error",
-        });
-      } else {
-        document.location.href = '/authenticate/login'
-      }
-    }
+    
     return Promise.reject(error);
   }
 );
@@ -64,7 +48,7 @@ authApi.interceptors.response.use(
 // functions
 // refresh Token
 const refreshAccessTokenFn = async () => {
-  return await authApi.get<ILoginResponse>("refresh");
+  return await authApi.get<ILoginResponse>("/v1/refresh");
 };
 
 // login

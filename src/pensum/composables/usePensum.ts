@@ -18,7 +18,7 @@ import { storeToRefs } from "pinia";
 
 const pensumAsynFn = async (carnet: string = "me"): Promise<Pensum> => {
   // @ts-ignore
-  return await authApi.get<Pensum>(`/alumno/${carnet}/pensum`);
+  return await authApi.get<Pensum>(`/v1/alumno/${carnet}/pensum`);
 };
 
 const pensumAsyncSendFn = async (ids: number[] = []) => {
@@ -44,7 +44,17 @@ export const usePensum = () => {
       onSuccess: (pensum) => {
         store.setListPensum(pensum);
       },
+      onError: (e) => {
+        util.showAlert({
+          summary: "Error",
+          severity: "error",
+          detail: "Tenemos un problema por el momento para mostrar la informacion, pongase en contacto con el administrador",
+        });
+        util.setLoading(false);
+      },
+      retry: 0,
       cacheTime: 0,
+      enabled: !list.value,
     });
 
     watch(data, (pensum) => {

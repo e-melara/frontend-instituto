@@ -1,6 +1,7 @@
 <template>
   <!-- :class="getClassSubject(subject.status)" lo he quitado de section -->
   <section
+   :class="getClassSubject(subject.estado)"
     class="item-subject container-fluid"
   >
     <header class="row">
@@ -41,7 +42,7 @@ const getClassSubject = (status: string | undefined): string => {
   switch (status) {
     case "A":
       return KeyClass.A;
-    case "I":
+    case "INSCRIBIR":
       return KeyClass.I;
     case "R":
       return KeyClass.R;

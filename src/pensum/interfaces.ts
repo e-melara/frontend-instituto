@@ -92,6 +92,7 @@ export interface PensumItem {
   nombre_materia: string;
   codigo_materia: string;
   requisitos: string;
+  estado: string;
 }
 
 export interface Subjects {
