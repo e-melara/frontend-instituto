@@ -1,11 +1,8 @@
 <template>
-  <BreadCumbs title="Cargas Academicas" :button="true" />
+  <BreadCumbs title="Materias" :button="true" />
   <div class="file-content">
     <div class="card">
-      <b-table v-if="data" :fields="headers" :items="data.cargas">
-        <template #cell(nommate)="{ item }">
-          {{ item.materia.nommate }}
-        </template>
+      <b-table v-if="data" :fields="headers" :items="data">
         <template #cell(actions)="row">
           <b-button
             variant="success"
@@ -38,18 +35,17 @@ const { data } = storeToRefs(store);
 
 // headers table
 const headers = [
-  { key: "codmate", label: "Codigo", sortable: false },
-  { key: "nommate", label: "Materia", sortable: false },
-  { key: "dias", label: "Dias", sortable: false },
-  { key: "hora", label: "Horas", sortable: false },
-  { key: "actions", label: "" },
+  { key: "materia_codigo", label: "Codigo", sortable: false },
+  { key: "materia_nombre", label: "Materia", sortable: false, with: '50%' },
+  { key: "horario", label: "Dias", sortable: false },
+  { key: "actions", label: "", width: '50px' },
 ];
 
 // actions
-const goToVerEstudiantes = (item: ICarga) => {
+const goToVerEstudiantes = (item: any) => {
   router.replace({
     name: "notes-docente-student",
-    params: { id: item.codcarga },
+    params: { id: item.id },
   });
 };
 

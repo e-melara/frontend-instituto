@@ -41,8 +41,7 @@ import { usePensum } from "@/pensum/composables/usePensum";
 const util = useUtil();
 const pensum = usePensum();
 const { validarSubjects, removeSubjects, sendAsesoria } = pensum;
-const { asesoria, subjects, studentEnrolled, subjetsEnrolled, status } =
-  toRefs(pensum);
+const { asesoria, subjects, studentEnrolled, subjetsEnrolled, status } = toRefs(pensum);
 
 const validarAsignacion = (args: any) => {
   validarSubjects(args.item);
@@ -52,7 +51,7 @@ const handlerRemoveSubject = (codmate: string) => {
   removeSubjects(codmate);
 };
 const sendAsesoriaFn = () => {
-  // sendAsesoria();
+  sendAsesoria();
 };
 
 // getters

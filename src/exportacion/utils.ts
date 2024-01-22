@@ -81,6 +81,7 @@ export const readFile = (files: any[], noteKey: string, codCarga: number) => {
         const worksheet = workbook.worksheets[0];
 
         const codCargaExcel = worksheet.getCell("A1").value?.toString();
+        console.log(codCarga, codCargaExcel)
         if (codCarga.toString() !== codCargaExcel) {
           reject("El Documento no es valido para esta asignatura");
         }

@@ -1,16 +1,14 @@
-import { orderBy, map, filter } from "lodash";
+import { map, filter } from "lodash";
 import { useRouter } from "vue-router";
 import { computed, onMounted, watch, ref } from "vue";
-import { useMutation, useQuery, useQueryClient } from "vue-query";
+import { useMutation, useQuery } from "vue-query";
 
 import { authApi } from "@/api/base";
 import { useUtil, useAuth } from "@/composables";
 
 import type {
-  IHorarioAsesoria,
   CargasAcademica,
   Pensum,
-  Subjects,
   Subject,
 } from "../interfaces";
 import { usePensumStore } from "@/stores";
@@ -21,8 +19,8 @@ const pensumAsynFn = async (carnet: string = "me"): Promise<Pensum> => {
   return await authApi.get<Pensum>(`/v1/alumno/${carnet}/pensum`);
 };
 
-const pensumAsyncSendFn = async (ids: number[] = []) => {
-  return await authApi.post<Subject>("pensum", { ids });
+const pensumAsyncSendFn = async (ids:  Array<number> = []) => {
+  return await authApi.post<Subject>("v1/pensum", { ids });
 };
 
 export const usePensum = () => {
@@ -30,7 +28,6 @@ export const usePensum = () => {
   const auth = useAuth();
   const router = useRouter();
   const store = usePensumStore();
-  const queryClient = useQueryClient();
 
   const subjectsVisibles = ref<CargasAcademica[]>([]);
   const subjectsSeleccionadas = ref<CargasAcademica[]>([]);
@@ -44,7 +41,7 @@ export const usePensum = () => {
       onSuccess: (pensum) => {
         store.setListPensum(pensum);
       },
-      onError: (e) => {
+      onError: () => {
         util.showAlert({
           summary: "Error",
           severity: "error",
@@ -68,7 +65,7 @@ export const usePensum = () => {
   }
 
   const { isLoading: sendLoading, mutate } = useMutation(
-    (ids: number[]) => pensumAsyncSendFn(ids),
+    (ids: Array<number>) => pensumAsyncSendFn(ids),
     {
       onSuccess(data) {
         util.showAlert({
@@ -125,11 +122,11 @@ export const usePensum = () => {
     },
     // actions
     sendAsesoria() {
-      // const ids: number[] = [];
-      // subjectsSeleccionadas.value.forEach(({ item: { id } }) => {
-      //   ids.push(id);
-      // });
-      // mutate(ids);
+      let cargas: Array<number> = []
+      subjectsSeleccionadas.value.forEach(function(item) {
+        cargas.push(item.id)
+      });
+      // mutate(cargas);
     },
     validarSubjects: (
       item: CargasAcademica,

@@ -20,9 +20,9 @@
         </b-card-text>
       </b-card-body>
       <b-table
-        v-if="carga?.alumnos"
+        v-if="carga"
         :fields="headers"
-        :items="carga.alumnos"
+        :items="carga"
         class="text-center"
         striped
         bordered
@@ -31,7 +31,7 @@
         hover
       >
         <template #cell(estudiante)="{ item }">
-          {{ item.apellidos }} {{ item.nombres }}
+          {{ item.alumno.apellidos }} {{ item.alumno.nombres }}
         </template>
         <template #cell(nota1)="{ item }">
           {{ formatDouble(item.nota1) }}
@@ -88,12 +88,12 @@ const { carga, open } = storeToRefs(store);
 const headers = [
   { key: "carnet", label: "Carnet", sortable: false },
   { key: "estudiante", label: "Estudiante", sortable: false },
-  { key: "nota1", label: "Nota 1", sortable: false },
-  { key: "nota2", label: "Nota 2", sortable: false },
-  { key: "nota3", label: "Nota 3", sortable: false },
-  { key: "nota4", label: "Nota 4", sortable: false },
-  { key: "nota5", label: "Nota 5", sortable: false },
-  { key: "promedio", label: "Promedio", sortable: false },
+  // { key: "nota1", label: "Nota 1", sortable: false },
+  // { key: "nota2", label: "Nota 2", sortable: false },
+  // { key: "nota3", label: "Nota 3", sortable: false },
+  // { key: "nota4", label: "Nota 4", sortable: false },
+  // { key: "nota5", label: "Nota 5", sortable: false },
+  // { key: "promedio", label: "Promedio", sortable: false },
 ];
 
 const title = computed(() => {

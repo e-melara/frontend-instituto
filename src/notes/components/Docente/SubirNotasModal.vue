@@ -78,12 +78,13 @@
     </b-container>
 
     <div class="d-flex justify-content-end mt-4" v-if="validNote">
-      <b-button variant="primary" @click="sendNote">Subir notas</b-button>
+      <b-button variant="primary">Subir notas</b-button>
     </div>
   </b-modal>
 </template>
 
 <script lang="ts" setup>
+import { useRoute } from 'vue-router'
 import { useDropzone } from "vue3-dropzone";
 import { computed, reactive, toRefs, ref, onMounted } from "vue";
 
@@ -98,6 +99,7 @@ interface Props {
 
 const header = ["carnet", "nombre", "valor"];
 
+const route = useRoute()
 const util = useUtilsStore();
 const arrayNote = ref<any[]>([]);
 const validNote = ref<boolean>(false);
@@ -168,7 +170,7 @@ const handleSubmit = (event: Event) => {
   event.preventDefault();
   if (valid && note) {
     const noteKey: any = note.value !== undefined ? map.get(+note.value) : "F";
-    readFile(state.files, noteKey, carga.value.codcarga)
+    readFile(state.files, noteKey, route.params.id)
       .then((array: any) => {
         arrayNote.value = array;
         validNote.value = true;

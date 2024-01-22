@@ -1,3 +1,16 @@
+export interface MateriaDocente {
+  horario : {
+    codigo: string,
+    nombre: string,
+  }
+  materia: {
+    id: number,
+    codigo: string,
+    nombre: string,
+  }
+}
+
+
 export interface IDocenteNotes {
   coddoc: string;
   nombres: string;

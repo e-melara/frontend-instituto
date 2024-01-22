@@ -48,7 +48,19 @@ export const useAuth = () => {
 
   return {
     // state
-    rutas: computed(()  => store.rutas),
+    rutas: computed(()  => {
+      const token = storage.getItemFn({ key: 'token' })
+      const { roles }: any = jwtDecode(token);
+      return store.rutas.filter(function( { permissions } ){ 
+        if(permissions && permissions === 'public') {
+          return true;
+        }
+        if(roles.includes(permissions)) {
+          return true;
+        }
+        return false;
+      });
+    }),
     roles: computed(() => store.roles),
     people: computed(() => {
       return {

@@ -3,10 +3,8 @@ import Excel from "exceljs";
 import { saveFile } from "./save-file";
 import { createOuterBorder } from "./utils";
 import { TypeOrden } from "@/notes/interfaces";
-import type { ICarga } from "@/notes/interfaces";
 
-const header = (worksheet: Excel.Worksheet, carga: ICarga) => {
-  const { docente, materia, codcarga, dias, hora } = carga;
+const header = (worksheet: Excel.Worksheet, carga: any) => {
   worksheet.mergeCells("B2:J2");
   worksheet.mergeCells("B4:E4");
   worksheet.mergeCells("B5:E5");
@@ -14,14 +12,14 @@ const header = (worksheet: Excel.Worksheet, carga: ICarga) => {
   worksheet.mergeCells("F4:J4");
   worksheet.mergeCells("F5:J5");
 
-  worksheet.getCell("A1").value = codcarga;
-  worksheet.getCell("J2").value = materia.toString();
-  worksheet.getCell("E4").value = `Codigo: ${codcarga}`;
+  const [item] = carga
+  worksheet.getCell("A1").value = item.carga_academica_id;
+  worksheet.getCell("J2").value = 'NOMBRE MATERIA';
+  worksheet.getCell("E4").value = `Codigo: CODIGO DE CARGA ACADEMICA`;
   worksheet.getCell(
     "E5"
-  ).value = `Docente: ${docente?.nombres} ${docente?.apellidos}`;
-  worksheet.getCell("J4").value = `Dias: ${dias}`;
-  worksheet.getCell("J5").value = `Horario: ${hora}`;
+  ).value = `Docente: NOMBRE DEL DOCENTE`;
+  worksheet.getCell("J5").value = `Horario`;
 
   // anchos de las columnas
   const items = [
@@ -59,7 +57,7 @@ const styles = (worksheet: Excel.Worksheet) => {
   };
 };
 
-export const excelExportFileCuadro = async (carga: ICarga) => {
+export const excelExportFileCuadro = async (carga: any) => {
   const workbook = new Excel.Workbook();
   const worksheet = workbook.addWorksheet("Cuadro de notas");
 
@@ -68,22 +66,15 @@ export const excelExportFileCuadro = async (carga: ICarga) => {
   await worksheet.protect(password, {});
 
   // header
-  header(worksheet, carga);
-
   let array = new Array<any>();
-  if (carga.alumnos) {
-    array = carga.alumnos?.map((alumno, index) => {
+  if (carga) {
+    header(worksheet, carga);
+    array = carga.map((item: any, index: number) => {
       return [
         index + 1,
-        alumno.carnet,
-        `${alumno.apellidos} ${alumno.nombres }`,
-        `${alumno.carnet}@utla.edu.sv`,
-        alumno.nota1 || null,
-        alumno.nota2 || null,
-        alumno.nota3 || null,
-        alumno.nota4 || null,
-        alumno.nota5 || null,
-        alumno.promedio || null,
+        item.alumno.carnet,
+        `${item.alumno.apellidos} ${item.alumno.nombres }`,
+        `${item.alumno.carnet}@correo.edu.sv`,      
       ];
     });
   }
@@ -102,12 +93,6 @@ export const excelExportFileCuadro = async (carga: ICarga) => {
       { name: "Carnet", filterButton: false },
       { name: "Alumno", filterButton: false },
       { name: "Correo", filterButton: false },
-      { name: "Nota 1", filterButton: false },
-      { name: "Nota 2", filterButton: false },
-      { name: "Nota 3", filterButton: false },
-      { name: "Nota 4", filterButton: false },
-      { name: "Nota 5", filterButton: false },
-      { name: "Promedio", filterButton: false },
     ],
     rows: [...array],
   });
@@ -133,6 +118,6 @@ export const excelExportFileCuadro = async (carga: ICarga) => {
     TypeOrden.Validation
   );
 
-  const nameFile = `${carga.codmate}-${carga.materia}-${new Date().getTime()}`;
+  const nameFile = `${new Date().getTime()}`;
   return saveFile(workbook, nameFile);
 };

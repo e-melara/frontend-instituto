@@ -37,9 +37,21 @@ export const useNoteStore = defineStore("useNoteStore", () => {
     async getListaCargasDocente() {
       try {
         util.setLoading(true);
-        const cargas = await authApi.get<IDocenteNotes>("/notas");
         // @ts-ignore
-        data.value = cargas;
+        const { cargas } = await authApi.get("/v1/materias/docentes");
+        data.value = cargas.filter(function(item: any) {
+          if(item && item.materia){
+            return true;
+          }
+          return false
+        }).map(function(item: any){
+            return {
+              id: item.id,
+              materia_nombre: item.materia.nombre,
+              materia_codigo: item.materia.codigo,
+              horario: item.horario.nombre
+            }
+        });
       } catch (error) {
         console.log(error);
       } finally {
@@ -50,9 +62,9 @@ export const useNoteStore = defineStore("useNoteStore", () => {
     async getDataCargaAcademica(id: number) {
       try {
         util.setLoading(true);
-        const carga = await authApi.get<ICarga>(`/notas/${id}/carga`);
+        const carga = await authApi.get(`/v1/materias/${id}/carga`);
         // @ts-ignore
-        item.value = carga;
+        item.value = carga.notas;
       } catch (error) {
         console.log(error);
       } finally {

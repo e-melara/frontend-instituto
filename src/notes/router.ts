@@ -11,7 +11,7 @@ export const NotesRoute: RouteRecordRaw = {
       name: "notes-docente",
       component: () => import("./pages/Docentes/List.vue"),
       meta: {
-        rol: "ROL_DOCENTE_LIST_NOTES",
+        rol: "docente.notes.view",
       },
     },
     {
@@ -19,7 +19,7 @@ export const NotesRoute: RouteRecordRaw = {
       name: "notes-docente-student",
       component: () => import("./pages/Docentes/StudentsNote.vue"),
       meta: {
-        rol: "ROL_DOCENTE_VIEW_NOTES",
+        rol: "docente.notes.view",
       },
     },
     {

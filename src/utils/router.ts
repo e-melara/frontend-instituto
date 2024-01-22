@@ -5,13 +5,19 @@ const arrayRutas: IRuta[] = [{
     icon: "home",
     nombre: "Inicio",
     url: "/",
-    permissions: [],
+    permissions: "public",
 }, {
     name: "pensum-student",
     icon: "book",
     nombre: "Pensum",
     url: "/pensum/student",
-    permissions: [],
+    permissions: 'student.pensum.view',
+}, {
+    name: "notes-docente",
+    icon: "book",
+    nombre: "Materias",
+    url: "/notes/docente",
+    permissions: 'docente.notes.view',
 }];
 
 export default arrayRutas;
