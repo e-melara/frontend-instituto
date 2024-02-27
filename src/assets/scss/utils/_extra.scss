@@ -66,3 +66,30 @@ input {
   margin-left: 60px !important;
   width: calc(100% - 60px) !important;
 }
+
+table.table-note , table.table-note td, table.table-note th {
+	border: 1px solid #595959;
+	border-collapse: collapse;
+  td, th {
+    padding: 3px;
+    width: 30px;
+    height: 25px;
+    vertical-align: middle;
+    text-align: center;
+  }
+
+  thead td {
+    background: #2f3c4e !important;
+    color: white;
+    font-weight: bold;
+    border-color: white;
+    border-width: 0.15px;
+  }
+  .even {
+    background: #fbf8f0;
+  }
+  .odd {
+    background: #fefcf9;
+  }
+}
+

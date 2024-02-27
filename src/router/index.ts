@@ -35,7 +35,6 @@ const router = createRouter({
     },
     PensumRoute,
     NotesRoute,
-
     // default
     {
       path: "/:pathMatch(.*)*",

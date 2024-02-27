@@ -51,7 +51,7 @@ export const useAuth = () => {
     rutas: computed(()  => {
       const token = storage.getItemFn({ key: 'token' })
       const { roles }: any = jwtDecode(token);
-      return store.rutas.filter(function( { permissions } ){ 
+      return store.rutas.filter(function( { permissions } ){
         if(permissions && permissions === 'public') {
           return true;
         }

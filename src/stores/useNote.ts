@@ -18,11 +18,19 @@ export const useNoteStore = defineStore("useNoteStore", () => {
   const data = ref<IDocenteNotes>();
   const notas = ref<CargaAcademicaHistory[]>([]);
 
+  const subjectsStudent = ref<any[]>([]);
+  const viewNoteTable = ref<{ materia: object, nota: object }>({
+    materia: {},
+    nota: {}
+  });
+
   return {
     //getters
     data: computed(() => data.value),
     carga: computed(() => item.value),
     open: computed(() => show.value),
+    subjectsStudent: computed(() => subjectsStudent.value),
+    viewNoteTable: computed(() => viewNoteTable.value),
     notas: computed(() => {
       const items = groupBy(notas.value, "ciclolectivo");
       return Object.entries(items)
@@ -106,6 +114,36 @@ export const useNoteStore = defineStore("useNoteStore", () => {
     // open modal
     toggleShowModal(open?: boolean) {
       show.value = open === undefined ? !show.value : open;
+    },
+
+    // Actions para los estudiantes
+    async getNotasEstudiante() {
+      try {
+        util.setLoading(true);
+        const { data } = await authApi.get<any[]>('/v1/alumno/materias');
+        subjectsStudent.value = data;
+      } catch (error) {
+        
+      } finally {
+        util.setLoading(false);
+      }
+    },
+
+    async getNotaViewId(id: number) {
+      try {
+        util.setLoading(true);
+        const data = await authApi.get<{ materia: object, nota: object }>('/v1/alumno/materias/' + id);
+        viewNoteTable.value = {
+          // @ts-ignore
+          materia: data.materia,
+          // @ts-ignore
+          nota: data.nota
+        }
+      } catch (error) {
+        
+      } finally {
+        util.setLoading(false);
+      }
     },
   };
 });

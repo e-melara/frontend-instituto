@@ -11,6 +11,13 @@
       "icon": "git-pull-request",
       "type": "link",
       "active": false
+    },
+    {
+      "path": "notes/student",
+      "title": "Notas",
+      "icon": "git-pull-request",
+      "type": "link",
+      "active": false
     }
   ]
 }

@@ -1,55 +1,32 @@
 <template>
-  <BreadCumbs :title="title" :button="true" />
+  <BreadCumbs title="Notas" :button="true" />
 
   <b-container fluid>
     <b-row>
       <b-col cols="12">
         <div class="table-responsive">
           <table class="table">
+            <thead>
+              <tr class="header-table table-dark">
+                <th scope="col">Codigo</th>
+                <th scope="col">Materia</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
             <tbody>
-              <template v-for="nota in notas" :key="nota.ciclo">
+              <template v-for="row in subjectsStudent" :key="row.id">
                 <tr>
-                  <td colspan="4"></td>
-                  <td colspan="6" class="text-end">
-                    <h5>Ciclo: {{ nota.ciclo }}</h5>
-                  </td>
-                </tr>
-                <tr class="header-table table-dark">
-                  <th scope="col">Codigo</th>
-                  <th scope="col">Materia</th>
-                  <th scope="col">Docente</th>
-                  <th scope="col" class="text-center">Nota 1</th>
-                  <th scope="col" class="text-center">Nota 2</th>
-                  <th scope="col" class="text-center">Nota 3</th>
-                  <th scope="col" class="text-center">Nota 4</th>
-                  <th scope="col" class="text-center">Nota 5</th>
-                  <th scope="col" class="text-center">Promedio</th>
-                  <th scope="col" class="text-center"></th>
-                </tr>
-                <tr v-for="materia in nota.materias" :key="materia.codcarga">
-                  <td scope="row">{{ materia.codmate }}</td>
-                  <td>{{ materia.nommate }}</td>
-                  <td>{{ materia.nombres }} {{ materia.apellidos }}</td>
-                  <td class="text-center">
-                    {{ formmatedNumber(materia.nota1) }}
-                  </td>
-                  <td class="text-center">
-                    {{ formmatedNumber(materia.nota2) }}
-                  </td>
-                  <td class="text-center">
-                    {{ formmatedNumber(materia.nota3) }}
-                  </td>
-                  <td class="text-center">
-                    {{ formmatedNumber(materia.nota4) }}
-                  </td>
-                  <td class="text-center">
-                    {{ formmatedNumber(materia.nota5) }}
-                  </td>
-                  <td class="text-center">
-                    {{ formmatedNumber(materia.promedio) }}
-                  </td>
-                  <td class="text-center">
-                    <span class="badge bg-primary">{{ materia.estado }}</span>
+                  <td scope="row">{{ row.codigo }}</td>
+                  <td>{{ row.materia }}</td>
+                  <td style="width: 10%">
+                    <b-button
+                      size="sm"
+                      class="mr-1"
+                      variant="success"
+                      @click="viewNoteStudent(row)"
+                    >
+                      Ver notas
+                    </b-button>
                   </td>
                 </tr>
               </template>
@@ -58,43 +35,48 @@
         </div>
       </b-col>
     </b-row>
+    <b-row>
+      <b-col cols="12">
+      </b-col>
+    </b-row>
   </b-container>
+  <b-modal 
+    v-model="open"
+    :title="titleModal"
+    size="xl"
+    no-close-on-esc
+    no-close-on-backdrop
+  >
+  <b-container fluid>
+    <TableLayout />
+  </b-container>
+  </b-modal>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onUpdated, ref } from "vue";
-import { useRoute } from "vue-router";
+import { storeToRefs } from "pinia";
+import { onMounted, ref } from "vue";
 
-// @ts-ignore
+// // @ts-ignore
 import BreadCumbs from "@/shared/BreadCumbs.vue";
+import TableLayout from "./components/TableLayout.vue";
 
 import { useNoteStore } from "@/stores";
-import { storeToRefs } from "pinia";
 
 const store = useNoteStore();
-const title = ref<string>("Historial de Notas");
+const { subjectsStudent } = storeToRefs(store);
 
-const { notas } = storeToRefs(store);
+const titleModal = ref("");
+const open = ref<boolean>(false);
 
-onUpdated(() => {
-  funCargarData();
-});
-
-onMounted(() => {
-  funCargarData();
-});
-
-const funCargarData = () => {
-  const route = useRoute();
-  const name = route.name;
-  title.value =
-    name === "notes-student-history" ? "Historial de Notas" : "Notas del Ciclo";
-  store.getNotasCicloOrHistory({
-    q: name === "notes-student-history" ? "HISTORY" : "CICLO",
-  });
+// actions 
+const viewNoteStudent = async (row: object) => {
+  await store.getNotaViewId((row as any).id);
+  titleModal.value = (row as any).materia;
+  open.value = true;
 };
 
-const formmatedNumber = (value: number) => Number(value).toFixed(2);
+onMounted(() => store.getNotasEstudiante());
 </script>
 
 <style scoped>

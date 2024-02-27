@@ -9,6 +9,7 @@ export const NotesRoute: RouteRecordRaw = {
     {
       path: "docente",
       name: "notes-docente",
+      // component: () => import("./pages/Docentes/List.vue"),
       component: () => import("./pages/Docentes/List.vue"),
       meta: {
         rol: "docente.notes.view",
@@ -35,7 +36,7 @@ export const NotesRoute: RouteRecordRaw = {
       name: "notes-student",
       component: () => import("./pages/Alumnos/List.vue"),
       meta: {
-        rol: "ROL_ESTUDIANTE_LIST_NOTES",
+        rol: "student.notes.view",
       },
     },
   ],
