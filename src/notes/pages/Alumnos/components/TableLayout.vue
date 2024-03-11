@@ -21,6 +21,10 @@ import TableNoteNueve from './TableNotes/TableNoteNueve.vue';
 import TableNoteCinco from './TableNotes/TableNoteCinco.vue';
 import TableNoteSeis from './TableNotes/TableNoteSeis.vue';
 import TableNoteSiete from './TableNotes/TableNoteSiete.vue';
+import TableNoteDoce from './TableNotes/TableNoteDoce.vue';
+import TableNoteTrece from './TableNotes/TableNoteTrece.vue';
+import TableNoteCatorce from './TableNotes/TableNoteCatorce.vue';
+import TableNoteQuince from './TableNotes/TableNoteQuince.vue';
 
 const components = [
   TableNoteOne, // 1
@@ -34,6 +38,10 @@ const components = [
   TableNoteNueve, // 9
   TableNoteDiez, // 10
   TableNoteOnce, // 11
+  TableNoteDoce, // 12
+  TableNoteTrece, // 13
+  TableNoteCatorce, // 14
+  TableNoteQuince, // 15
 ];
 
 export default defineComponent({

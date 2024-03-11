@@ -4,7 +4,7 @@
       <tr>
         <td colspan="12">TEORIA</td>
         <td rowspan="3">NOTA FINAL</td>
-        <td rowspan="3">EXAMEN DE REPO</td>
+        <td rowspan="3">EXAMEN DE REPOSICION</td>
         <td rowspan="3">NOTA DEL CICLO</td>
       </tr>
       <tr>
@@ -24,7 +24,7 @@
         <td>1</td>
         <td>2</td>
         <td>3</td>
-        <td>12%</td>
+        <td>TOTAL 12%</td>
       </tr>
     </thead>
     <tbody>

@@ -56,7 +56,19 @@
         <td>{{ filterNumeric(materia.nota_12) }}</td>
         <td>{{ filterNumeric(materia.nota_13) }}</td>
         <td>{{ filterNumeric(materia.nota_14) }}</td>
-        <td>{{ filterNumeric(materia.promedio) }}</td>
+        <td>{{ filterNumeric(materia.nota_15) }}</td>
+        <td>{{ filterNumeric(materia.nota_16) }}</td>
+        <td>{{ filterNumeric(materia.nota_17) }}</td>
+        <td>{{ filterNumeric(materia.nota_18) }}</td>
+        <td>{{ filterNumeric(materia.nota_19) }}</td>
+        <td>{{ filterNumeric(materia.nota_20) }}</td>
+        <td>{{ filterNumeric(materia.nota_21) }}</td>
+        <td>{{ filterNumeric(materia.nota_22) }}</td>
+        <td>{{ filterNumeric(materia.nota_23) }}</td>
+        <td>{{ filterNumeric(materia.nota_24) }}</td>
+        <td>{{ filterNumeric(materia.nota_25) }}</td>
+        <td>{{ filterNumeric(materia.nota_26) }}</td>
+        <td>{{ filterNumeric(materia.nota_27) }}</td>
       </tr>
     </tbody>
   </table>

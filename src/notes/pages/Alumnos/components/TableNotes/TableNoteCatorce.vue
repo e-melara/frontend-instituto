@@ -2,29 +2,44 @@
   <table class="table-note table">
     <thead>
       <tr>
-        <td colspan="12">TEORIA</td>
-        <td rowspan="3">NOTA FINAL</td>
+        <td colspan="16">TEORIA</td>
+        <td colspan="8">PRACTICAS</td>
+        <td rowspan="3">NOTA FINAL (TEORIA + PRACTICA)</td>
         <td rowspan="3">EXAMEN DE REPO</td>
         <td rowspan="3">NOTA DEL CICLO</td>
       </tr>
       <tr>
         <td colspan="4">EXAMENES PARCIALES</td>
         <td colspan="2">TRABAJO DE CAMPO</td>
-        <td colspan="4">EXAMENES CORTOS</td>
-        <td rowspan="2">EXAMEN FINAL</td>
-        <td rowspan="2">EXAMEN FINAL 20%</td>
+        <td colspan="4">LABORATORIOS</td>
+        <td colspan="2">EXAMEN FINAL</td>
+        <td rowspan="2">NOTA FINAL TEORIA</td>
+        <td rowspan="2">EXAMEN DE REPO</td>
+        <td rowspan="2">NOTA FINAL TEORIA</td>
+        <td rowspan="2">NOTA FINAL TEORIA 40%</td>
+        <td colspan="6">SALA DE OPERACIONES</td>
+        <td rowspan="2">NOTA FINAL PRACTICA</td>
+        <td rowspan="2">60%</td>
       </tr>
       <tr>
         <td>1</td>
         <td>2</td>
         <td>3</td>
-        <td>54%</td>
+        <td>15%</td>
         <td>1</td>
-        <td>14%</td>
+        <td>10%</td>
+        <td>LAB. 1</td>
+        <td>LAB. 2</td>
+        <td>LAB. 3</td>
+        <td>TOTAL 5%</td>
         <td>1</td>
-        <td>2</td>
-        <td>3</td>
-        <td>12%</td>
+        <td>10%</td>
+        <td>P</td>
+        <td>15%</td>
+        <td>CV</td>
+        <td>15%</td>
+        <td>PT</td>
+        <td>30%</td>
       </tr>
     </thead>
     <tbody>
@@ -44,6 +59,18 @@
         <td>{{ filterNumeric(materia.nota_13) }}</td>
         <td>{{ filterNumeric(materia.nota_14) }}</td>
         <td>{{ filterNumeric(materia.nota_15) }}</td>
+        <td>{{ filterNumeric(materia.nota_16) }}</td>
+        <td>{{ filterNumeric(materia.nota_17) }}</td>
+        <td>{{ filterNumeric(materia.nota_18) }}</td>
+        <td>{{ filterNumeric(materia.nota_19) }}</td>
+        <td>{{ filterNumeric(materia.nota_20) }}</td>
+        <td>{{ filterNumeric(materia.nota_21) }}</td>
+        <td>{{ filterNumeric(materia.nota_22) }}</td>
+        <td>{{ filterNumeric(materia.nota_23) }}</td>
+        <td>{{ filterNumeric(materia.nota_24) }}</td>
+        <td>{{ filterNumeric(materia.nota_25) }}</td>
+        <td>{{ filterNumeric(materia.nota_26) }}</td>
+        <td>{{ filterNumeric(materia.nota_27) }}</td>
       </tr>
     </tbody>
   </table>
