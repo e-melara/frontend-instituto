@@ -20,9 +20,7 @@
         </b-card-text>
       </b-card-body>
       <b-table
-        v-if="carga"
         :fields="headers"
-        :items="carga"
         class="text-center"
         striped
         bordered
@@ -54,13 +52,13 @@
       </b-table>
     </b-card>
   </div>
-  <ModalSubirNotas
+  <!-- <ModalSubirNotas
     :show="open"
     @close="handlerClose"
     @send="recibeNotes"
     :carga="carga"
     v-if="carga"
-  />
+  /> -->
 </template>
 
 <script lang="ts" setup>
@@ -82,7 +80,7 @@ const route = useRoute();
 const util = useUtilsStore();
 const store = useNoteStore();
 
-const { carga, open } = storeToRefs(store);
+const { open } = storeToRefs(store);
 
 // headers table
 const headers = [
@@ -97,18 +95,18 @@ const headers = [
 ];
 
 const title = computed(() => {
-  if (carga.value?.materia) {
-    return carga.value.materia.toString();
-  }
+  // if (carga.value?.materia) {
+  //   return carga.value.materia.toString();
+  // }
   return "";
 });
 
 // actions
 const downloadFileNotes = async () => {
-  const values = carga.value;
-  if (values) {
-    await excelExportFileCuadro(values);
-  }
+  // const values = carga.value;
+  // if (values) {
+  //   await excelExportFileCuadro(values);
+  // }
 };
 
 const openModal = () => {

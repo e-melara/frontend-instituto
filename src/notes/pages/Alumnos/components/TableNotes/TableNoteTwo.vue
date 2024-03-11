@@ -44,7 +44,8 @@
         <td>{{ filterNumeric(materia.nota_12) }}</td>
         <td>{{ filterNumeric(materia.nota_13) }}</td>
         <td>{{ filterNumeric(materia.nota_14) }}</td>
-        <td>{{ filterNumeric(materia.promedio) }}</td>
+        <td>{{ filterNumeric(materia.nota_15) }}</td>
+        <td>{{ filterNumeric(materia.nota_16) }}</td>
       </tr>
     </tbody>
   </table>

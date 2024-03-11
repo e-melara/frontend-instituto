@@ -46,6 +46,7 @@
     size="xl"
     no-close-on-esc
     no-close-on-backdrop
+    class="modal-98"
   >
   <b-container fluid>
     <TableLayout />
@@ -79,7 +80,7 @@ const viewNoteStudent = async (row: object) => {
 onMounted(() => store.getNotasEstudiante());
 </script>
 
-<style scoped>
+<style>
 .table {
   font-size: 0.8rem;
   border: 1px solid black !important;
@@ -89,5 +90,8 @@ onMounted(() => store.getNotasEstudiante());
   font-weight: bold !important;
   font-size: 0.95rem !important;
   color: white !important;
+}
+.modal-98 .modal-dialog {
+  max-width: 98% !important;
 }
 </style>

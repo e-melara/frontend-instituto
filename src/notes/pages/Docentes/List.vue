@@ -2,7 +2,7 @@
   <BreadCumbs title="Materias" :button="true" />
   <div class="file-content">
     <div class="card">
-      <b-table v-if="data" :fields="headers" :items="data">
+      <b-table v-if="data" :fields="headers">
         <template #cell(actions)="row">
           <b-button
             variant="success"

@@ -13,15 +13,23 @@ import { useNoteStore } from "@/stores";
 import TableNoteOne from './TableNotes/TableNoteOne.vue';
 import TableNoteOcho from './TableNotes/TableNoteOcho.vue';
 import TableNoteTwo from './TableNotes/TableNoteTwo.vue';
+import TableNoteThree from './TableNotes/TableNoteThree.vue';
+import TableNoteFour from './TableNotes/TableNoteFour.vue';
 import TableNoteDiez from './TableNotes/TableNoteDiez.vue';
 import TableNoteOnce from './TableNotes/TableNoteOnce.vue';
 import TableNoteNueve from './TableNotes/TableNoteNueve.vue';
 import TableNoteCinco from './TableNotes/TableNoteCinco.vue';
+import TableNoteSeis from './TableNotes/TableNoteSeis.vue';
+import TableNoteSiete from './TableNotes/TableNoteSiete.vue';
 
 const components = [
   TableNoteOne, // 1
   TableNoteTwo, // 2
+  TableNoteThree, // 3
+  TableNoteFour, // 4
   TableNoteCinco, // 5
+  TableNoteSeis, // 6
+  TableNoteSiete, // 7
   TableNoteOcho, // 8
   TableNoteNueve, // 9
   TableNoteDiez, // 10

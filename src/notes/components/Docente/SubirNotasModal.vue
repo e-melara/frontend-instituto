@@ -170,19 +170,19 @@ const handleSubmit = (event: Event) => {
   event.preventDefault();
   if (valid && note) {
     const noteKey: any = note.value !== undefined ? map.get(+note.value) : "F";
-    readFile(state.files, noteKey, route.params.id)
-      .then((array: any) => {
-        arrayNote.value = array;
-        validNote.value = true;
-      })
-      .catch((error) => {
-        util.showAlert({
-          detail: error,
-          summary: "Error",
-          severity: "error",
-        });
-        validNote.value = false;
-      });
+    // readFile(state.files, noteKey, route.params.id)
+    //   .then((array: any) => {
+    //     arrayNote.value = array;
+    //     validNote.value = true;
+    //   })
+    //   .catch((error) => {
+    //     util.showAlert({
+    //       detail: error,
+    //       summary: "Error",
+    //       severity: "error",
+    //     });
+    //     validNote.value = false;
+    //   });
   }
 };
 
