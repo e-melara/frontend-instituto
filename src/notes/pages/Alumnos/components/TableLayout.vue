@@ -1,7 +1,5 @@
 <template>
-  <div class="container-fluid">
-    <component :is="element" />
-  </div>
+  <component :is="element" />
 </template>
 
 <script lang="ts">
@@ -26,6 +24,10 @@ import TableNoteTrece from './TableNotes/TableNoteTrece.vue';
 import TableNoteCatorce from './TableNotes/TableNoteCatorce.vue';
 import TableNoteQuince from './TableNotes/TableNoteQuince.vue';
 
+import TableNoteDiezSeis from './TableNotes/TableNoteDiezSeis.vue';
+import TableNoteDiezSiete from './TableNotes/TableNoteDiezSiete.vue';
+import TableNoteDiezOcho from './TableNotes/TableNoteDiezOcho.vue';
+
 const components = [
   TableNoteOne, // 1
   TableNoteTwo, // 2
@@ -42,6 +44,10 @@ const components = [
   TableNoteTrece, // 13
   TableNoteCatorce, // 14
   TableNoteQuince, // 15
+
+  TableNoteDiezSeis, // 16
+  TableNoteDiezSiete, // 17
+  TableNoteDiezOcho // 18
 ];
 
 export default defineComponent({

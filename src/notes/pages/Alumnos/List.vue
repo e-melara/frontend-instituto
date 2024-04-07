@@ -48,7 +48,7 @@
     no-close-on-backdrop
     class="modal-98"
   >
-  <b-container fluid>
+  <b-container fluid style="padding: 0px !important;">
     <TableLayout />
   </b-container>
   </b-modal>
