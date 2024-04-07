@@ -25,18 +25,18 @@
 			<td rowspan="2">NOTA FINAL PRACTICA 60%</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td>1</td>
+			<td>2</td>
+			<td>3</td>
+			<td>18%</td>
+			<td>1</td>
+			<td>6%</td>
+			<td>1</td>
+			<td>2</td>
+			<td>3</td>
+			<td>6%</td>
+			<td>1</td>
+			<td>10%</td>
 		</tr>
   </thead>
   <tbody>
