@@ -2,7 +2,8 @@
   <table class="table-note table">
     <thead>
       <tr>
-        <td colspan="13">TEORIA</td>
+        <td colspan="11">TEORIA</td>
+        <td rowspan="2" colspan="2">EXAMEN FINAL 20%</td>
         <td rowspan="3">NOTA FINAL</td>
         <td rowspan="3">EXAMEN REPO</td>
         <td rowspan="3">NOTA DEL CICLO</td>
@@ -11,21 +12,21 @@
         <td colspan="4">EXAMENES PARCIALES</td>
         <td colspan="2">TRABAJO DE CAMPO</td>
         <td colspan="5">LABORATORIOS PRACTICOS</td>
-        <td rowspan="2">EXAMEN FINAL</td>
-        <td rowspan="2">EXAMEN FINAL 20%</td>
       </tr>
       <tr>
         <td>1</td>
         <td>2</td>
         <td>3</td>
-        <td>45%</td>
+        <td>51%</td>
         <td>1</td>
-        <td>15%</td>
+        <td>14%</td>
         <td>LAB.1</td>
         <td>LAB.2</td>
         <td>LAB.3</td>
         <td>LAB.4</td>
         <td>TOTAL 20%</td>
+        <td>1</td>
+        <td>15%</td>
       </tr>
     </thead>
     <tbody>
