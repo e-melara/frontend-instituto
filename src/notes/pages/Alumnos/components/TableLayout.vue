@@ -52,8 +52,8 @@ export default defineComponent({
     const { viewNoteTable } = storeToRefs(store);
 
     watch(viewNoteTable, ({ nota }) => {
-      const { id_config_nota } = nota as any;
-      element.value = components[id_config_nota - 1];
+      const { id_porcentaje_nota } = nota as any;
+      element.value = components[id_porcentaje_nota - 1];
     });
 
     return {
