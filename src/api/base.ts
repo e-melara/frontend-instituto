@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { useUtil } from "@/composables";
+// import { useUtil } from "@/composables";
 import type { ILoginResponse, IUserResponse, LoginInput } from "@/interfaces";
 
 const authApi = axios.create({

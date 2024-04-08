@@ -35,6 +35,15 @@ export const useAuth = () => {
           name: "home",
         });
       },
+      onError({ response }) {
+        const { message } = response.data;
+        util.showAlert({
+          detail: message,
+          summary: "Error",
+          severity: "error",
+        });
+        console.log("Error: ", message);
+      }
     }
   );
 

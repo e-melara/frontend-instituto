@@ -6,8 +6,6 @@ import { useForm, Field, ErrorMessage } from "vee-validate";
 
 // assets
 import loginImage from "@/assets/images/login/undraw_medicine_b-1-ol.svg";
-import logoImageLigth from "@/assets/images/logo/utla.png";
-import logoImageDark from "@/assets/images/logo/utla.png";
 
 import { useAuth } from "@/composables";
 import type { LoginInput } from "@/interfaces";
