@@ -1,5 +1,5 @@
 import jwt from "jwt-decode";
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 
 import { useAuthStore } from "@/stores";
 import { useLocalStorage } from "@/composables";
@@ -15,7 +15,7 @@ import { PensumRoute } from "@/pensum/router";
 const storage = useLocalStorage();
 
 const router = createRouter({
-  history: createWebHashHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     // public pages
     {

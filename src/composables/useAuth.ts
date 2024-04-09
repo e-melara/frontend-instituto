@@ -1,9 +1,10 @@
 import jwtDecode from "jwt-decode";
+import { AxiosError } from "axios";
 import { computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useMutation, useQueryClient } from "vue-query";
 
-import { login } from "@/api/base";
+import { login, updatePassword } from "@/api/base";
 import { useAuthStore } from "@/stores";
 import { useUtil, useLocalStorage } from ".";
 import type { IUser, LoginInput } from "@/interfaces";
@@ -55,6 +56,34 @@ export const useAuth = () => {
     await mutate(params);
   };
 
+  const handlerChangePassword = async (params: any) => {
+    let ok = true;
+    try {
+      util.setLoading(true);
+      const data : any = await updatePassword(params);
+      util.showAlert({
+        // @ts-ignore
+        detail: data["message"] as string,
+        summary: "Success",
+        severity: "success",
+      });      
+      router.replace({
+        name: "authenticate-login",
+      });
+    } catch (error: AxiosError | any ) {
+      const { message } = error.response?.data;
+      util.showAlert({
+        detail: message,
+        summary: "Error",
+        severity: "error",
+      });
+      ok = false;
+    } finally {
+      util.setLoading(false);
+    }
+    return ok;
+  };
+
   return {
     // state
     rutas: computed(()  => {
@@ -78,9 +107,10 @@ export const useAuth = () => {
       }
     }),
     // isAdmin: computed(() => store.isAdmin),
-    isLoading: computed(() => isLoading.value),
+    // isLoading: computed(() => isLoading.value),
     // functions
     loginFn,
+    handlerChangePassword,
     setData(token: string, user: IUser) {
       const decoded: any = jwtDecode(token);
       const { perfil, persona, roles } = decoded;

@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
     BDropdown: typeof import('bootstrap-vue-3')['BDropdown']
     BDropdownItem: typeof import('bootstrap-vue-3')['BDropdownItem']
     BFormGroup: typeof import('bootstrap-vue-3')['BFormGroup']
+    BFormInput: typeof import('bootstrap-vue-3')['BFormInput']
     BFormSelect: typeof import('bootstrap-vue-3')['BFormSelect']
     BModal: typeof import('bootstrap-vue-3')['BModal']
     BRow: typeof import('bootstrap-vue-3')['BRow']

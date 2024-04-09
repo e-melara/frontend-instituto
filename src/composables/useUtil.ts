@@ -2,6 +2,7 @@ import { storeToRefs } from "pinia";
 
 import { useUtilsStore, useAuthStore } from "@/stores";
 import type { INotify, ISideBarMenu } from "@/interfaces";
+import { computed } from "vue";
 
 export const useUtil = () => {
   const store = useUtilsStore();

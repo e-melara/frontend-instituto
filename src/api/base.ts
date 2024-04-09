@@ -61,4 +61,8 @@ export const getMe = async () => {
   return await authApi.get<IUserResponse>("users/me");
 };
 
+export const updatePassword = async (data: any) => {
+  return await authApi.post("change/password", data);
+}
+
 export { authApi };
