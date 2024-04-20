@@ -6,7 +6,7 @@
         <b-card-text>
           <b-row>
             <b-col cols="8">
-              <h5>Listado de estudiantes</h5>
+              <h5>{{ `Materia: ${data?.materia?.nombre}` || 'Listado de estudiantes' }}</h5>
             </b-col>
             <b-col cols="4" class="d-flex justify-content-end">
               <b-button-group>
@@ -21,7 +21,7 @@
       </b-card-body>
       <b-table
         :fields="headers"
-        class="text-center"
+        :items="(carga as any)"
         striped
         bordered
         borderless
@@ -31,34 +31,16 @@
         <template #cell(estudiante)="{ item }">
           {{ item.alumno.apellidos }} {{ item.alumno.nombres }}
         </template>
-        <template #cell(nota1)="{ item }">
-          {{ formatDouble(item.nota1) }}
-        </template>
-        <template #cell(nota2)="{ item }">
-          {{ formatDouble(item.nota2) }}
-        </template>
-        <template #cell(nota3)="{ item }">
-          {{ formatDouble(item.nota3) }}
-        </template>
-        <template #cell(nota4)="{ item }">
-          {{ formatDouble(item.nota4) }}
-        </template>
-        <template #cell(nota5)="{ item }">
-          {{ formatDouble(item.nota5) }}
-        </template>
-        <template #cell(promedio)="{ item }">
-          {{ formatDouble(item.promedio) }}
-        </template>
       </b-table>
     </b-card>
   </div>
-  <!-- <ModalSubirNotas
+  <ModalSubirNotas
     :show="open"
     @close="handlerClose"
     @send="recibeNotes"
     :carga="carga"
     v-if="carga"
-  /> -->
+  />
 </template>
 
 <script lang="ts" setup>
@@ -80,33 +62,26 @@ const route = useRoute();
 const util = useUtilsStore();
 const store = useNoteStore();
 
-const { open } = storeToRefs(store);
+const { open, carga, data } = storeToRefs(store);
 
 // headers table
 const headers = [
   { key: "carnet", label: "Carnet", sortable: false },
-  { key: "estudiante", label: "Estudiante", sortable: false },
-  // { key: "nota1", label: "Nota 1", sortable: false },
-  // { key: "nota2", label: "Nota 2", sortable: false },
-  // { key: "nota3", label: "Nota 3", sortable: false },
-  // { key: "nota4", label: "Nota 4", sortable: false },
-  // { key: "nota5", label: "Nota 5", sortable: false },
-  // { key: "promedio", label: "Promedio", sortable: false },
+  { key: "estudiante", label: "Estudiante", sortable: false, class:'text-left' },
 ];
 
 const title = computed(() => {
-  // if (carga.value?.materia) {
-  //   return carga.value.materia.toString();
-  // }
+  if (carga.value?.materia) {
+    return carga.value.materia.toString();
+  }
   return "";
 });
 
-// actions
 const downloadFileNotes = async () => {
-  // const values = carga.value;
-  // if (values) {
-  //   await excelExportFileCuadro(values);
-  // }
+  const values = carga.value;
+  if (values) {
+    await excelExportFileCuadro(values, data);
+  }
 };
 
 const openModal = () => {
@@ -116,10 +91,6 @@ const openModal = () => {
 const handlerClose = () => {
   store.toggleShowModal();
 };
-
-const formatDouble = (value: string) => {
-  return parseFloat(value).toFixed(2);
-}
 
 const recibeNotes = (params: any) => {
   store.sendNotesCarga(params).then(() => {
@@ -133,8 +104,7 @@ const recibeNotes = (params: any) => {
 
 onMounted(() => {
   const { id } = route.params;
+  store.getDataConfigMateria(+id);
   store.getDataCargaAcademica(+id);
 });
 </script>
-
-<style></style>

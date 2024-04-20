@@ -4,7 +4,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-12 footer-copyright text-center">
-            <p class="mb-0">Copyright {{  new Date().getFullYear() }} © Instituto Tecnológicov Escuela Técnica para la Salud.</p>
+            <p class="mb-0">Copyright {{  new Date().getFullYear() }} © Instituto Tecnológico Escuela Técnica para la Salud.</p>
           </div>
         </div>
       </div>

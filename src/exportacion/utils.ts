@@ -33,8 +33,8 @@ export const createOuterBorder = (
       };
     }
   } else {
-    for (let row = start.row; row < end.row; row++) {
-      for (let column = start.column; column < end.column; column++) {
+    for (let row = start.row; row <= end.row; row++) {
+      for (let column = start.column; column <= end.column; column++) {
         if (opts === TypeOrden.Border) {
           worksheet.getCell(row, column).border = border;
         }

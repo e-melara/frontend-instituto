@@ -15,7 +15,7 @@ export const useNoteStore = defineStore("useNoteStore", () => {
   const util = useUtil();
   const item = ref<ICarga>();
   const show = ref<boolean>(false);
-  const data = ref<IDocenteNotes>();
+  const data = ref<IDocenteNotes | any>();
   const notas = ref<CargaAcademicaHistory[]>([]);
 
   const subjectsStudent = ref<any[]>([]);
@@ -73,6 +73,19 @@ export const useNoteStore = defineStore("useNoteStore", () => {
         const carga = await authApi.get(`/v1/materias/${id}/carga`);
         // @ts-ignore
         item.value = carga.notas;
+      } catch (error) {
+        console.log(error);
+      } finally {
+        util.setLoading(false);
+      }
+    },
+
+    async getDataConfigMateria(id: number) {
+      try {
+        util.setLoading(true);
+        const carga = await authApi.get(`/v1/materias/${id}`);
+        // @ts-ignore
+        data.value = carga;
       } catch (error) {
         console.log(error);
       } finally {

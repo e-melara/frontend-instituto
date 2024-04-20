@@ -4,8 +4,8 @@ import { saveFile } from "./save-file";
 import { createOuterBorder } from "./utils";
 import { TypeOrden } from "@/notes/interfaces";
 
-const header = (worksheet: Excel.Worksheet, carga: any) => {
-  worksheet.mergeCells("B2:J2");
+const header = (worksheet: Excel.Worksheet, carga: any, docente: any, materia: any) => {
+  worksheet.mergeCells("B2:E2");
   worksheet.mergeCells("B4:E4");
   worksheet.mergeCells("B5:E5");
 
@@ -14,12 +14,9 @@ const header = (worksheet: Excel.Worksheet, carga: any) => {
 
   const [item] = carga
   worksheet.getCell("A1").value = item.carga_academica_id;
-  worksheet.getCell("J2").value = 'NOMBRE MATERIA';
-  worksheet.getCell("E4").value = `Codigo: CODIGO DE CARGA ACADEMICA`;
-  worksheet.getCell(
-    "E5"
-  ).value = `Docente: NOMBRE DEL DOCENTE`;
-  worksheet.getCell("J5").value = `Horario`;
+  worksheet.getCell("E2").value = `NOMBRE MATERIA: ${materia.nombre}`;
+  worksheet.getCell("E4").value = `Codigo: ${materia.codigo}`;
+  worksheet.getCell("E5").value = `Docente: ${docente.nombres} ${docente.apellidos}`;
 
   // anchos de las columnas
   const items = [
@@ -27,7 +24,7 @@ const header = (worksheet: Excel.Worksheet, carga: any) => {
     { column: 1, width: 5.5 },
     { column: 2, width: 12.1 },
     { column: 3, width: 48.4 },
-    { column: 4, width: 28.25 },
+    { column: 4, width: 6.0 },
   ];
 
   items.forEach(({ column, width }) => {
@@ -36,8 +33,8 @@ const header = (worksheet: Excel.Worksheet, carga: any) => {
 };
 
 const styles = (worksheet: Excel.Worksheet) => {
-  ["J2", "E4", "E5", "J4", "J5"].map((cell) => {
-    const primary = cell === "J2";
+  ["E2", "E4", "E5", "J4", "J5"].map((cell) => {
+    const primary = cell === "E2";
     worksheet.getCell(cell).alignment = {
       vertical: "middle",
       horizontal: "center",
@@ -57,9 +54,11 @@ const styles = (worksheet: Excel.Worksheet) => {
   };
 };
 
-export const excelExportFileCuadro = async (carga: any) => {
+export const excelExportFileCuadro = async (carga: any, data: any) => {
   const workbook = new Excel.Workbook();
   const worksheet = workbook.addWorksheet("Cuadro de notas");
+
+  const { materia, docente } = data.value;
 
   // protecion de hoja
   const password = new Date().getTime() + "--pass--word--secret";
@@ -68,13 +67,12 @@ export const excelExportFileCuadro = async (carga: any) => {
   // header
   let array = new Array<any>();
   if (carga) {
-    header(worksheet, carga);
+    header(worksheet, carga, docente, materia);
     array = carga.map((item: any, index: number) => {
       return [
         index + 1,
         item.alumno.carnet,
-        `${item.alumno.apellidos} ${item.alumno.nombres }`,
-        `${item.alumno.carnet}@correo.edu.sv`,      
+        `${item.alumno.apellidos} ${item.alumno.nombres }`
       ];
     });
   }
@@ -92,7 +90,7 @@ export const excelExportFileCuadro = async (carga: any) => {
       { name: "#", filterButton: false },
       { name: "Carnet", filterButton: false },
       { name: "Alumno", filterButton: false },
-      { name: "Correo", filterButton: false },
+      { name: "Nota", filterButton: false },
     ],
     rows: [...array],
   });
@@ -100,24 +98,24 @@ export const excelExportFileCuadro = async (carga: any) => {
   styles(worksheet);
   createOuterBorder(
     worksheet,
-    { row: 7, column: 2 },
-    { column: 12, row: 8 + array.length }
+    { row: 7, column: 12 },
+    { column: 5, row: 8 + array.length }
   );
 
   createOuterBorder(
     worksheet,
-    { row: 8, column: 6 },
-    { column: 11, row: 8 + array.length },
+    { row: 8, column: 5 },
+    { row: 8 + array.length, column: 5  },
     TypeOrden.Protection
   );
 
   createOuterBorder(
     worksheet,
-    { row: 8, column: 6 },
-    { column: 11, row: 8 + array.length },
+    { row: 8, column: 5 },
+    { column: 5, row: 8 + array.length },
     TypeOrden.Validation
   );
 
-  const nameFile = `${new Date().getTime()}`;
+  const nameFile = `${materia.nombre}-${docente.nombres}-${new Date().getTime()}`;
   return saveFile(workbook, nameFile);
 };
