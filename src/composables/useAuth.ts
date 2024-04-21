@@ -1,5 +1,5 @@
 import jwtDecode from "jwt-decode";
-import { AxiosError } from "axios";
+import type { AxiosError } from "axios";
 import { computed, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useMutation, useQueryClient } from "vue-query";
