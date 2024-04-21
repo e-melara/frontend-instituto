@@ -13,14 +13,24 @@
     <b-container fluid>
       <b-row>
         <b-col cols="4">
-          <b-form-group id="nota-group" label="Nota" label-for="nota-input">
-            <b-form-select
-              v-model="note"
-              required
-              :options="itemsNotas"
-              id="nota-input"
-            />
-          </b-form-group>
+          <b-row>
+            <b-form-group id="nota-group" label="Evaluacion:" label-for="nota-input">
+              <b-form-select
+                v-model="note"
+                required
+                :options="keys"
+                id="nota-input"
+              />
+            </b-form-group>
+            <b-form-group id="nota-group" label="Nota: " label-for="nota-input-children" v-if="keysChildren.length > 0">
+              <b-form-select
+                v-model="noteChildren"
+                required
+                :options="keysChildren"
+                id="nota-input-children"
+              />
+            </b-form-group>
+          </b-row>
           <b-row>
             <b-col class="mt-3">
               <div v-if="state.files.length > 0" class="files">
@@ -67,10 +77,13 @@
             small
             :fields="header"
           >
-            <template #cell(valor)="{ item }">
+            <template #cell(nota)="{ item }">
               <span class="d-block text-center badge" :class="item.color">
                 {{ item.valor.toFixed(2) }}
               </span>
+            </template>
+            <template #cell(#)="{ index }">
+              {{ index + 1 }}
             </template>
           </b-table>
         </b-col>
@@ -78,7 +91,7 @@
     </b-container>
 
     <div class="d-flex justify-content-end mt-4" v-if="validNote">
-      <b-button variant="primary">Subir notas</b-button>
+      <b-button variant="primary" @click="sendNote">Subir notas</b-button>
     </div>
   </b-modal>
 </template>
@@ -86,7 +99,7 @@
 <script lang="ts" setup>
 import { useRoute } from 'vue-router'
 import { useDropzone } from "vue3-dropzone";
-import { computed, reactive, toRefs, ref, onMounted } from "vue";
+import { computed, reactive, toRefs, ref, onMounted, watch } from "vue";
 
 import { useUtilsStore } from "@/stores";
 import { readFile } from "@/exportacion/utils";
@@ -95,21 +108,21 @@ import type { ICarga } from "@/notes/interfaces";
 interface Props {
   show: boolean;
   carga: ICarga;
+  data: { notas: any, materia: any };
 }
 
-const header = ["carnet", "nombre", "valor"];
+const header = ["#","carnet", "nombre", "nota"];
 
-const route = useRoute()
+const route = useRoute();
 const util = useUtilsStore();
+
+const keys = ref<string[]>([]);
+const keysChildren = ref<string[]>([]);
+const note = ref<string | undefined>(undefined);
+const noteChildren = ref<string | undefined>(undefined);
+
 const arrayNote = ref<any[]>([]);
 const validNote = ref<boolean>(false);
-const note = ref<string | undefined>(undefined);
-const map = new Map<number, string>();
-map.set(1, "F");
-map.set(2, "G");
-map.set(3, "H");
-map.set(4, "I");
-map.set(5, "J");
 
 const state = reactive<{ files: any[] }>({
   files: [],
@@ -129,31 +142,21 @@ const { getRootProps, getInputProps, isDragActive, ...rest } = useDropzone({
 
 const { show, carga } = toRefs(props);
 
-const itemsNotas = computed(() => {
-  const array = [];
-  const value = carga.value;
+watch(() => props.data.notas, (value) => {
+  if(!value) return;
+  keys.value = Object.keys(value);
+}, { immediate: true });
 
-  if (value.e1 === "N") {
-    array.push({ value: 1, text: "Nota 1" });
+watch(() => note.value, (value) => {
+  if(value) {
+    const noteKey: string = props.data.notas[value];
+    noteChildren.value = undefined;
+    if(typeof noteKey === 'object') {
+      keysChildren.value = Object.keys(noteKey);
+    } else {
+      keysChildren.value = [];
+    }
   }
-
-  if (value.e2 === "N") {
-    array.push({ value: 2, text: "Nota 2" });
-  }
-
-  if (value.e3 === "N") {
-    array.push({ value: 3, text: "Nota 3" });
-  }
-
-  if (value.e4 === "N") {
-    array.push({ value: 4, text: "Nota 4" });
-  }
-
-  if (value.e5 === "N") {
-    array.push({ value: 5, text: "Nota 5" });
-  }
-
-  return array;
 });
 
 // actions
@@ -168,41 +171,73 @@ const handlerDeleteFile = () => {
 
 const handleSubmit = (event: Event) => {
   event.preventDefault();
-  if (valid && note) {
-    const noteKey: any = note.value !== undefined ? map.get(+note.value) : "F";
-    // readFile(state.files, noteKey, route.params.id)
-    //   .then((array: any) => {
-    //     arrayNote.value = array;
-    //     validNote.value = true;
-    //   })
-    //   .catch((error) => {
-    //     util.showAlert({
-    //       detail: error,
-    //       summary: "Error",
-    //       severity: "error",
-    //     });
-    //     validNote.value = false;
-    //   });
+
+  if(keysChildren.value.length > 0 && noteChildren.value === undefined) {
+    util.showAlert({
+      detail: "Debes seleccionar una evaluacion",
+      summary: "Error",
+      severity: "error",
+    });
+    return;
+  }
+  
+
+  if (valid) {
+    const routeId = route.params.id;
+    // @ts-ignore
+    readFile(state.files, +routeId, carga.value.length)
+      .then((array: any) => {
+        arrayNote.value = array;
+        validNote.value = true;
+      })
+      .catch((error) => {
+        util.showAlert({
+          detail: error,
+          summary: "Error",
+          severity: "error",
+        });
+        validNote.value = false;
+      });
   }
 };
 
 // computed
-const valid = computed(() => note && state.files.length > 0);
+const valid = computed(() => {
+  if(keysChildren.value.length > 0 && noteChildren.value === undefined) {
+    return false;
+  }
+  return state.files.length > 0 && note.value !== undefined;
+});
 
 const reset = () => {
   state.files = [];
   arrayNote.value = [];
   note.value = undefined;
   validNote.value = false;
+  keysChildren.value = [];
+  noteChildren.value = undefined;
 };
 
 const sendNote = () => {
-  emits("send", {
-    notes: arrayNote.value.map(({ carnet, valor }) => ({ carnet, valor })),
-    note: note.value,
-    idcarga: carga.value.codcarga,
-  });
-  reset();
+  if(note.value) {
+    let keyNote = props.data.notas[note.value];
+    if(noteChildren.value) {
+      keyNote = keyNote[noteChildren.value];
+    }
+    const params = {
+      notes: arrayNote.value.map(({ carnet, valor }) => ({ carnet, valor })),
+      idcarga: route.params.id,
+      key_note: keyNote,
+    }
+    emits("send", params);
+    reset();
+  } else {
+    util.showAlert({
+      detail: "Debes seleccionar todas las evaluaciones y subir un archivo valido",
+      summary: "Error",
+      severity: "error",
+    });
+  }
 };
 
 onMounted(() => {

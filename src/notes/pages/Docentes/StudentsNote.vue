@@ -1,12 +1,19 @@
 <template>
-  <BreadCumbs main="Cargas Academicas" :title="title" :button="true" />
+  <BreadCumbs main="Cargas Academicas" :title="title" :button="true">
+    <template #back>
+      <button class="btn btn-primary align-items-center d-flex justify-content-center" 
+        style=" margin-right: 15px;padding: 0px 20px;" @click="back">
+        <vue-feather type="arrow-left" />
+      </button>
+    </template>
+  </BreadCumbs>
   <div class="file-content">
     <b-card no-body>
       <b-card-body>
         <b-card-text>
           <b-row>
             <b-col cols="8">
-              <h5>{{ `Materia: ${data?.materia?.nombre}` || 'Listado de estudiantes' }}</h5>
+              <h5>Listado de estudiantes</h5>
             </b-col>
             <b-col cols="4" class="d-flex justify-content-end">
               <b-button-group>
@@ -29,7 +36,7 @@
         hover
       >
         <template #cell(estudiante)="{ item }">
-          {{ item.alumno.apellidos }} {{ item.alumno.nombres }}
+          {{ item?.alumno?.apellidos }} {{ item?.alumno?.nombres }}
         </template>
       </b-table>
     </b-card>
@@ -39,13 +46,14 @@
     @close="handlerClose"
     @send="recibeNotes"
     :carga="carga"
-    v-if="carga"
+    :data="data"
+    v-if="carga && data"
   />
 </template>
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { computed, onMounted } from "vue";
 
 import { useNoteStore, useUtilsStore } from "@/stores";
@@ -59,6 +67,7 @@ import ModalSubirNotas from "../../components/Docente/SubirNotasModal.vue";
 
 // variables
 const route = useRoute();
+const router = useRouter();
 const util = useUtilsStore();
 const store = useNoteStore();
 
@@ -71,8 +80,8 @@ const headers = [
 ];
 
 const title = computed(() => {
-  if (carga.value?.materia) {
-    return carga.value.materia.toString();
+  if (data.value?.materia?.nombre) {
+    return data.value.materia?.nombre.toString();
   }
   return "";
 });
@@ -92,14 +101,27 @@ const handlerClose = () => {
   store.toggleShowModal();
 };
 
-const recibeNotes = (params: any) => {
-  store.sendNotesCarga(params).then(() => {
-    util.showAlert({
-      summary:'Exito!',
-      detail: 'Proceso realizado con exito',
-      severity: 'success'
-    });
+const recibeNotes = async (params: any) => {
+  store.sendNotesCarga(params).then(async(resp: any) => {    
+    if(resp['response'].status === 200) {
+      await store.getDataConfigMateria(+route.params.id);
+      util.showAlert({
+        summary:'Exito!',
+        detail: 'Proceso realizado con exito',
+        severity: 'success'
+      });
+    } else {
+      util.showAlert({
+        summary:'Error!',
+        detail: 'Proceso no realizado',
+        severity: 'error'
+      });
+    }
   });
+};
+
+const back = () => {
+  router.push({ name: "notes-docente" });
 };
 
 onMounted(() => {

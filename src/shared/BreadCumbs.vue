@@ -15,6 +15,7 @@ const { title, main } = toRefs(props);
     <div class="page-title">
       <div class="row">
         <div class="col-6 d-flex">
+          <slot name="back"></slot>
           <h3>{{ title }}</h3>
         </div>
         <div class="col-6">

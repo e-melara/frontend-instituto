@@ -98,11 +98,10 @@ export const useNoteStore = defineStore("useNoteStore", () => {
       try {
         util.setLoading(true);
         const { idcarga: id, ...rest } = params;
-        const carga = await authApi.put(`/notas/${id}/carga`, { ...rest });
-        // @ts-ignore
-        item.value = carga;
+        const data = await authApi.put(`/v1/materias/${id}/carga`, { ...rest });
+        return Promise.resolve({ response: data });
       } catch (error) {
-        console.log(error);
+        return error;
       } finally {
         util.setLoading(false);
       }

@@ -64,7 +64,7 @@ export const createOuterBorder = (
   }
 };
 
-export const readFile = (files: any[], noteKey: string, codCarga: number) => {
+export const readFile = (files: any[], codCarga: number, totalRow: number) => {
   const [file] = files;
   const wb = new Workbook();
   const reader = new FileReader();
@@ -81,16 +81,15 @@ export const readFile = (files: any[], noteKey: string, codCarga: number) => {
         const worksheet = workbook.worksheets[0];
 
         const codCargaExcel = worksheet.getCell("A1").value?.toString();
-        console.log(codCarga, codCargaExcel)
         if (codCarga.toString() !== codCargaExcel) {
           reject("El Documento no es valido para esta asignatura");
         }
 
         worksheet.eachRow({ includeEmpty: true }, function (_, rowNumber) {
-          if (rowNumber > 7) {
+          if (rowNumber > 7 && rowNumber <= (totalRow + 7)) {
             const row = worksheet.getRow(rowNumber);
             const valorNoteKey =
-              parseFloat(row.getCell(noteKey).value?.toString()!) || 0;
+              parseFloat(row.getCell(5).value?.toString()!) || 0;
             array.push({
               carnet: row.getCell(3).value?.toString() || "",
               nombre: row.getCell(4).value?.toString() || "",

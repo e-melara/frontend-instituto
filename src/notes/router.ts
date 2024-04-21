@@ -9,7 +9,6 @@ export const NotesRoute: RouteRecordRaw = {
     {
       path: "docente",
       name: "notes-docente",
-      // component: () => import("./pages/Docentes/List.vue"),
       component: () => import("./pages/Docentes/List.vue"),
       meta: {
         rol: "docente.notes.view",
