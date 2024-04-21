@@ -18,12 +18,12 @@ const open = () => {
   <div class="header-logo-wrapper">
     <div class="logo-wrapper">
       <RouterLink to="/">
-        <img
+        <!-- <img
           :src="imageLogo"
           style="width: 60px"
           alt="image logo"
           class="img-fluid"
-        />
+        /> -->
       </RouterLink>
     </div>
     <div class="toggle-sidebar" @click="open">

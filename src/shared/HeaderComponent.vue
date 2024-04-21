@@ -10,7 +10,7 @@ import Profile from "./components/Header/Profile.vue";
 
 <template>
   <div class="header-wrapper m-0">
-    <!-- <logo /> -->
+    <logo />
     <div class="left-header col horizontal-wrapper pl-0"></div>
     <div class="nav-right col-8 pull-right right-header p-0">
       <ul class="nav-menus">
