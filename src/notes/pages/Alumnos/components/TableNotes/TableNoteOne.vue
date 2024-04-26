@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 
 import { useNoteStore } from '@/stores';
@@ -65,7 +65,6 @@ export default {
     materia.value = viewNoteTable.value.materia;
 
     const filterNumeric = (value: string | number) => {
-      console.log(value);
       return parseFloat(value.toString()).toFixed(2);
     };
 
@@ -76,8 +75,5 @@ export default {
   },
 };
 </script>
-
-
-
 <style scoped>
 </style>

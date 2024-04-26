@@ -1,5 +1,7 @@
 <template>
-  <component :is="element" />
+  <div class="table-responsive">
+    <component :is="element" />
+  </div>
 </template>
 
 <script lang="ts">
