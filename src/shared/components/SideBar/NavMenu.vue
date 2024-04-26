@@ -75,7 +75,7 @@ onUnmounted(() => {
   <div class="d-flex" id="sidebar-menu" style="margin-top: 10px;">
     <ul class="sidebar-links custom-scrollbar" id="myDiv" style="margin: 0px">
       <li class="back-btn">
-        <RouterLink to="/">
+        <RouterLink to="/dashboard">
           <img :src="logoIcon" alt="image logo" />
         </RouterLink>
         <div class="mobile-back text-right">

@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
 
-import logoIcon from "@/assets/images/logo/utla.png";
-
-// @ts-ignore
-import Logo from "./components/SideBar/Logo.vue";
 // @ts-ignore
 import Nav from "./components/SideBar/Nav.vue";
 const emits = defineEmits(["clicked"]);
@@ -28,7 +24,7 @@ const toggleSideBar = () => {
     </div>
   </div>
   <div class="logo-icon-wrapper">
-    <RouterLink to="/">
+    <RouterLink to="/dashboard">
       <!-- <img style="width: 30px" :src="logoIcon" alt="icon" class="img-fluid" /> -->
     </RouterLink>
   </div>

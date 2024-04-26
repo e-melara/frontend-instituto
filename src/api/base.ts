@@ -53,7 +53,13 @@ const refreshAccessTokenFn = async () => {
 
 // login
 export const login = async (user: LoginInput) => {
-  return await authApi.post<ILoginResponse>("login", user);
+  return await fetch(`${import.meta.env.VITE_APP_BASE_URL}/login`, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify(user)
+  });
 };
 
 // me

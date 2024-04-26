@@ -143,6 +143,7 @@ export const useNoteStore = defineStore("useNoteStore", () => {
 
     async getNotaViewId(id: number) {
       try {
+        viewNoteTable.value = { materia: {}, nota: {} };
         util.setLoading(true);
         const data = await authApi.get<{ materia: object, nota: object }>('/v1/alumno/materias/' + id);
         viewNoteTable.value = {

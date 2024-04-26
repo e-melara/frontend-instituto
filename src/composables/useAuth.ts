@@ -1,8 +1,8 @@
 import jwtDecode from "jwt-decode";
 import type { AxiosError } from "axios";
-import { computed, watch } from "vue";
+import { computed } from "vue";
 import { useRouter } from "vue-router";
-import { useMutation, useQueryClient } from "vue-query";
+import { useQueryClient } from "vue-query";
 
 import { login, updatePassword } from "@/api/base";
 import { useAuthStore } from "@/stores";
@@ -16,13 +16,23 @@ export const useAuth = () => {
   const storage = useLocalStorage();
   const queryClient = useQueryClient();
 
-  const { isLoading, mutate } = useMutation(
-    (params: LoginInput) => login(params),
-    {
-      onSuccess(data) {
-        // @ts-ignore
-        const { token } = data;
-        queryClient.getQueryCache().clear();
+
+  const loginFn = async (params: LoginInput) => {
+    util.setLoading(true);
+    await login(params).then(async (response) => {
+      const { status } = response;
+      if([401, 422].includes(status)) {
+        util.showAlert({
+          detail: "Credenciales no validas",
+          summary: "Error",
+          severity: "error",
+        });
+        return;
+      }
+
+      if(status === 200) {
+        const json = await response.json();
+        const { token } = json;
         const decoded: any = jwtDecode(token);
         const { perfil, persona, roles } = decoded;
         storage.setItemFn({ key: "token", value: token });
@@ -32,28 +42,10 @@ export const useAuth = () => {
           roles,
           perfil,
         );
-        router.replace({
-          name: "home",
-        });
-      },
-      onError({ response }) {
-        const { message } = response.data;
-        util.showAlert({
-          detail: message,
-          summary: "Error",
-          severity: "error",
-        });
-        console.log("Error: ", message);
+        router.push({ name: "dasbhoard", replace: true })
       }
-    }
-  );
-
-  watch(isLoading, (newValue) => {
-    util.setLoading(newValue);
-  });
-
-  const loginFn = async (params: LoginInput) => {
-    await mutate(params);
+      util.setLoading(false);
+    })
   };
 
   const handlerChangePassword = async (params: any) => {
