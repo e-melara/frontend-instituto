@@ -27,6 +27,7 @@ export const useAuth = () => {
           summary: "Error",
           severity: "error",
         });
+        util.setLoading(false);
         return;
       }
 

@@ -57,7 +57,7 @@ export const useNoteStore = defineStore("useNoteStore", () => {
               id: item.id,
               materia_nombre: item.materia.nombre,
               materia_codigo: item.materia.codigo,
-              horario: item.horario.nombre
+              carrera: item.materia.carrera.nombre
             }
         });
       } catch (error) {
@@ -132,8 +132,9 @@ export const useNoteStore = defineStore("useNoteStore", () => {
     async getNotasEstudiante() {
       try {
         util.setLoading(true);
-        const { data } = await authApi.get<any[]>('/v1/alumno/materias');
-        subjectsStudent.value = data;
+        const data = await authApi.get<any>('/v1/alumno/materias');
+        // @ts-ignore
+        subjectsStudent.value = data['materias'];
       } catch (error) {
         
       } finally {

@@ -45,7 +45,7 @@ onMounted(() => auth.logout());
   <div class="container-fluid">
     <div class="row">
       <div
-        class="col-xl-7" style="background-color: #837eff;"
+        class="col-lg-7" id="banner" style="background-color: #837eff;"
       >
       <div class="b-center bg-size vh-100 bg-image-opacity col-xl-12" 
         style="
@@ -59,19 +59,6 @@ onMounted(() => auth.logout());
           <div>
             <div>
               <a href="#" class="logo text-left">
-                <!-- TODO: Aqui va ir el logo de la institucion -->
-                <!-- <img
-                  style="width: 100px"
-                  class="img-fluid for-light"
-                  :src="logoImageLigth"
-                  alt="looginpage"
-                />
-                <img
-                  style="width: 100px"
-                  class="img-fluid for-dark"
-                  :src="logoImageDark"
-                  alt="looginpage"
-                /> -->
               </a>
             </div>
             <div class="login-main login-form-card">
@@ -136,6 +123,9 @@ onMounted(() => auth.logout());
 @media only screen and (max-width: 1199.98px) {
   .bg-image-opacity {
     opacity: 0 !important;
+  }
+  #banner {
+    display: none;
   }
 }
 </style>

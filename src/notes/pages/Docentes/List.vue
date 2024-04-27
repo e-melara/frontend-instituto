@@ -37,7 +37,7 @@ const { data } = storeToRefs(store);
 const headers = [
   { key: "materia_codigo", label: "Codigo", sortable: false },
   { key: "materia_nombre", label: "Materia", sortable: false, with: '50%' },
-  { key: "horario", label: "Dias", sortable: false },
+  { key: "carrera", label: "Carrera", sortable: false },
   { key: "actions", label: "", width: '50px' },
 ];
 

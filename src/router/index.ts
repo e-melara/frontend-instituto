@@ -52,22 +52,25 @@ const router = createRouter({
 router.beforeEach((to, _, next) => {
   const { path, meta } = to;
   const loggedIn = storage.getItemFn({ key: "token" });
-  const publicPages = ["/authenticate/login", '/'];
+  const publicPages = ["/authenticate/login"];
 
-  if (publicPages.includes(path)) {
+  if (publicPages.includes(path)) {    
     return next();
   }
 
-  const decoded: any = jwt(loggedIn);
-  if (decoded && decoded?.roles) {
-    decoded.roles.push("dashboard.view");
-    const rol = meta?.rol as string;
-    if (rol && decoded.roles.includes(rol)) {
-      return next();
+  try {
+    const decoded: any = jwt(loggedIn);
+    if (decoded && decoded?.roles) {
+      decoded.roles.push("dashboard.view");
+      const rol = meta?.rol as string;
+      if (rol && decoded.roles.includes(rol)) {
+        return next();
+      }
     }
+    return next("/authenticate/login");
+  } catch (error) {
+    return next("/authenticate/login");
   }
-
-  return next("/authenticate/login");
 });
 
 export default router;

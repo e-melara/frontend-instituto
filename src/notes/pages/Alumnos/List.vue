@@ -4,35 +4,13 @@
   <b-container fluid>
     <b-row>
       <b-col cols="12">
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr class="header-table table-dark">
-                <th scope="col">Codigo</th>
-                <th scope="col">Materia</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <template v-for="row in subjectsStudent" :key="row.id">
-                <tr>
-                  <td scope="row">{{ row.codigo }}</td>
-                  <td>{{ row.materia }}</td>
-                  <td style="width: 10%">
-                    <b-button
-                      size="sm"
-                      class="mr-1"
-                      variant="success"
-                      @click="viewNoteStudent(row)"
-                    >
-                      Ver notas
-                    </b-button>
-                  </td>
-                </tr>
-              </template>
-            </tbody>
-          </table>
-        </div>
+        <Accordion>
+          <AccordionTab v-for="tab in subjectsStudent" :key="tab.id" :header="getTitleTabs(tab)">
+            <div class="table-responsive"> {{ tab.id_porcentaje_nota }}
+              <table-notes :config="tab.id_porcentaje_nota" :alumnos="[tab]" />
+            </div>
+          </AccordionTab>
+        </Accordion>
       </b-col>
     </b-row>
     <b-row>
@@ -40,29 +18,21 @@
       </b-col>
     </b-row>
   </b-container>
-  <b-modal 
-    v-model="open"
-    :title="titleModal"
-    size="xl"
-    no-close-on-esc
-    no-close-on-backdrop
-    class="modal-98"
-  >
-  <b-container fluid style="padding: 0px !important;">
-    <TableLayout />
-  </b-container>
-  </b-modal>
 </template>
 
 <script lang="ts" setup>
 import { storeToRefs } from "pinia";
 import { onMounted, ref } from "vue";
 
+import Accordion from 'primevue/accordion';
+import AccordionTab from 'primevue/accordiontab';
+
 // // @ts-ignore
+import TableNotes from '../../components/Notes/TableNote.vue';
 import BreadCumbs from "@/shared/BreadCumbs.vue";
-import TableLayout from "./components/TableLayout.vue";
 
 import { useNoteStore } from "@/stores";
+import { string } from "zod";
 
 const store = useNoteStore();
 const { subjectsStudent } = storeToRefs(store);
@@ -76,6 +46,15 @@ const viewNoteStudent = async (row: object) => {
   titleModal.value = (row as any).materia;
   open.value = true;
 };
+
+const getTitleTabs = (tab:any) => {
+  const { codigo, nombre, docente } = tab
+  let stringTab = `${codigo} - ${nombre}`;
+  if(docente) {
+    stringTab += ` - ${docente.nombres} ${docente.apellidos}`;
+  }
+  return stringTab;
+}
 
 onMounted(() => store.getNotasEstudiante());
 </script>
