@@ -9,10 +9,11 @@
   </table-note-one>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineProps } from 'vue'
 
-import TableNoteOne from '../../components/Notes/TableNoteOne.vue'
+// @ts-ignore
+import TableNoteOne from '../../components/Notes/TableNoteOne'
 
 const props = defineProps({
   config: {

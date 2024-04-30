@@ -11,10 +11,8 @@ declare module '@vue/runtime-core' {
     BButtonGroup: typeof import('bootstrap-vue-3')['BButtonGroup']
     BCard: typeof import('bootstrap-vue-3')['BCard']
     BCardBody: typeof import('bootstrap-vue-3')['BCardBody']
-    BCardHeader: typeof import('bootstrap-vue-3')['BCardHeader']
     BCardText: typeof import('bootstrap-vue-3')['BCardText']
     BCol: typeof import('bootstrap-vue-3')['BCol']
-    BCollapse: typeof import('bootstrap-vue-3')['BCollapse']
     BContainer: typeof import('bootstrap-vue-3')['BContainer']
     BDropdown: typeof import('bootstrap-vue-3')['BDropdown']
     BDropdownItem: typeof import('bootstrap-vue-3')['BDropdownItem']
@@ -28,9 +26,5 @@ declare module '@vue/runtime-core' {
     BTabs: typeof import('bootstrap-vue-3')['BTabs']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-  }
-  export interface ComponentCustomProperties {
-    vBToggle: typeof import('bootstrap-vue-3')['VBToggle']
-    vBTooltip: typeof import('bootstrap-vue-3')['VBTooltip']
   }
 }
