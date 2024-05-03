@@ -6,7 +6,7 @@
         <div class="header-top">
           <h5 class="m-0">Materias</h5>
           <div class="" style="float: right" v-if="viewBtnAsesoria">
-            <b-dropdown id="dropdown-1" text="Asesoria" class="m-md-2">
+            <b-dropdown id="dropdown-1" text="Asesoria" class="m-md-2" v-if="!viewAsesoriaBtn">
               <b-dropdown-item @click="clickDescargarFileExcel">
                 Descargar horarios
               </b-dropdown-item>
@@ -14,6 +14,7 @@
                 {{ studentEnrolled ? "Ver asesoria" : "Iniciar asesoria" }}
               </b-dropdown-item>
             </b-dropdown>
+            <b-button v-else @click="goToViewAsesoria">Ver asesoria</b-button>
           </div>
         </div>
       </div>
@@ -43,7 +44,7 @@ import { excelExportFile } from "@/exportacion";
 
 const pensum = usePensum();
 const router = useRouter();
-const { list, inscribir, studentEnrolled, viewBtnAsesoria, carrera } = toRefs(pensum);
+const { list, inscribir, studentEnrolled, viewBtnAsesoria, carrera, viewAsesoriaBtn } = toRefs(pensum);
 
 const clickDescargarFileExcel = () => {
   excelExportFile(inscribir.value);
@@ -54,4 +55,10 @@ const goToAsesoria = () => {
     name: "pensum-asesoria",
   });
 };
+
+const goToViewAsesoria = () => {
+  router.push({
+    name: 'pensum-view'
+  })
+}
 </script>

@@ -30,5 +30,13 @@ export const PensumRoute: RouteRecordRaw = {
         rol: 'student.pensum.create'
       }
     },
+    {
+      path: "asesoria/view",
+      name: "pensum-view",
+      component: () => import("./pages/AsesoriaView.vue"),
+      meta: {
+        rol: 'student.pensum.view'
+      }
+    },
   ],
 };

@@ -121,12 +121,27 @@ export const usePensum = () => {
       store.getPagination(params);
     },
     // actions
-    sendAsesoria() {
+    async sendAsesoria() {
       let cargas: Array<number> = []
       subjectsSeleccionadas.value.forEach(function(item) {
         cargas.push(item.id)
       });
-      // mutate(cargas);
+      try {
+        await pensumAsyncSendFn(cargas)
+        util.showAlert({
+          summary: 'Exito',
+          severity: 'success',
+          'detail' : 'Asesoria creada con exito'
+        })
+        router.push({ name: 'pensum-student', replace: true })
+      } catch (error : any) {
+        const { message } = error.response.data;
+        util.showAlert({
+          detail: message,
+          severity: 'error',
+          summary: 'Error'
+        })
+      }
     },
     validarSubjects: (
       item: CargasAcademica,
@@ -172,6 +187,7 @@ export const usePensum = () => {
     status: computed(() => list.value?.enrolled?.estado),
     studentEnrolled: computed(() => enrolled.value),
     subjetsEnrolled: computed(() => store.enrolledSubjects),
+    estado_asesoria: computed(() => store.estado_asesoria),
     subjects: computed(() => subjectsSeleccionadas.value),
     inscribir: computed(() => {
       return list.value?.cargas_academicas || [];
@@ -179,5 +195,6 @@ export const usePensum = () => {
     asesoria: computed(() =>
       subjectsVisibles.value.filter((item) => item.visible)
     ),
+    viewAsesoriaBtn: computed(() => list.value?.asesoria_activa)
   };
 };

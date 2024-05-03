@@ -80,20 +80,9 @@ export const usePensumStore = defineStore("usePensumStore", () => {
       }) || [];
     }),
     enrolledSubjects: computed(() => {
-      if (list.value?.enrolled) {
-        const ids = list.value.enrolled.subjects.reduce(
-          (acc: number[], prev: Subject) => {
-            acc.push(+prev.codcarga);
-            return acc;
-          },
-          []
-        );
-        return list.value.inscribir.filter((item) => {
-          return ids.includes(item.codcarga);
-        });
-      }
-      return null;
+      return list.value?.asesoria_detalle;
     }),
+    estado_asesoria: computed(() => list.value?.aseroria?.estado),
     //  actions
     setListPensum(newList: Pensum) {
       list.value = newList;

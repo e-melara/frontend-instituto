@@ -27,18 +27,10 @@
             <th
               class="text-center"
               role="columnheader"
-              width="60px"
-              scope="col"
-            >
-              Dias
-            </th>
-            <th
-              class="text-center"
-              role="columnheader"
               width="190px"
               scope="col"
             >
-              Hora
+            Docente
             </th>
             <th
               class="text-center"
@@ -53,7 +45,6 @@
             <td>{{ index + 1 }}</td>
             <td>{{ subject.materia.codigo }}</td>
             <td>{{ subject.materia.nombre }}</td>
-            <td>{{ subject.horario.nombre }} {{ subject.horario.codigo }}</td>
             <td>{{ subject.docente.nombre }} {{ subject.docente.apellido }}</td>
             <td>
               <button
