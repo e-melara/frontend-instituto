@@ -47,16 +47,20 @@
                 <template #cell(nota_final)="{item}">
                   {{ numberOfColumns !== 0 ? filterNumeric(item[`nota_${numberOfColumns}`]) : filterNumeric(0) }}
                 </template>
+                <template #cell(estado)="{ item }">
+                  <b-alert show :variant="varianteColor(item.estado)" class="p-0">
+                    {{ item.estado.codigo === '001' ? 'Aprobado' : item.estado.codigo === '002' ? 'Reprobado' : 'En curso'}}
+                  </b-alert>
+                </template>
               </b-table>
             </b-card>
           </b-card-text>
         </b-tab>
         <b-tab title="Notas">
-          <table-notes :config="data?.config" :alumnos="carga as any" />
+          <table-notes :config="data?.config" :alumnos="(carga as any)"></table-notes>
         </b-tab>
       </b-tabs>
     </b-card>
-    <!--  -->
   </div>
   <ModalSubirNotas
     :show="open"
@@ -107,6 +111,7 @@ const headers = [
   { key: "carnet", label: "Carnet", sortable: false },
   { key: "estudiante", label: "Estudiante", sortable: false, class:'text-left' },
   { key: "nota_final", label: "Nota", sortable: false, class:'text-center' },
+  { key: "estado", label: "", sortable: false, class:'text-center', variant: 'info', stickyColumn: true,},
 ];
 
 const title = computed(() => {
@@ -135,6 +140,7 @@ const recibeNotes = async (params: any) => {
   store.sendNotesCarga(params).then(async(resp: any) => {    
     if(resp['response'].status === 200) {
       await store.getDataConfigMateria(+route.params.id);
+      await reloadData();
       util.showAlert({
         summary:'Exito!',
         detail: 'Proceso realizado con exito',
@@ -154,10 +160,25 @@ const back = () => {
   router.push({ name: "notes-docente" });
 };
 
-onMounted(() => {
+const reloadData = async () => {
   const { id } = route.params;
-  store.getDataConfigMateria(+id);
-  store.getDataCargaAcademica(+id);
+  await store.getDataConfigMateria(+id);
+  await store.getDataCargaAcademica(+id);
+};
+
+const varianteColor = ({codigo} : any )  => {
+  switch (codigo) {
+    case '001':
+      return 'success';
+    case '002':
+      return 'danger';
+    case '003':
+      return 'primary';
+  }
+};
+
+onMounted(() => {
+  reloadData();
 });
 </script>
 

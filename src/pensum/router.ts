@@ -6,14 +6,14 @@ export const PensumRoute: RouteRecordRaw = {
   path: NAME_ROUTE,
   component: () => import("@/shared/LayoutComponent.vue"),
   children: [
-/*     {
+    {
       path: "asesor",
       name: "pensum-asesor",
       component: () => import("./pages/Admin/Pensum.vue"),
       meta: {
-        rol: 'ROL_ASESORIA_LIST'
+        rol: 'admin.asesoria.view'
       }
-    }, */
+    },
     {
       path: "student",
       name: "pensum-student",

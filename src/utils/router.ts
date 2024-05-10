@@ -24,6 +24,12 @@ const arrayRutas: IRuta[] = [{
     nombre: "Materias",
     url: "/notes/student",
     permissions: 'student.notes.view',
+}, {
+    name: "pensum-asesor",
+    icon: "book",
+    nombre: "Asesoria",
+    url: "/pensum/asesor",
+    permissions: 'admin.asesoria.view',
 }];
 
 export default arrayRutas;

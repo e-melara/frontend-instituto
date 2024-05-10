@@ -53,8 +53,15 @@ const configWatcher = async () => {
   }
 }
 
-watchEffect(async () => {
+watch(config, async (value) => {
   await configWatcher();
+});
+
+watch(alumnos, async (value) => {
+  listStudentsFn();
+});
+
+const listStudentsFn = () => {
   listStudents.value = alumnos.value.map((student: any, index) => {
     const { alumno } = student;
     const arrayStudentInfo = [ (index + 1), alumno.carnet, `${alumno.apellidos} ${alumno.nombres}` ]
@@ -62,6 +69,11 @@ watchEffect(async () => {
       return startsWith(key, 'nota_')
     }), numberOfColumns.value)[0]
     return concat(arrayStudentInfo, $arrayNotes)
-  });
+  }, [listStudents.value]);
+}
+
+watchEffect(async () => {
+  await configWatcher();
+  listStudentsFn();  
 });
 </script>

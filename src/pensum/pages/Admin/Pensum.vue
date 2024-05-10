@@ -1,7 +1,8 @@
 <script setup lang="ts">
 // @ts-ignore
 import BreadCumbs from "@/shared/BreadCumbs.vue";
-// @ts-ignore
+
+/* // @ts-ignore
 import PensumList from "../../components/Asesoria/Admin/List.vue";
 // @ts-ignore
 import Search from "../../components/Asesoria/Admin/Search.vue";
@@ -72,16 +73,50 @@ const hadlerValidar = (args: { id: number; estado: string }) => {
 
 onBeforeMount(() => {
   paginateFn({});
-});
+}); */
 </script>
 
 <template>
   <BreadCumbs title="Asesoria" main="Pensum" :button="true" />
   <div class="file-content">
+    <b-card no-body>
+      <b-tabs class="tabs-student" card>
+        <b-tab title="Asesoria">
+          <b-card-text>
+            <b-card no-body>
+              <b-card-body>
+                <b-row>
+                  <b-col cols="12">
+                    <h5>Listado de asesorias</h5>
+                  </b-col>
+                </b-row>
+              </b-card-body>
+              <h3>Table de asesoria para registro academico</h3>
+            </b-card>
+          </b-card-text>
+        </b-tab>
+        <b-tab title="Asesoria">
+          <b-card-text>
+            <b-card no-body>
+              <b-card-body>
+                <b-row>
+                  <b-col cols="12">
+                    <h5>Listado de asesorias</h5>
+                  </b-col>
+                </b-row>
+              </b-card-body>
+              <h3>Table de asesoria para pagaduria</h3>
+            </b-card>
+          </b-card-text>
+        </b-tab>
+      </b-tabs>
+    </b-card>
+  </div>
+<!--   <div class="file-content">
     <div class="card">
-      <!-- <div class="card-header">
+      div class="card-header">
         <Search />
-      </div> -->
+      </div>
       <b-table
         :items="enrolleds?.body"
         :fields="headers"
@@ -110,9 +145,9 @@ onBeforeMount(() => {
         </template>
       </b-table>
     </div>
-  </div>
+  </div> -->
 
-  <b-modal
+  <!-- <b-modal
     hide-footer
     v-model="open"
     no-close-on-esc
@@ -143,11 +178,24 @@ onBeforeMount(() => {
         </div>
       </div>
     </div>
-  </b-modal>
+  </b-modal> -->
 </template>
 
 <style>
 .modal-dialog.modal-xll {
   max-width: 95%;
+}
+.tabs-student {
+  .card-header {
+    background-color: #7265fc;
+    padding-bottom: 8px !important;
+    button.nav-link {
+      text-transform: uppercase;
+      color: #fff;
+      &.active {
+        color: #000;
+      }
+    }
+  }
 }
 </style>

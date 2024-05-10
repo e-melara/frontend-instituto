@@ -13,7 +13,7 @@ import type {
 
 export const useNoteStore = defineStore("useNoteStore", () => {
   const util = useUtil();
-  const item = ref<ICarga>();
+  const item = ref<ICarga | any>();
   const show = ref<boolean>(false);
   const data = ref<IDocenteNotes | any>();
   const notas = ref<CargaAcademicaHistory[]>([]);
@@ -47,6 +47,7 @@ export const useNoteStore = defineStore("useNoteStore", () => {
         util.setLoading(true);
         // @ts-ignore
         const { cargas } = await authApi.get("/v1/materias/docentes");
+        this.setCargaAcademica();
         data.value = cargas.filter(function(item: any) {
           if(item && item.materia){
             return true;
@@ -94,11 +95,11 @@ export const useNoteStore = defineStore("useNoteStore", () => {
     },
 
     async sendNotesCarga(params: any = {}) {
-      this.toggleShowModal();
       try {
         util.setLoading(true);
         const { idcarga: id, ...rest } = params;
         const data = await authApi.put(`/v1/materias/${id}/carga`, { ...rest });
+        this.toggleShowModal();
         return Promise.resolve({ response: data });
       } catch (error) {
         return error;
@@ -159,5 +160,9 @@ export const useNoteStore = defineStore("useNoteStore", () => {
         util.setLoading(false);
       }
     },
+    setCargaAcademica() {
+      item.value = undefined;
+      data.value = undefined;
+    }
   };
 });

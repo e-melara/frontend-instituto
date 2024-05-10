@@ -4,9 +4,7 @@ import { groupBy, toPairs } from "lodash";
 
 import type {
   Pensum,
-  Subject,
   Enrolled,
-  IMateria,
   PensumItem,
   PensumEnrolled,
   SubjectEnrolled,

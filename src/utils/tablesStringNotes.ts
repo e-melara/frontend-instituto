@@ -823,7 +823,6 @@ const mapStringNotes = new Map<number, any>([
 
 export const stringTableFn = (config_id: number) : Promise<any> => {
   return new Promise<any>((resolve, reject) => {
-    console.log('config_id', config_id);
     if (mapStringNotes.has(config_id)) {
       resolve(mapStringNotes.get(config_id) as any);
     } else {
