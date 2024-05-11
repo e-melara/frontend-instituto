@@ -1,6 +1,29 @@
 <script setup lang="ts">
+import { onMounted, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+
+
 // @ts-ignore
 import BreadCumbs from "@/shared/BreadCumbs.vue";
+// @ts-ignore
+import TableAsesoria from "../../components/Asesoria/TableAsesoria.vue";
+
+const route = useRoute();
+
+const routeNameParams = ()  => {  
+  estado.value = route.name === 'pensum-asesor' ? '9' : '10';
+  // @ts-ignore
+  table.value?.refresh({ estado: estado.value });
+}
+
+watch(() => route.name, () => routeNameParams());
+
+const table = ref(null);
+const estado = ref<string | null>(null);
+
+onMounted(() => {
+  routeNameParams();
+});
 
 /* // @ts-ignore
 import PensumList from "../../components/Asesoria/Admin/List.vue";
@@ -87,25 +110,10 @@ onBeforeMount(() => {
               <b-card-body>
                 <b-row>
                   <b-col cols="12">
-                    <h5>Listado de asesorias</h5>
+                    <table-asesoria :estado="estado" :per_page="5" ref="table" v-if="estado"/>
                   </b-col>
                 </b-row>
-              </b-card-body>
-              <h3>Table de asesoria para registro academico</h3>
-            </b-card>
-          </b-card-text>
-        </b-tab>
-        <b-tab title="Asesoria">
-          <b-card-text>
-            <b-card no-body>
-              <b-card-body>
-                <b-row>
-                  <b-col cols="12">
-                    <h5>Listado de asesorias</h5>
-                  </b-col>
-                </b-row>
-              </b-card-body>
-              <h3>Table de asesoria para pagaduria</h3>
+              </b-card-body>              
             </b-card>
           </b-card-text>
         </b-tab>

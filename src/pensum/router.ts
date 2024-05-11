@@ -11,7 +11,14 @@ export const PensumRoute: RouteRecordRaw = {
       name: "pensum-asesor",
       component: () => import("./pages/Admin/Pensum.vue"),
       meta: {
-        rol: 'admin.asesoria.view'
+        rol: 'admin.asesoria.aprobar.registro'
+      }
+    },{
+      path: "pagador",
+      name: "pensum-pagador",
+      component: () => import("./pages/Admin/Pensum.vue"),
+      meta: {
+        rol: 'admin.asesoria.aprobar.pagaduria'
       }
     },
     {

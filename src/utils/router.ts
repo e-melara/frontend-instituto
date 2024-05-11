@@ -29,7 +29,13 @@ const arrayRutas: IRuta[] = [{
     icon: "book",
     nombre: "Asesoria",
     url: "/pensum/asesor",
-    permissions: 'admin.asesoria.view',
+    permissions: 'admin.asesoria.aprobar.registro',
+}, {
+    name: "pensum-pagador",
+    icon: "book",
+    nombre: "Asesoria",
+    url: "/pensum/pagador",
+    permissions: 'admin.asesoria.aprobar.pagaduria',
 }];
 
 export default arrayRutas;
