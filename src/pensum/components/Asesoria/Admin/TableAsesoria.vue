@@ -1,39 +1,37 @@
 <template>
   <b-table
     :fields="headers"
+    :items="pensum.asesoria_detalle"
     class="b-table asesoria"
     bordered
-    :items="enrolled.cargas"
     caption-top
   >
     <template #table-caption>
       <div class="d-flex">
-        <div class="flex-shrink-0">
-          <img :src="imgProfile" width="80" alt="image profile" />
-        </div>
         <div class="flex-grow-1 ms-3">
-          <h4>{{ student.nombres }} {{ student.apellidos }}</h4>
           <p>
-            Carnet: {{ student.carnet }} <br />
-            Plan: {{ student.plan }}
+            <h4>{{ pensum.student?.nombres }} {{ pensum.student?.apellidos }}</h4>
+            Carnet: {{ pensum.student?.carnet }} <br />           
+            <p>carrera: pensum: {{ pensum.carrera.nombre }}</p>
           </p>
           <strong>Materias solicitadas</strong>
         </div>
       </div>
+    </template>
+    <template #cell(docente)="{item}">
+    {{ item.docente_nombres }} {{ item.docente_apellidos }}
     </template>
   </b-table>
   <div class="row my-3">
     <div class="col-12 d-flex justify-content-between">
       <b-button
         variant="primary"
-        @click="() => clickBtns('V')"
-        v-if="util.hasRole('ROL_ASESORIA_ACEPTAR')"
+        @click="() => clickBtns('008')"
         >Validar</b-button
       >
       <b-button
         variant="danger"
-        @click="() => clickBtns('D')"
-        v-if="util.hasRole('ROL_ASESORIA_DENEGAR')"
+        @click="() => clickBtns('004')"
         >Denegar</b-button
       >
     </div>
@@ -41,29 +39,26 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs } from "vue";
-import { useUtil } from "@/composables";
-import imgProfile from "@/assets/images/profile.png";
-import type { Student, SubjectEnrolled } from "@/pensum/interfaces";
+import { toRefs } from "vue";
 
 interface Props {
-  student: Student;
-  enrolled: SubjectEnrolled;
+  pensum: any;
 }
 
 const headers = [
-  { key: "codmate", align: "center", label: "Codigo", sortable: false },
-  { key: "nommate", label: "Nombre de la materia", sortable: false },
+  { key: "materia_codigo", align: "center", label: "Codigo", sortable: false },
+  { key: "materia_nombre", label: "Nombre de la materia", sortable: false },
+  { key: "docente", label: "Nombrel docente", sortable: false },
 ];
 
-const util = useUtil();
+// const util = useUtil();
 const props = defineProps<Props>();
-const { student, enrolled } = toRefs(props);
+const { pensum } = toRefs(props);
 
 const emits = defineEmits(["validar"]);
 
 const clickBtns = (status: string) => {
-  emits("validar", { estado: status, id: +enrolled.value.id });
+  emits("validar", { status, id: props.pensum.aseroria.id });
 };
 </script>
 

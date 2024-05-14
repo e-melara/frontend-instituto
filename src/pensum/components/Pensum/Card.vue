@@ -1,5 +1,4 @@
 <template>
-  <!-- :class="getClassSubject(subject.status)" lo he quitado de section -->
   <section
    :class="getClassSubject(subject.estado)"
     class="item-subject container-fluid"
@@ -21,7 +20,6 @@
 </template>
 
 <script setup lang="ts">
-import { def } from "@vue/shared";
 import { toRefs } from "vue";
 import type { PensumItem } from "../../interfaces";
 interface Props {

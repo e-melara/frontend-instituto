@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
-
+import { onMounted, ref, watch } from "vue";
 
 // @ts-ignore
 import BreadCumbs from "@/shared/BreadCumbs.vue";
 // @ts-ignore
 import TableAsesoria from "../../components/Asesoria/TableAsesoria.vue";
+import TableAsesoriaAdmin from "../../components/Asesoria/Admin/TableAsesoria.vue";
+
+import Pensum from "../../components/Pensum/List.vue";
+import { usePensumStore } from "@/stores/usePensum";
 
 const route = useRoute();
+const pensum = usePensumStore();
+const { open, pensumEnrolled, pensumEnrolledGenerate } = storeToRefs(pensum);
 
 const routeNameParams = ()  => {  
   estado.value = route.name === 'pensum-asesor' ? '9' : '10';
@@ -25,78 +31,22 @@ onMounted(() => {
   routeNameParams();
 });
 
-/* // @ts-ignore
-import PensumList from "../../components/Asesoria/Admin/List.vue";
-// @ts-ignore
-import Search from "../../components/Asesoria/Admin/Search.vue";
-
-// para el modal
-// @ts-ignore
-import TableAsesoria from "../../components/Asesoria/Admin/TableAsesoria.vue";
-// @ts-ignore
-import Pensum from "../../components/Pensum/List.vue";
-
-import { storeToRefs } from "pinia";
-import type { BvEvent } from "bootstrap-vue-3";
-import { computed, onBeforeMount, ref, watch } from "vue";
-
-import { usePensumStore } from "@/stores/usePensum";
-
-const pensum = usePensumStore();
-
-const modalRefs = ref(null);
-const currentPage = ref<number>(1);
-const { enrolleds, open, pensumEnrolled, pensumEnrolledGenerate } =
-  storeToRefs(pensum);
-
-const headers = [
-  { key: "carnet", label: "Carnet", sortable: false },
-  { key: "nombres", label: "Nombres", sortable: false },
-  { key: "apellidos", label: "Apellidos", sortable: false },
-  { key: "nomcarrera", label: "Carrera", sortable: false },
-  { key: "actions", label: "" },
-];
-
-const perPage = computed(() => {
-  if (enrolleds.value?.per_page) {
-    return +enrolleds.value.per_page;
-  } else {
-    return 0;
-  }
-});
-
-interface Props {
-  estado?: string;
-  paginate?: number;
-  per_page?: number;
-}
-
-const paginateFn = (params: Props) => {
-  const values = {
-    estado: "A",
-    paginate: params.paginate || 1,
-    per_page: params.per_page || 5,
-  };
-  pensum.getPagination(values);
-};
-
-const changePage = (event: BvEvent, page: number) => {
-  paginateFn({ paginate: page });
-};
-
-const clickBtn = (carnet: string) => {
+// methods
+const viewPensumStudent = async (carnet: any) => {
   pensum.getPensumAsesoriaStudent(carnet);
 };
 
-const hadlerValidar = (args: { id: number; estado: string }) => {
-  pensum.updateStatusEnrolled(args.id, { estado: args.estado }).then(() => {
-    paginateFn({ paginate: 1 });
+const hadlerValidar = (args: { id: number; status: string }) => {
+  pensum.updateStatusEnrolled(args.id, { estado: args.status }).then(() => {
+    routeNameParams();
   });
 };
 
-onBeforeMount(() => {
-  paginateFn({});
-}); */
+const handlerAprobar = (id: any) => {
+  pensum.updateStatusEnrolled(id, { estado: '009' }).then(() => {
+    routeNameParams();
+  });
+};
 </script>
 
 <template>
@@ -110,7 +60,14 @@ onBeforeMount(() => {
               <b-card-body>
                 <b-row>
                   <b-col cols="12">
-                    <table-asesoria :estado="estado" :per_page="5" ref="table" v-if="estado"/>
+                    <table-asesoria 
+                      v-if="estado"
+                      ref="table" 
+                      :per_page="5" 
+                      :estado="estado"
+                      @aprobar-asesoria="handlerAprobar"
+                      @view-pensum="viewPensumStudent" 
+                    />
                   </b-col>
                 </b-row>
               </b-card-body>              
@@ -120,42 +77,8 @@ onBeforeMount(() => {
       </b-tabs>
     </b-card>
   </div>
-<!--   <div class="file-content">
-    <div class="card">
-      div class="card-header">
-        <Search />
-      </div>
-      <b-table
-        :items="enrolleds?.body"
-        :fields="headers"
-        :per-page="perPage"
-        class="b-table asesoria"
-      >
-        <template #cell(actions)="row">
-          <b-button
-            variant="success"
-            @click="() => clickBtn(row.item.carnet)"
-            size="sm"
-            class="mr-1"
-          >
-            Ver
-          </b-button>
-        </template>
-        <template #table-caption>
-          <b-pagination
-            align="center"
-            @page-click="changePage"
-            v-model="currentPage"
-            :total-rows="enrolleds?.total_rows"
-            :per-page="perPage"
-            aria-controls="my-table"
-          />
-        </template>
-      </b-table>
-    </div>
-  </div> -->
 
-  <!-- <b-modal
+  <b-modal
     hide-footer
     v-model="open"
     no-close-on-esc
@@ -164,21 +87,19 @@ onBeforeMount(() => {
     scrollable
   >
     <div class="container-fluid">
-      <div class="row">
-        <div class="col-4">
+      <div class="row py-5">
+        <div class="col-5">
           <div
             class="card"
-            v-if="pensumEnrolled?.enrolled && pensumEnrolled.student"
+            v-if="pensumEnrolled?.asesoria_detalle && pensumEnrolled?.student"
           >
-            <TableAsesoria
-              :enrolled="pensumEnrolled.enrolled"
-              :student="pensumEnrolled.student"
+            <table-asesoria-admin
+              :pensum="pensumEnrolled"
               @validar="hadlerValidar"
-            />
+            ></table-asesoria-admin>
           </div>
         </div>
-        <div class="col-8">
-          <h2 class="text-center">Pensum</h2>
+        <div class="col-7">
           <Pensum
             :keys="pensumEnrolledGenerate.keys"
             :items="pensumEnrolledGenerate.items"
@@ -186,7 +107,7 @@ onBeforeMount(() => {
         </div>
       </div>
     </div>
-  </b-modal> -->
+  </b-modal>
 </template>
 
 <style>

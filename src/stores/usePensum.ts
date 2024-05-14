@@ -19,14 +19,13 @@ const getPaginationAxios = async (params = {}): Promise<Enrolled> => {
   return await authApi.get<Enrolled>("/pensum/paginate", { params });
 };
 
-const getSearchAxios = async (params = {}): Promise<PensumEnrolled> => {
-  // @ts-ignore
-  return await authApi.get<PensumEnrolled>("/pensum/search", { params });
+const getSearchAxios = async (carnet: string): Promise<any> => {
+  return await authApi.get<PensumEnrolled>(`/v1/alumno/${carnet}/pensum`);
 };
 
 const updateStatusEnrolled = async (id: number, params = {}) => {
   // @ts-ignore
-  return await authApi.put(`/pensum/${id}`, params);
+  return await authApi.put(`/v1/pensum/asesorias/${id}`, params);
 };
 
 export const usePensumStore = defineStore("usePensumStore", () => {
@@ -36,9 +35,9 @@ export const usePensumStore = defineStore("usePensumStore", () => {
   const open = ref<boolean>(false);
 
   const enrolleds = ref<Enrolled>();
-  const pensumEnrolled = ref<PensumEnrolled>();
+  const pensumEnrolled = ref<PensumEnrolled | any>();
 
-  const generatePensum = (pensum: PensumItem[] | undefined) => {
+  const generatePensum = (pensum: PensumItem[] | any | undefined) => {
     const order = groupBy(pensum, "semestre");
     const entries = toPairs(order);
 
@@ -67,7 +66,7 @@ export const usePensumStore = defineStore("usePensumStore", () => {
     enrolled: computed(() => !!list.value?.enrolled),
     pensumList: computed(() => generatePensum(list.value?.pensum)),
     pensumEnrolledGenerate: computed(() =>
-      generatePensum(pensumEnrolled.value?.pensum.pensum)
+      generatePensum(pensumEnrolled.value?.pensum)
     ),
     asesoria: computed<CargasAcademica[]>(() => {
       return list.value?.cargas_academicas.map((item) => {
@@ -111,7 +110,7 @@ export const usePensumStore = defineStore("usePensumStore", () => {
     async getPensumAsesoriaStudent(carnet: string) {
       try {
         util.setLoading(true);
-        const data = await getSearchAxios({ carnet });
+        const data = await getSearchAxios(carnet);
         pensumEnrolled.value = data;
         open.value = true;
       } catch (error) {
@@ -123,16 +122,20 @@ export const usePensumStore = defineStore("usePensumStore", () => {
     async updateStatusEnrolled(id: number, params = {}) {
       try {
         util.setLoading(true);
-        const data = await updateStatusEnrolled(id, params);
+        await updateStatusEnrolled(id, params);
         open.value = false;
         util.showAlert({
-          // @ts-ignore
-          detail: data.message,
+          detail: 'Se ha actualizado el estado de la asesoria correctamente.',
           severity: "success",
           summary: "Exito",
         });
       } catch (error) {
         console.log(error);
+        util.showAlert({
+          detail: 'Error al actualizar el estado de la asesoria.',
+          severity: "error",
+          summary: "Error",
+        })
       } finally {
         util.setLoading(false);
       }

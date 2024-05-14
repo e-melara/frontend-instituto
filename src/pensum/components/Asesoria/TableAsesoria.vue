@@ -36,14 +36,14 @@
     :busy.sync="isBuy"
   >
   <template #empty>
-    <b-alert show variant="info">No hay registros</b-alert>
+    <b-alert show variant="info">Por el momento no tenemos registro para mostrar</b-alert>
   </template>
   <template #cell(id)="{ index }">
     {{ index + 1 }}
   </template>
   <template #cell(actions)="data">
     <b-button variant="primary" @click="handlerViewPensum(data)" v-if="props.estado === '9'">Ver pensum</b-button>
-    <b-button variant="primary" v-else>Aprobar</b-button>
+    <b-button variant="primary" v-else @click="handlerAprobar(data)">Aprobar</b-button>
   </template>
   </b-table>
   <div class="row">
@@ -61,7 +61,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { onMounted, ref, defineProps, defineExpose } from 'vue'
+import { onMounted, ref, defineProps, defineExpose, defineEmits } from 'vue'
 
 import { useAsesoria } from '../../../stores';
 
@@ -82,6 +82,8 @@ interface Props {
 
 const props = defineProps<Props>();
 
+const emits = defineEmits(['viewPensum', 'aprobarAsesoria'])
+
 const store = useAsesoria()
 const { paginate, results } = storeToRefs(store)
 const isBuy = ref(false)
@@ -95,10 +97,14 @@ const handlerBtnSearch = () => {
   paginateFn({ q: filter.value });
 };
 
-const handlerViewPensum = ({ item }: any) => {
+const handlerAprobar = ({ item }: any) => {
   const { id } = item;
-  console.log(id);
-  
+  emits('aprobarAsesoria', id)
+};
+
+const handlerViewPensum = ({ item }: any) => {
+  const { carnet } = item;
+  emits('viewPensum', carnet)
 };
 
 const paginateFn = async (params:any = {}) => {
