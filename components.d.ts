@@ -8,7 +8,6 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BAlert: typeof import('bootstrap-vue-3')['BAlert']
-    BBadge: typeof import('bootstrap-vue-3')['BBadge']
     BButton: typeof import('bootstrap-vue-3')['BButton']
     BButtonGroup: typeof import('bootstrap-vue-3')['BButtonGroup']
     BCard: typeof import('bootstrap-vue-3')['BCard']

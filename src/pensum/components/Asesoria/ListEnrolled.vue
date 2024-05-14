@@ -9,7 +9,7 @@ const mapEstados = new Map([
 
 interface Props {
   items?: any[] | null;
-  estado: any;
+  status: any;
 }
 
 const props = defineProps<Props>();
@@ -17,7 +17,7 @@ const { items } = toRefs(props);
 
 // actions
 const getEstadoAsesoria = computed(() => {
-  return mapEstados.get(props.estado.codigo);
+  return mapEstados.get(props.status.codigo);
 });
 </script>
 

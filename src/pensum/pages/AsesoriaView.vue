@@ -1,7 +1,7 @@
 <template>
   <BreadCumbs title="Asesoria" main="Pensum" :button="true" />
   <div>
-    <ListEnrolled :items="subjetsEnrolled" :estado="estado_asesoria" />
+    <ListEnrolled :items="subjetsEnrolled" :status="estado_asesoria" />
   </div>
 </template>
 
