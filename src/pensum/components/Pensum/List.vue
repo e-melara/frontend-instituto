@@ -1,40 +1,51 @@
 <template>
-  <div class="table-responsive">
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th v-for="key in keys" :key="key">{{ key }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td v-for="(item, index) in items" :key="index">
-            <Card
-              v-for="subject in item"
-              :key="subject.pensum_materia_id"
-              :subject="subject"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <b-row>
+    <b-col class="p-0">
+      <div class="table-responsive p-0" >
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th v-for="key in group.keys" :key="key">{{ key }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td v-for="(item, index) in group.subjects" :key="index">
+                <Card v-for="subject in item" :key="subject.id" :subject="subject" />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </b-col>
+  </b-row>
 </template>
 
 <script setup lang="ts">
-import { toRefs } from "vue";
+import { onMounted, ref, toRefs } from "vue";
+
+import { tranformPensum } from "../../utils";
 
 // @ts-ignore
 import Card from "./Card.vue";
-import type { PensumItem } from "../../interfaces";
+import type { Pensum } from "@/pensum/interfaces";
 
-interface Props {
-  keys: string[];
-  items: Array<PensumItem[]>;
-}
+const props = defineProps<{ items: Pensum[] }>();
+const { items } = toRefs(props);
 
-const props = defineProps<Props>();
-const { keys } = toRefs(props);
+const group = ref({
+  keys: [],
+  subjects: [],
+});
+
+onMounted(() => {
+  if (items?.value) {
+    tranformPensum(items.value).then(function ({ keys, data }) {
+      group.value.keys = [...keys];
+      group.value.subjects = data;
+    });
+  }
+});
 </script>
 
 <style lang="scss" scoped>

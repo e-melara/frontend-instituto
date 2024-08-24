@@ -1,15 +1,15 @@
 export interface Pensum {
-  uv: number;
-  show: boolean;
-  aseroria: any;
-  carnet: string;
-  carrera: ICarrera;
-  pensum: PensumItem[];
-  asesoria_detalle: any[];
-  asesoria_activa: number;
-  cargas_academicas: CargasAcademica[];
-  inscribir: Inscribir[];
-  enrolled: SubjectEnrolled | null;
+  id: number
+  uv: number
+  ciclo: string
+  estado: string
+  no_ciclo: number
+  requisitos: string
+  curso_id: number
+  curso_nombre: string
+  no_orden: number
+  curso_codigo: string
+  requisitos_array: number[]
 }
 
 export interface CargasAcademica {
