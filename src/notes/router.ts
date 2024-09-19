@@ -38,5 +38,13 @@ export const NotesRoute: RouteRecordRaw = {
         rol: "student.notes.view",
       },
     },
+    {
+      path: "students/history",
+      name: "notes-student-history",
+      component: () => import("./pages/Alumnos/History.vue"),
+      meta: {
+        rol: "student.notes.view",
+      },
+    },
   ],
 };

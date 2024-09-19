@@ -14,37 +14,22 @@ export interface Pensum {
 
 export interface CargasAcademica {
   id:         number;
-  docente_id: number;
-  materia_id: number;
-  horario_id: number;
-  ciclo_id:   number;
-  visible?:    boolean;
-  horario: {
-    id:     number;
-    nombre: string;
-    codigo: string;
-  }
-  materia: {
-    nombre: string;
-    codigo: string;
-  }
-  docente: {
-    nombre:   string;
-    apellido: string;
-  };
+  ciclo:      string;
+  subject_code: string;
+  subject_name: string;
+  teacher_lasts: string;
+  teacher_names: string;
 }
 
-export interface Docente {
-
+export interface Academic {
+  id:         number;
+  ciclo:      string;
+  subject_code: string;
+  subject_name: string;
+  teacher_lasts: string;
+  teacher_names: string;
 }
 
-export interface Horario {
-
-}
-
-export interface Materia {
-
-}
 
 export interface ICarrera {
   codigo: string;

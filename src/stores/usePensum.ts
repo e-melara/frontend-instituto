@@ -1,18 +1,15 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
-import { groupBy, toPairs } from "lodash";
 
 import type {
-  Pensum,
   Enrolled,
-  PensumItem,
+  ICarrera,
+  Pensum,
   PensumEnrolled,
-  SubjectEnrolled,
-  CargasAcademica, Subject, ICarrera
+  Subject,
+  Academic,
 } from "@/pensum/interfaces";
 import { authApi } from "@/api/base";
-
-import { useUtil } from "@/composables";
 
 const getPaginationAxios = async (params = {}): Promise<Enrolled> => {
   // @ts-ignore
@@ -38,45 +35,36 @@ const pensumAsyncSendFn = async (ids:  Array<number> = []) => {
 };
 
 export const usePensumStore = defineStore("usePensumStore", () => {
-  // state
+  const academicLoads = ref<Academic[]>([]);
+  const activeAdvice = ref<boolean>(false);
   const loading = ref<boolean>(false);
   const pensumList = ref<Pensum[]>();
   const carrera = ref<ICarrera>();
-
-  const actions = {
-    async fetchPensum() {
-      loading.value = true;
-      try {
-        const { data } = await pensumAsynFn();
-        this.setPensumList(data?.pensum);
-        this.setCarrera(data?.carrera);
-      } catch (e) {
-        console.log(e);
-      } finally {
-        loading.value = false;
-      }
-    }
-  }
-
-  const mutations = {
-    setPensumList(newList: Pensum) {
-      pensumList.value = newList;
-    },
-    setCarrera(newCarrera: ICarrera) {
-      carrera.value = newCarrera;
-    }
-  }
-
 
   return {
     // state
     pensumList,
     carrera,
+    activeAdvice,
+    academicLoads,
     // getters
     loading: computed(() => loading.value),
     // actions
-    ...actions,
-    ...mutations,
+    async fetchPensum() {
+      loading.value = true;
+      try {
+        // @ts-ignore
+        const { data } = await pensumAsynFn();
+        pensumList.value = data?.pensum;
+        carrera.value = data?.carrera;
+        academicLoads.value = data?.academicLoads;
+        activeAdvice.value = !!data?.activeAdvice;
+      } catch (e) {
+        console.log(e);
+      } finally {
+        loading.value = false;
+      }
+    },
   }
 
   // const util = useUtil();

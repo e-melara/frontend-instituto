@@ -3,7 +3,6 @@ import { defineStore } from "pinia";
 import type { IRuta } from "@/interfaces";
 
 import arrayRoutes from "@/utils/router";
-import { usePensumStore } from "./usePensum";
 
 export const useAuthStore = defineStore("useAuthStore", () => {
   const rutas = ref<IRuta[]>([...arrayRoutes]);
@@ -29,10 +28,8 @@ export const useAuthStore = defineStore("useAuthStore", () => {
       isAuthenticated.value = true;
     },
     getLogout() {
-      const pensum = usePensumStore();
       persona.value = undefined;
       isAuthenticated.value = false;
-      pensum.clearList();
     },
   };
 });

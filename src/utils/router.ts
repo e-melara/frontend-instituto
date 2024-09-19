@@ -21,10 +21,16 @@ const arrayRutas: IRuta[] = [{
 }, {
     name: "notes-student",
     icon: "book",
-    nombre: "Materias",
+    nombre: "Notas",
     url: "/notes/student",
     permissions: 'student.notes.view',
 }, {
+    name: "notes-student-history",
+    icon: "book",
+    nombre: "Historial",
+    url: "/notes/students/history",
+    permissions: 'student.notes.view',
+},{
     name: "pensum-asesor",
     icon: "book",
     nombre: "Asesoria",

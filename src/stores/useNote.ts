@@ -130,10 +130,10 @@ export const useNoteStore = defineStore("useNoteStore", () => {
     },
 
     // Actions para los estudiantes
-    async getNotasEstudiante() {
+    async getNotasEstudiante(all: number = 0) {
       try {
         util.setLoading(true);
-        const data = await authApi.get<any>('/v1/alumno/materias');
+        const data = await authApi.get<any>('/v1/alumno/materias?all=' + all);
         // @ts-ignore
         subjectsStudent.value = data['materias'];
       } catch (error) {
