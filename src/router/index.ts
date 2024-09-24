@@ -69,8 +69,7 @@ router.beforeEach((to, _, next) => {
     }
     return next("/authenticate/login");
   } catch (error) {
-    console.log(error);
-    // return next("/authenticate/login");
+    return next("/authenticate/login");
   }
 });
 

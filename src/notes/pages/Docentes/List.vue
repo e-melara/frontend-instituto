@@ -27,7 +27,6 @@ import { useNoteStore } from "@/stores";
 
 // @ts-ignore
 import BreadCumbs from "@/shared/BreadCumbs.vue";
-import type { ICarga } from "@/notes/interfaces";
 
 const router = useRouter();
 const store = useNoteStore();

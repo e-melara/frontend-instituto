@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
+import moment from "moment";
 import VueFeather from "vue-feather";
 import PrimeVue from "primevue/config";
 import { VueQueryPlugin } from "vue-query";
@@ -24,6 +25,7 @@ app.use(VueQueryPlugin);
 app.use(PrimeVue);
 app.use(ToastService);
 
+// @ts-ignore
 app.component(VueFeather.name, VueFeather);
 
 // filters
