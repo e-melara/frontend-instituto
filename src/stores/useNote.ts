@@ -13,6 +13,7 @@ import type {
 
 export const useNoteStore = defineStore("useNoteStore", () => {
   const util = useUtil();
+  const history = ref<any[]>([]);
   const item = ref<ICarga | any>();
   const show = ref<boolean>(false);
   const data = ref<IDocenteNotes | any>();
@@ -27,8 +28,9 @@ export const useNoteStore = defineStore("useNoteStore", () => {
   return {
     //getters
     data: computed(() => data.value),
-    carga: computed(() => item.value),
     open: computed(() => show.value),
+    carga: computed(() => item.value),
+    history: computed(() => history.value),
     subjectsStudent: computed(() => subjectsStudent.value),
     viewNoteTable: computed(() => viewNoteTable.value),
     notas: computed(() => {
@@ -155,9 +157,20 @@ export const useNoteStore = defineStore("useNoteStore", () => {
           nota: data.nota
         }
       } catch (error) {
-        
+        console.log(error)
       } finally {
         util.setLoading(false);
+      }
+    },
+    async getHistorialNote(id: number) {
+      try {
+        util.setLoading(true);
+        const data = await authApi.get<any>(`/v1/materias/${id}/history`);
+        
+        // @ts-ignore
+        history.value = data.history;
+      } catch (e) {
+        console.log(e)
       }
     },
     setCargaAcademica() {

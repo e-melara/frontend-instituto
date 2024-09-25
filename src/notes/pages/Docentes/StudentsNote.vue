@@ -34,7 +34,7 @@
               </b-card-body>
               <b-table
                 :fields="headers"
-                :items="(carga as any)"
+                :items="carga"
                 striped
                 bordered
                 borderless
@@ -57,7 +57,31 @@
           </b-card-text>
         </b-tab>
         <b-tab title="Notas">
-          <table-notes :config="data?.config" :alumnos="(carga as any)"></table-notes>
+          <table-notes :config="data?.config" :alumnos="carga"></table-notes>
+        </b-tab>
+        <b-tab title="Historial">
+          <b-table
+            :fields="header_history"
+            :items="history"
+            striped
+            bordered
+            borderless
+            small
+            hover
+            class="table-middle"
+          >
+          <template #cell()="{ item }">
+            <strong>{{ nameTransform(item.key_note) }}</strong>
+          </template>
+          <template #cell(created_at)="{ item }">
+            {{ timeAgo(item.created_at) }}
+          </template>
+          <template #cell(actions)="{ item }">
+            <b-button @click="downloadPDF(item)">
+              <vue-feather type="download-cloud" />
+            </b-button>
+          </template>
+        </b-table>
         </b-tab>
       </b-tabs>
     </b-card>
@@ -78,6 +102,7 @@ import { useRoute, useRouter } from "vue-router";
 import { computed, onMounted, ref, watch } from "vue";
 
 import { useNoteStore, useUtilsStore } from "@/stores";
+import { timeAgo } from '@/utils/functions';
 import { excelExportFileCuadro } from "@/exportacion/cuadro-notas";
 
 // componentes
@@ -88,7 +113,8 @@ import ModalSubirNotas from "../../components/Docente/SubirNotasModal.vue";
 // @ts-ignore
 import TableNotes from '../../components/Notes/TableNote.vue';
 
-import { filterNumeric } from '@/utils/functions';
+// @ts-ignore
+import { filterNumeric, nameTransform } from '@/utils/functions';
 import { stringTableFn } from "@/utils/tablesStringNotes";
 
 // variables
@@ -99,7 +125,8 @@ const store = useNoteStore();
 
 const numberOfColumns = ref(0);
 
-const { open, carga, data } = storeToRefs(store);
+//@ts-ignore
+const { open, carga, data, history } = storeToRefs(store);
 
 watch(data, (async (value) => {
   const stringTable = await stringTableFn(value.config);
@@ -112,6 +139,12 @@ const headers = [
   { key: "estudiante", label: "Estudiante", sortable: false, class:'text-left' },
   { key: "nota_final", label: "Nota", sortable: false, class:'text-center' },
   { key: "estado", label: "", sortable: false, class:'text-center', variant: 'info', stickyColumn: true,},
+];
+
+const header_history = [
+  { key: "key_note", label: "Nota", sortable: false },
+  { key: "created_at", label: "Fecha", sortable: false, class: 'text-center width-200' },
+  { key: 'actions', label: '', class: 'text-center width-100', sortable: false },
 ];
 
 const title = computed(() => {
@@ -162,8 +195,11 @@ const back = () => {
 
 const reloadData = async () => {
   const { id } = route.params;
-  await store.getDataConfigMateria(+id);
-  await store.getDataCargaAcademica(+id);
+  await Promise.all([
+    store.getDataConfigMateria(+id),
+    store.getDataCargaAcademica(+id),
+    store.getHistorialNote(+id)
+  ]);
 };
 
 const varianteColor = ({codigo} : any )  => {
@@ -177,12 +213,16 @@ const varianteColor = ({codigo} : any )  => {
   }
 };
 
+const downloadPDF = (item: any) => {
+  window.open(`${import.meta.env.VITE_APP_BASE_URL}/v1/materias/${item.id}/download`, '_blank');
+};
+
 onMounted(() => {
   reloadData();
 });
 </script>
 
-<style>
+<style lang="scss">
 .tabs-student {
   .card-header {
     background-color: #7265fc;
@@ -195,5 +235,10 @@ onMounted(() => {
       }
     }
   }
+}
+.width-100 { width: 100px; }
+.width-200 { width: 200px; }
+.table-middle td {
+  vertical-align: middle;
 }
 </style>
