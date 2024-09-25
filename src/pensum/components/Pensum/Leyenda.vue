@@ -4,7 +4,7 @@ import { toRefs } from "vue";
 // @ts-ignore
 import type { ICarrera } from "../../interfaces";
 
-const props = defineProps<{ carrera: ICarrera }>();
+const props = defineProps<{ carrera: ICarrera | null | undefined }>();
 const { carrera } = toRefs(props);
 </script>
 

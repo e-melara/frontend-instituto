@@ -11,7 +11,7 @@
           <tbody>
             <tr>
               <td v-for="(item, index) in group.subjects" :key="index">
-                <Card v-for="subject in item" :key="subject.id" :subject="subject" />
+                <Card v-for="subject in item" :key="index" :subject="subject" />
               </td>
             </tr>
           </tbody>
@@ -30,7 +30,7 @@ import { tranformPensum } from "../../utils";
 import Card from "./Card.vue";
 import type { Pensum } from "@/pensum/interfaces";
 
-const props = defineProps<{ items: Pensum[] }>();
+const props = defineProps<{ items: Pensum[] | null | undefined }>();
 const { items } = toRefs(props);
 
 const group = ref({
@@ -40,9 +40,11 @@ const group = ref({
 
 onMounted(() => {
   if (items?.value) {
-    tranformPensum(items.value).then(function ({ keys, data }) {
-      group.value.keys = [...keys];
-      group.value.subjects = data;
+    tranformPensum(items.value).then((res: any) => {
+      if(res['keys']) {
+        group.value.keys = res.keys;
+      }
+      group.value.subjects = res.data;
     });
   }
 });

@@ -32,13 +32,11 @@
         <tbody v-for="item in asesorias" :key="item.id">
           <tr role="row">
             <th role="columnheader" width="150px" scope="col">
-              {{ item.materia.codigo }}
+              
             </th>
             <th role="columnheader" scope="col">
-              {{ item.materia.nombre }}
             </th>
             <th role="columnheader" scope="col">
-              {{ item.docente.nombre }} {{ item.docente.apellido  }}
             </th>
             <th>
               <button

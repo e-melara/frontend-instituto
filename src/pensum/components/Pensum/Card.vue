@@ -1,22 +1,22 @@
 <template>
   <section
     class="item-subject container-fluid"
-    :class="getClassSubject(subject.estado)"
+    :class="getClassSubject(subject?.estado)"
   >
     <header class="row">
       <div class="col-3">
-        <strong>{{ subject.no_orden }}</strong>
+        <strong>{{ subject?.no_orden }}</strong>
       </div>
-      <div class="col-9">{{ subject.curso_codigo }}</div>
+      <div class="col-9">{{ subject?.curso_codigo }}</div>
     </header>
     <main class="row d-flex align-items-center justify-content-center">
-      {{ subject.curso_nombre }}
+      {{ subject?.curso_nombre }}
     </main>
     <article class="row">
       <div class="col-6">
-        {{ subject.requisitos === "0" ? "Bachillerato" : subject.requisitos }}
+        {{ subject?.requisitos === "0" ? "Bachillerato" : subject?.requisitos }}
       </div>
-      <div class="col-6">{{ subject.uv }} UV</div>
+      <div class="col-6">{{ subject?.uv }} UV</div>
     </article>
   </section>
 </template>
@@ -25,7 +25,7 @@
 import { toRefs } from "vue";
 import type { Pensum } from "../../interfaces";
 
-const props = defineProps<{  subject: Pensum  }>();
+const props = defineProps<{  subject: Pensum | undefined  }>();
 const { subject } = toRefs(props);
 
 const mapStatusSubjects = new Map([
@@ -37,6 +37,6 @@ const mapStatusSubjects = new Map([
 ]);
 
 const getClassSubject = (status: string | undefined): string => {
-  return mapStatusSubjects.get(status) || '';
+  return mapStatusSubjects.get(status || 'A') || 'pendiente';
 };
 </script>

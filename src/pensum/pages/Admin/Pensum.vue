@@ -13,8 +13,6 @@ import Pensum from "../../components/Pensum/List.vue";
 import { usePensumStore } from "@/stores/usePensum";
 
 const route = useRoute();
-const pensum = usePensumStore();
-const { open, pensumEnrolled, pensumEnrolledGenerate } = storeToRefs(pensum);
 
 const routeNameParams = ()  => {  
   estado.value = route.name === 'pensum-asesor' ? '9' : '10';
@@ -31,22 +29,6 @@ onMounted(() => {
   routeNameParams();
 });
 
-// methods
-const viewPensumStudent = async (carnet: any) => {
-  pensum.getPensumAsesoriaStudent(carnet);
-};
-
-const hadlerValidar = (args: { id: number; status: string }) => {
-  pensum.updateStatusEnrolled(args.id, { estado: args.status }).then(() => {
-    routeNameParams();
-  });
-};
-
-const handlerAprobar = (id: any) => {
-  pensum.updateStatusEnrolled(id, { estado: '009' }).then(() => {
-    routeNameParams();
-  });
-};
 </script>
 
 <template>
@@ -65,8 +47,6 @@ const handlerAprobar = (id: any) => {
                       ref="table" 
                       :per_page="5" 
                       :estado="estado"
-                      @aprobar-asesoria="handlerAprobar"
-                      @view-pensum="viewPensumStudent" 
                     />
                   </b-col>
                 </b-row>
@@ -80,7 +60,6 @@ const handlerAprobar = (id: any) => {
 
   <b-modal
     hide-footer
-    v-model="open"
     no-close-on-esc
     no-close-on-backdrop
     size="xll"
@@ -91,19 +70,10 @@ const handlerAprobar = (id: any) => {
         <div class="col-5">
           <div
             class="card"
-            v-if="pensumEnrolled?.asesoria_detalle && pensumEnrolled?.student"
           >
-            <table-asesoria-admin
-              :pensum="pensumEnrolled"
-              @validar="hadlerValidar"
-            ></table-asesoria-admin>
           </div>
         </div>
         <div class="col-7">
-          <Pensum
-            :keys="pensumEnrolledGenerate.keys"
-            :items="pensumEnrolledGenerate.items"
-          />
         </div>
       </div>
     </div>

@@ -43,14 +43,11 @@
         <tbody>
           <tr v-for="(subject, index) in subjects" :key="subject.id">
             <td>{{ index + 1 }}</td>
-            <td>{{ subject.materia.codigo }}</td>
-            <td>{{ subject.materia.nombre }}</td>
-            <td>{{ subject.docente.nombre }} {{ subject.docente.apellido }}</td>
+            
             <td>
               <button
               v-if="hasRol"
-                class="btn btn-secondary"
-                @click="clickRemoveItem(subject.materia.codigo)">
+                class="btn btn-secondary">
                 x
               </button>
             </td>

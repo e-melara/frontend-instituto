@@ -1,7 +1,6 @@
 <template>
   <BreadCumbs title="Asesoria" main="Pensum" :button="true" />
   <div>
-    <ListEnrolled :items="subjetsEnrolled" :status="estado_asesoria" />
   </div>
 </template>
 
@@ -13,7 +12,4 @@ import BreadCumbs from "@/shared/BreadCumbs.vue";
 import ListEnrolled from "../components/Asesoria/ListEnrolled.vue";
 // @ts-ignore
 import { usePensum } from "@/pensum/composables/usePensum";
-
-const pensum = usePensum();
-const { subjetsEnrolled, estado_asesoria } = toRefs(pensum);
 </script>
