@@ -172,8 +172,8 @@ const stringDeizSeis = `
   <td rowspan="2">N.F TEORIA</td>
   <td rowspan="2">N.F TEORIA 40%</td>
   <td colspan="8">PARTO  20%</td>
-  <td colspan="8">PARTO  20%</td>
-  <td colspan="8">PARTO  20%</td>
+  <td colspan="8">PUERPERIO 20%</td>
+  <td colspan="8">PEDIATRIA 20%</td>
   <td rowspan="2">N.F PRACTICA</td>
   <td rowspan="2">60%</td>
 </tr>

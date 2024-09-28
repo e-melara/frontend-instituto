@@ -5,7 +5,7 @@ const filterNumeric = (value: string | number, toFixedNumber = 2) => {
 };
 
 const timeAgo = (date: string) => {
-  return moment(date).locale('es').fromNow();
+  return moment(date).format('DD/MM/YYYY HH:mm')
 }
 
 const nameTransform = (name: string) => {

@@ -68,8 +68,12 @@
             borderless
             small
             hover
+            show-empty
             class="table-middle"
           >
+          <template #empty>
+            <h4 class="text-center">No hay registro por el momento</h4>
+          </template>
           <template #cell()="{ item }">
             <strong>{{ nameTransform(item.key_note) }}</strong>
           </template>

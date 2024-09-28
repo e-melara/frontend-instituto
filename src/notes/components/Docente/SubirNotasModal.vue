@@ -220,14 +220,17 @@ const reset = () => {
 
 const sendNote = () => {
   if(note.value) {
+    let nameNote = note.value;
     let keyNote = props.data.notas[note.value];
     if(noteChildren.value) {
       keyNote = keyNote[noteChildren.value];
+      nameNote = noteChildren.value
     }
     const params = {
       notes: arrayNote.value.map(({ carnet, valor }) => ({ carnet, valor })),
       idcarga: route.params.id,
       key_note: keyNote,
+      name_note: nameNote,
     }
     emits("send", params);
     reset();
