@@ -5,15 +5,8 @@
       <div>
         <div class="header-top">
           <h5 class="m-0">Materias</h5>
-          <div class="" style="float: right">
-            <!-- <b-dropdown id="dropdown-1" text="Asesoria" class="m-md-2">
-              <b-dropdown-item @click="clickDescargarFileExcel">
-                Descargar horarios
-              </b-dropdown-item>
-              <b-dropdown-item @click="goToEnrolled">
-                {{ activeAdvice ? "Ver asesoria" : "Iniciar asesoria" }}
-              </b-dropdown-item>
-            </b-dropdown> -->
+          <div class="" style="float: right" v-if="activeAdvice">
+            <b-button @click="goToEnrolled">Iniciar asesoria</b-button>
           </div>
         </div>
       </div>
@@ -44,7 +37,6 @@ import List from "../components/Pensum/List.vue";
 // @ts-ignore
 import Leyenda from "../components/Pensum/Leyenda.vue";
 
-import { excelExportFile } from "@/exportacion";
 import { storeToRefs } from "pinia";
 
 const router = useRouter();
@@ -56,19 +48,9 @@ onMounted(() => {
   store.fetchPensum();
 });
 
-const clickDescargarFileExcel = () => {
-  excelExportFile(academicLoads.value);
-};
-
 const goToEnrolled = () => {
-  if(activeAdvice.value) {
-    router.push({
-      name: 'pensum-view'
-    })
-  } else {
-    router.push({
-      name: "pensum-asesoria",
-    });
-  }
+  router.push({
+    name: "pensum-asesoria",
+  });
 };
 </script>
