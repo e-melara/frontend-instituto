@@ -6,7 +6,7 @@
         <div class="header-top">
           <h5 class="m-0">Materias</h5>
           <div class="" style="float: right" v-if="activeAdvice">
-            <b-button @click="goToEnrolled">Iniciar asesoria</b-button>
+            <!-- <b-button @click="goToEnrolled">Iniciar asesoria</b-button> -->
           </div>
         </div>
       </div>
@@ -21,11 +21,27 @@
       <b-spinner type="grow" style="width: 6rem; height: 6rem;" variant="primary" label="Cargando..."  />
     </div>
   </div>
+  <b-modal v-model="open" size="xxl" title="Crear asesoria" 
+      :no-close-on-backdrop="true"
+      :no-close-on-esc="true"
+    >
+    <b-row>
+      <b-col>
+        <TableAsesoria
+          emptyText="No hay materias disponibles para seleccionar"
+          @validar="handlerValidation"
+          :asesorias="academicNotEnrolled" 
+        />
+      </b-col>
+      <b-col>
+        {{ academicEnrolled }}
+      </b-col>
+    </b-row>
+  </b-modal>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { onMounted, ref } from "vue";
 
 import { usePensumStore } from '@/stores/usePensum';
 
@@ -36,21 +52,24 @@ import BreadCumbs from "@/shared/BreadCumbs.vue";
 import List from "../components/Pensum/List.vue";
 // @ts-ignore
 import Leyenda from "../components/Pensum/Leyenda.vue";
+import TableAsesoria from "../components/Asesoria/Table.vue";
 
 import { storeToRefs } from "pinia";
 
-const router = useRouter();
+const open = ref<boolean>(false);
 const store = usePensumStore();
 
-const { pensumList, loading, carrera, activeAdvice, academicLoads } =  storeToRefs(store);
+const { pensumList, loading, carrera, activeAdvice, academicNotEnrolled, academicEnrolled } =  storeToRefs(store);
 
 onMounted(() => {
   store.fetchPensum();
 });
 
+const handlerValidation = (item: any) => {
+  store.pushAcademicLoad(item);
+};
+
 const goToEnrolled = () => {
-  router.push({
-    name: "pensum-asesoria",
-  });
+  open.value = true;
 };
 </script>

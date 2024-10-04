@@ -97,3 +97,13 @@ table.table-note , table.table-note td, table.table-note th {
 .modal-xxl {
   width: 90% !important;
 }
+
+// modal
+.modal-dialog.modal-xxl {
+  width: 95% !important;
+  max-width: 95% !important;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}

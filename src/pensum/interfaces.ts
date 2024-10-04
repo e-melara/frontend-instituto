@@ -28,6 +28,7 @@ export interface Academic {
   subject_name: string;
   teacher_lasts: string;
   teacher_names: string;
+  enrolled?: boolean;
 }
 
 

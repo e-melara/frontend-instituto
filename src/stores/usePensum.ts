@@ -1,5 +1,6 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
+import {  } from 'lodash'
 
 import type {
   Enrolled,
@@ -40,6 +41,7 @@ export const usePensumStore = defineStore("usePensumStore", () => {
   const loading = ref<boolean>(false);
   const pensumList = ref<Pensum[]>();
   const carrera = ref<ICarrera>();
+  const pensumEnrolled = ref<Academic[] | any[]>();
 
   return {
     // state
@@ -49,6 +51,8 @@ export const usePensumStore = defineStore("usePensumStore", () => {
     academicLoads,
     // getters
     loading: computed(() => loading.value),
+    academicEnrolled: computed(() => pensumEnrolled.value),
+    academicNotEnrolled: computed(() => academicLoads.value.filter((load) => !load.enrolled)),
     // actions
     async fetchPensum() {
       loading.value = true;
@@ -65,6 +69,16 @@ export const usePensumStore = defineStore("usePensumStore", () => {
         loading.value = false;
       }
     },
+    pushAcademicLoad(item: any) {
+      const { subject_code } = item;
+      pensumEnrolled?.value?.push(item);
+      academicLoads.value = academicLoads.value.map((load) => {
+        if(load.subject_code === subject_code) {
+          load.enrolled = true;
+        }
+        return load;
+      });
+    }
   }
 
   // const util = useUtil();
