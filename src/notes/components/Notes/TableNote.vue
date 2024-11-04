@@ -5,7 +5,7 @@
       <tbody>
         <tr v-for="(student, key) in listStudents" :key="key">
           <td v-for="(position, index) in student" :key="index">
-            {{ index > 2 ? filterNumeric(position) : position }}
+            {{ index > 2 ? filterNumeric(position, 2, index === (student.length - 1)) : position }}
           </td>
         </tr>
       </tbody>
@@ -34,18 +34,23 @@ const props = defineProps({
     default: 0,
     required: true
   },
+  codigo: {
+    type: String,
+    default: '',
+    required: false
+  },
   alumnos: {
     type: Array,
     default: () => []
   }
 })
 
-const { config, alumnos } = toRefs(props);
+const { config, alumnos, codigo } = toRefs(props);
 
 const configWatcher = async () => {
   try {
     show.value = true;
-    const stringTable = await stringTableFn(config.value);
+    const stringTable = await stringTableFn(config.value, codigo.value);
     stringTableHeader.value = stringTable.template;
     numberOfColumns.value = stringTable.number_of_columns;
   } catch (error) {

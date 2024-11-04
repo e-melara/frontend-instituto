@@ -1,4 +1,3 @@
-//#region Table One
 const stringOneNote = `
 <tr>
   <td rowspan="3">No</td>
@@ -61,13 +60,13 @@ const stringEightNote = `
 </tr>
 `;
 
-const stringCuatroNote = `
+const stringCuatroNote = (showTitle: boolean = true) => `
 <tr>
   <td rowspan="3">No</td>
   <td rowspan="3">CARNET</td>
   <td rowspan="3">NOMBRE DEL ESTUDIANTE</td>
   <td colspan="17">TEORIA</td>
-  <td colspan="8">PRACTICA</td>
+  <td colspan="8">PRACTICA ${ !showTitle ? 'PEDIATRIA' : '' } </td>
   <td rowspan="3">NOTA FINAL CICLO (TEORIA + PRACTICA)</td>
   <td rowspan="3">EXAMEN DE REPO</td>
   <td rowspan="3">NOTA DEL CICLO</td>
@@ -283,7 +282,7 @@ const stringNueve = `
 </tr>
 `;
 
-const stringSiete = `
+const stringSiete = (showTitle:boolean = true) => `
 <tr>
   <td rowspan="3">No</td>
   <td rowspan="3">CARNET</td>
@@ -303,7 +302,7 @@ const stringSiete = `
   <td rowspan="2">EXAMEN DE REPO</td>
   <td rowspan="2">NOTA FINAL TEORIA</td>
   <td rowspan="2">NOTA FINAL TEORIA 40%</td>
-  <td colspan="6">UNIDAD DE SALUD</td>
+  <td colspan="6">${showTitle ? 'UNIDAD DE SALUD' : ''}</td>
   <td rowspan="2">NOTA FINAL PRACTICA</td>
   <td rowspan="2">PRACTICA 60%</td>
 </tr>
@@ -708,64 +707,31 @@ const stringTrece = `
   <td rowspan="3">No</td>
   <td rowspan="3">CARNET</td>
   <td rowspan="3">NOMBRE DEL ESTUDIANTE</td>
-  <td colspan="16">TEORIA</td>
-  <td colspan="26">PRACTICAS</td>
-  <td rowspan="3">NOTA FINAL (TEORIA + PRACTICA)</td>
-  <td rowspan="3">EXAMEN DE REPO</td>
+  <td colspan="13">TEORIA</td>
+  <td rowspan="3">NOTA FINAL</td>
+  <td rowspan="3">EXAMEN DE REPOSICION</td>
   <td rowspan="3">NOTA DEL CICLO</td>
 </tr>
 <tr>
   <td colspan="4">EXAMENES PARCIALES</td>
   <td colspan="2">TRABAJO DE CAMPO</td>
-  <td colspan="4">LABORATORIOS</td>
+  <td colspan="5">LABORATORIOS PRACTICOS</td>
   <td colspan="2">EXAMEN FINAL</td>
-  <td rowspan="2">NOTA FINAL TEORIA</td>
-  <td rowspan="2">EXAMEN DE REPO</td>
-  <td rowspan="2">NOTA FINAL TEORIA</td>
-  <td rowspan="2">NOTA FINAL TEORIA 40%</td>
-  <td colspan="8">PARTO  20%</td>
-  <td colspan="8">PUERPERIO  20%</td>
-  <td colspan="8">PEDIATRIA  20%</td>
-  <td rowspan="2">NOTA FINAL PRACTICA</td>
-  <td rowspan="2">60%</td>
 </tr>
 <tr>
   <td>1</td>
   <td>2</td>
   <td>3</td>
-  <td>15%</td>
+  <td>45%</td>
   <td>1</td>
-  <td>10%</td>
+  <td>15%</td>
   <td>LAB. 1</td>
+  <td>10%</td>
   <td>LAB. 2</td>
-  <td>LAB. 3</td>
-  <td>TOTAL 5%</td>
+  <td>10%</td>
+  <td>TOTAL 20%</td>
   <td>1</td>
-  <td>10%</td>
-  <td>P</td>
-  <td>15%</td>
-  <td>CV</td>
-  <td>5%</td>
-  <td>PT</td>
-  <td>10%</td>
-  <td>NOTA</td>
-  <td>TOTAL 20%</td>
-  <td>P</td>
-  <td>15%</td>
-  <td>CV</td>
-  <td>5%</td>
-  <td>PT</td>
-  <td>10%</td>
-  <td>NOTA</td>
-  <td>TOTAL 20%</td>
-  <td>P</td>
-  <td>15%</td>
-  <td>CV</td>
-  <td>5%</td>
-  <td>PT</td>
-  <td>10%</td>
-  <td>NOTA</td>
-  <td>TOTAL 20%</td>
+  <td>20%</td>
 </tr>
 `;
 
@@ -821,9 +787,17 @@ const mapStringNotes = new Map<number, any>([
   [18, { template: stringDieciocho, number_of_columns: 15 }],
 ]);
 
-export const stringTableFn = (config_id: number) : Promise<any> => {
+export const stringTableFn = (config_id: number, codigo: string) : Promise<any> => {
   return new Promise<any>((resolve, reject) => {
     if (mapStringNotes.has(config_id)) {
+      if([4, 7].includes(config_id)) {
+        let showTitleTable = true;
+        const mapItem = mapStringNotes.get(config_id);
+        if(['ESCII23', 'AGSE27', 'AMNII14'].includes(codigo)) {
+          showTitleTable = false;
+        }
+        resolve({ template: mapItem?.template(showTitleTable), number_of_columns: mapItem?.number_of_columns });
+      }
       resolve(mapStringNotes.get(config_id) as any);
     } else {
       reject('No se encontro la configuracion');

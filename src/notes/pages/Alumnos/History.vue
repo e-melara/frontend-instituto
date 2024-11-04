@@ -7,7 +7,7 @@
           <Accordion>
             <AccordionTab v-for="tab in subjectsStudent" :key="tab.id" :header="getTitleTabs(tab)">
               <div class="table-responsive">
-                <table-notes :config="tab.id_porcentaje_nota" :alumnos="[tab]" />
+                <table-notes :config="tab.id_porcentaje_nota" :codigo="tab.codigo" :alumnos="[tab]" />
               </div>
             </AccordionTab>
           </Accordion>

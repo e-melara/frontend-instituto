@@ -6,7 +6,7 @@
         <div class="header-top">
           <h5 class="m-0">Materias</h5>
           <div class="" style="float: right" v-if="activeAdvice">
-            <!-- <b-button @click="goToEnrolled">Iniciar asesoria</b-button> -->
+            <b-button @click="goToEnrolled">Iniciar asesoria</b-button>
           </div>
         </div>
       </div>

@@ -41,7 +41,7 @@ export const usePensumStore = defineStore("usePensumStore", () => {
   const loading = ref<boolean>(false);
   const pensumList = ref<Pensum[]>();
   const carrera = ref<ICarrera>();
-  const pensumEnrolled = ref<Academic[] | any[]>();
+  const pensumEnrolled = ref<any[]>([]);
 
   return {
     // state
@@ -71,7 +71,7 @@ export const usePensumStore = defineStore("usePensumStore", () => {
     },
     pushAcademicLoad(item: any) {
       const { subject_code } = item;
-      pensumEnrolled?.value?.push(item);
+      pensumEnrolled.value?.push(item);
       academicLoads.value = academicLoads.value.map((load) => {
         if(load.subject_code === subject_code) {
           load.enrolled = true;
