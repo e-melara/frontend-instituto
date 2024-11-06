@@ -133,7 +133,7 @@ const numberOfColumns = ref(0);
 const { open, carga, data, history } = storeToRefs(store);
 
 watch(data, (async (value) => {
-  const stringTable = await stringTableFn(value.config);
+  const stringTable = await stringTableFn(value.config, '');
   numberOfColumns.value = stringTable.number_of_columns;
 }));
 
