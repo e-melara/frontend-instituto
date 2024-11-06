@@ -57,7 +57,7 @@
           </b-card-text>
         </b-tab>
         <b-tab title="Notas">
-          <table-notes :config="data?.config" :alumnos="carga"></table-notes>
+          <table-notes :config="data?.config" :codigo="data?.materia.codigo" :alumnos="carga"></table-notes>
         </b-tab>
         <b-tab title="Historial">
           <b-table
@@ -133,7 +133,8 @@ const numberOfColumns = ref(0);
 const { open, carga, data, history } = storeToRefs(store);
 
 watch(data, (async (value) => {
-  const stringTable = await stringTableFn(value.config, '');
+  const materia = value.materia.codigo || ''
+  const stringTable = await stringTableFn(value.config, materia);
   numberOfColumns.value = stringTable.number_of_columns;
 }));
 
