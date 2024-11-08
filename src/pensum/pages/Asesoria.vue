@@ -1,13 +1,12 @@
 <template>
   <BreadCumbs title="Asesoria" main="Pensum" :button="true" />
   <div>
-   
   </div>
   <div class="row">
     <div class="col-12 col-md-5 col-lg-5">
-      <AsesoriaList
+      <!-- <AsesoriaList
         :has-rol="hasRole"
-      />
+      /> -->
     </div>
     <div class="col-12 col-md-7 col-lg-7">
     </div>

@@ -72,10 +72,9 @@
 
 <script setup lang="ts">
 import { toRefs } from "vue";
-import type { CargasAcademica } from "../../interfaces";
 
 interface Props {
-  subjects: CargasAcademica[];
+  subjects: any[];
   hasRol: boolean
 }
 const props = defineProps<Props>();
