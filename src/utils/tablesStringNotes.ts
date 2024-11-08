@@ -66,7 +66,7 @@ const stringCuatroNote = (showTitle: boolean = true) => `
   <td rowspan="3">CARNET</td>
   <td rowspan="3">NOMBRE DEL ESTUDIANTE</td>
   <td colspan="17">TEORIA</td>
-  <td colspan="8">PRACTICA ${ !showTitle ? 'PEDIATRIA' : '' } </td>
+  <td colspan="8">PRACTICA ${!showTitle ? "PEDIATRIA" : ""} </td>
   <td rowspan="3">NOTA FINAL CICLO (TEORIA + PRACTICA)</td>
   <td rowspan="3">EXAMEN DE REPO</td>
   <td rowspan="3">NOTA DEL CICLO</td>
@@ -282,7 +282,7 @@ const stringNueve = `
 </tr>
 `;
 
-const stringSiete = (showTitle:boolean = true) => `
+const stringSiete = (showTitle: boolean = true) => `
 <tr>
   <td rowspan="3">No</td>
   <td rowspan="3">CARNET</td>
@@ -302,7 +302,7 @@ const stringSiete = (showTitle:boolean = true) => `
   <td rowspan="2">EXAMEN DE REPO</td>
   <td rowspan="2">NOTA FINAL TEORIA</td>
   <td rowspan="2">NOTA FINAL TEORIA 40%</td>
-  <td colspan="6">${showTitle ? 'UNIDAD DE SALUD' : ''}</td>
+  <td colspan="6">${showTitle ? "UNIDAD DE SALUD" : ""}</td>
   <td rowspan="2">NOTA FINAL PRACTICA</td>
   <td rowspan="2">PRACTICA 60%</td>
 </tr>
@@ -478,7 +478,7 @@ const stringDiezSiete = `
   <td>PT</td>
   <td>30%</td>
 </tr>
-`
+`;
 
 const stringSeis = `
 <tr>
@@ -545,7 +545,7 @@ const stringSeis = `
   <td>NOTA</td>
   <td>TOTAL 20%</td>
 </tr>
-`
+`;
 
 const stringDiez = `
 <tr>
@@ -571,7 +571,7 @@ const stringDiez = `
   <td>1</td>
   <td>30%</td>
 </tr>
-`
+`;
 
 const stringTres = `
 <tr>
@@ -766,6 +766,54 @@ const stringDieciocho = `
 </tr>
 `;
 
+const stringDieciNueve = `
+<tr>
+  <td rowspan="3">No</td>
+  <td rowspan="3">CARNET</td>
+  <td rowspan="3">NOMBRE DEL ESTUDIANTE</td>
+  <td colspan="16">TEORIA</td>
+  <td colspan="10">PRACTICAS</td>
+  <td rowspan="3">NOTA FINAL (TEORIA + PRACTICA)</td>
+  <td rowspan="3">EXAMEN DE REPO</td>
+  <td rowspan="3">NOTA DEL CICLO</td>
+</tr>
+  <tr>
+    <td colspan="4">EXAMANES PARCIALES</td>
+    <td colspan="2">TRABAJO DE CAMPO</td>
+    <td colspan="4">EXAMANES CORTOS</td>
+    <td colspan="2">EXAMEN FINAL</td>
+    <td rowspan="2">NOTA FINAL TEORIA</td>
+    <td rowspan="2">EXAMEN DE REPO</td>
+    <td rowspan="2">NOTA FINAL TEORIA</td>
+    <td rowspan="2">NOTA FINAL TEORIA 40%</td>
+    <td colspan="6">AREA DE PSIQUIATRIA</td>
+    <td rowspan="2">PROYECTO SALUD MENTAL</td>
+    <td rowspan="2">15%</td>
+    <td rowspan="2">NOTA FINAL PRACTICA</td>
+    <td rowspan="2">PRACTICA 60%</td>
+  </tr>
+		<tr>
+			<td>1</td>
+			<td>2</td>
+			<td>3</td>
+			<td>15%</td>
+			<td>1</td>
+			<td>5%</td>
+			<td>1</td>
+			<td>2</td>
+			<td>3</td>
+			<td>10%</td>
+			<td>1</td>
+			<td>10%</td>
+			<td>P</td>
+			<td>5%</td>
+			<td>CV</td>
+			<td>10%</td>
+			<td>PT</td>
+			<td>30%</td>
+		</tr>
+`;
+
 const mapStringNotes = new Map<number, any>([
   [1, { template: stringOneNote, number_of_columns: 15 }],
   [2, { template: stringDos, number_of_columns: 16 }],
@@ -785,22 +833,30 @@ const mapStringNotes = new Map<number, any>([
   [16, { template: stringDeizSeis, number_of_columns: 45 }],
   [17, { template: stringDiezSiete, number_of_columns: 27 }],
   [18, { template: stringDieciocho, number_of_columns: 15 }],
+  [19, { template: stringDieciNueve, number_of_columns: 29 }],
 ]);
 
-export const stringTableFn = (config_id: number, codigo: string) : Promise<any> => {
+export const stringTableFn = (
+  config_id: number,
+  codigo: string
+): Promise<any> => {
   return new Promise<any>((resolve, reject) => {
+    console.log(config_id);
     if (mapStringNotes.has(config_id)) {
-      if([4, 7].includes(config_id)) {
+      if ([4, 7].includes(config_id)) {
         let showTitleTable = true;
         const mapItem = mapStringNotes.get(config_id);
-        if(['ESCII23', 'AGSE27', 'AMNII14'].includes(codigo)) {
+        if (["ESCII23", "AGSE27", "AMNII14"].includes(codigo)) {
           showTitleTable = false;
         }
-        resolve({ template: mapItem?.template(showTitleTable), number_of_columns: mapItem?.number_of_columns });
+        resolve({
+          template: mapItem?.template(showTitleTable),
+          number_of_columns: mapItem?.number_of_columns,
+        });
       }
       resolve(mapStringNotes.get(config_id) as any);
     } else {
-      reject('No se encontro la configuracion');
+      reject("No se encontro la configuracion");
     }
   });
-}
+};

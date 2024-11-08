@@ -57,7 +57,7 @@
           </b-card-text>
         </b-tab>
         <b-tab title="Notas">
-          <table-notes :config="data?.config" :codigo="data?.materia.codigo" :alumnos="carga"></table-notes>
+          <table-notes :config="data?.config" :codigo="data?.materia?.codigo" :alumnos="carga"></table-notes>
         </b-tab>
         <b-tab title="Historial">
           <b-table
