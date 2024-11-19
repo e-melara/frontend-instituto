@@ -841,7 +841,6 @@ export const stringTableFn = (
   codigo: string
 ): Promise<any> => {
   return new Promise<any>((resolve, reject) => {
-    console.log(config_id);
     if (mapStringNotes.has(config_id)) {
       if ([4, 7].includes(config_id)) {
         let showTitleTable = true;

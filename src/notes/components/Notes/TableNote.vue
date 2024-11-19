@@ -5,45 +5,52 @@
       <tbody>
         <tr v-for="(student, key) in listStudents" :key="key">
           <td v-for="(position, index) in student" :key="index">
-            {{ index > 2 ? filterNumeric(position, 2, index === (student.length - 1)) : position }}
+            {{
+              index > 2
+                ? filterNumeric(position, 2, index > student.length - 4)
+                : position
+            }}
           </td>
         </tr>
       </tbody>
     </table>
     <div v-else>
-      <h3>Tenemos un problema al mostrar la notas, consulta al administrador del sistema</h3>
+      <h3>
+        Tenemos un problema al mostrar la notas, consulta al administrador del
+        sistema
+      </h3>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { concat, filter, startsWith, chunk } from 'lodash'
-import { ref, toRefs, watchEffect, watch } from 'vue';
+import { concat, filter, startsWith, chunk } from "lodash";
+import { ref, toRefs, watchEffect, watch } from "vue";
 
-import { filterNumeric } from '@/utils/functions';
-import { stringTableFn } from '@/utils/tablesStringNotes';
+import { filterNumeric } from "@/utils/functions";
+import { stringTableFn } from "@/utils/tablesStringNotes";
 
 const show = ref(false);
 const listStudents = ref<any>([]);
 const numberOfColumns = ref(0);
-const stringTableHeader = ref<string>('');
+const stringTableHeader = ref<string>("");
 
 const props = defineProps({
   config: {
     type: Number,
     default: 0,
-    required: true
+    required: true,
   },
   codigo: {
     type: String,
-    default: '',
-    required: false
+    default: "",
+    required: false,
   },
   alumnos: {
     type: Array,
-    default: () => []
-  }
-})
+    default: () => [],
+  },
+});
 
 const { config, alumnos, codigo } = toRefs(props);
 
@@ -56,7 +63,7 @@ const configWatcher = async () => {
   } catch (error) {
     show.value = false;
   }
-}
+};
 
 watch(config, async (value) => {
   await configWatcher();
@@ -67,18 +74,28 @@ watch(alumnos, async (value) => {
 });
 
 const listStudentsFn = () => {
-  listStudents.value = alumnos.value.map((student: any, index) => {
-    const { alumno } = student;
-    const arrayStudentInfo = [ (index + 1), alumno.carnet, `${alumno.apellidos} ${alumno.nombres}` ]
-    const $arrayNotes = chunk(filter(student, (value, key) => {
-      return startsWith(key, 'nota_')
-    }), numberOfColumns.value)[0]
-    return concat(arrayStudentInfo, $arrayNotes)
-  }, [listStudents.value]);
-}
+  listStudents.value = alumnos.value.map(
+    (student: any, index) => {
+      const { alumno } = student;
+      const arrayStudentInfo = [
+        index + 1,
+        alumno.carnet,
+        `${alumno.apellidos} ${alumno.nombres}`,
+      ];
+      const $arrayNotes = chunk(
+        filter(student, (value, key) => {
+          return startsWith(key, "nota_");
+        }),
+        numberOfColumns.value
+      )[0];
+      return concat(arrayStudentInfo, $arrayNotes);
+    },
+    [listStudents.value]
+  );
+};
 
 watchEffect(async () => {
   await configWatcher();
-  listStudentsFn();  
+  listStudentsFn();
 });
 </script>

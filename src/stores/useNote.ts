@@ -13,6 +13,8 @@ import type {
 
 export const useNoteStore = defineStore("useNoteStore", () => {
   const util = useUtil();
+
+  const egreso = ref<any[]>([]);
   const history = ref<any[]>([]);
   const item = ref<ICarga | any>();
   const show = ref<boolean>(false);
@@ -20,9 +22,9 @@ export const useNoteStore = defineStore("useNoteStore", () => {
   const notas = ref<CargaAcademicaHistory[]>([]);
 
   const subjectsStudent = ref<any[]>([]);
-  const viewNoteTable = ref<{ materia: object, nota: object }>({
+  const viewNoteTable = ref<{ materia: object; nota: object }>({
     materia: {},
-    nota: {}
+    nota: {},
   });
 
   return {
@@ -30,6 +32,7 @@ export const useNoteStore = defineStore("useNoteStore", () => {
     data: computed(() => data.value),
     open: computed(() => show.value),
     carga: computed(() => item.value),
+    egreso: computed(() => egreso.value),
     history: computed(() => history.value),
     subjectsStudent: computed(() => subjectsStudent.value),
     viewNoteTable: computed(() => viewNoteTable.value),
@@ -41,28 +44,53 @@ export const useNoteStore = defineStore("useNoteStore", () => {
           const [b1, b2] = b[0].split("-");
           return Number(a2) - Number(b2) || Number(a1) - Number(b1);
         })
-        .map(([key, value]) => ({ ciclo: key, materias: sortBy(value, "ciclo") }));
+        .map(([key, value]) => ({
+          ciclo: key,
+          materias: sortBy(value, "ciclo"),
+        }));
     }),
     // actions
+    async getNotaEgreso() {
+      try {
+        util.setLoading(true);
+        const data = await authApi.get<any>("v1/alumno/egreso");
+        egreso.value = data["data"]?.map(function (e: any) {
+          return {
+            nota_1: e?.nota_1,
+            nota_2: e?.nota_2,
+            nota_3: e?.nota_3,
+            nota_4: e?.nota_4,
+            estado: e?.estado?.nombre,
+            materia: e?.carga_academica?.materia?.nombre,
+          };
+        });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        util.setLoading(false);
+      }
+    },
     async getListaCargasDocente() {
       try {
         util.setLoading(true);
         // @ts-ignore
         const { cargas } = await authApi.get("/v1/materias/docentes");
         this.setCargaAcademica();
-        data.value = cargas.filter(function(item: any) {
-          if(item && item.materia){
-            return true;
-          }
-          return false
-        }).map(function(item: any){
+        data.value = cargas
+          .filter(function (item: any) {
+            if (item && item.materia) {
+              return true;
+            }
+            return false;
+          })
+          .map(function (item: any) {
             return {
               id: item.id,
               materia_nombre: item.materia.nombre,
               materia_codigo: item.materia.codigo,
-              carrera: item.materia.carrera.nombre
-            }
-        });
+              carrera: item.materia.carrera.nombre,
+            };
+          });
       } catch (error) {
         console.log(error);
       } finally {
@@ -135,11 +163,10 @@ export const useNoteStore = defineStore("useNoteStore", () => {
     async getNotasEstudiante(all: number = 0) {
       try {
         util.setLoading(true);
-        const data = await authApi.get<any>('/v1/alumno/materias?all=' + all);
+        const data = await authApi.get<any>("/v1/alumno/materias?all=" + all);
         // @ts-ignore
-        subjectsStudent.value = data['materias'];
+        subjectsStudent.value = data["materias"];
       } catch (error) {
-        
       } finally {
         util.setLoading(false);
       }
@@ -149,15 +176,17 @@ export const useNoteStore = defineStore("useNoteStore", () => {
       try {
         viewNoteTable.value = { materia: {}, nota: {} };
         util.setLoading(true);
-        const data = await authApi.get<{ materia: object, nota: object }>('/v1/alumno/materias/' + id);
+        const data = await authApi.get<{ materia: object; nota: object }>(
+          "/v1/alumno/materias/" + id
+        );
         viewNoteTable.value = {
           // @ts-ignore
           materia: data.materia,
           // @ts-ignore
-          nota: data.nota
-        }
+          nota: data.nota,
+        };
       } catch (error) {
-        console.log(error)
+        console.log(error);
       } finally {
         util.setLoading(false);
       }
@@ -166,16 +195,16 @@ export const useNoteStore = defineStore("useNoteStore", () => {
       try {
         util.setLoading(true);
         const data = await authApi.get<any>(`/v1/materias/${id}/history`);
-        
+
         // @ts-ignore
         history.value = data.history;
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
     },
     setCargaAcademica() {
       item.value = undefined;
       data.value = undefined;
-    }
+    },
   };
 });

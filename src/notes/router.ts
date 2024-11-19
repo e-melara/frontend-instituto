@@ -2,14 +2,22 @@ import type { RouteRecordRaw } from "vue-router";
 
 export const NAME_ROUTE = "/notes";
 
+// components
+import Layout from "@/shared/LayoutComponent.vue";
+import AlumnoList from "./pages/Alumnos/List.vue";
+import DocenteList from "./pages/Docentes/List.vue";
+import AlumnoEgreso from "./pages/Alumnos/Egreso.vue";
+import AlumnoHistory from "./pages/Alumnos/History.vue";
+import StudentsNote from "./pages/Docentes/StudentsNote.vue";
+
 export const NotesRoute: RouteRecordRaw = {
   path: NAME_ROUTE,
-  component: () => import("@/shared/LayoutComponent.vue"),
+  component: Layout,
   children: [
     {
       path: "docente",
       name: "notes-docente",
-      component: () => import("./pages/Docentes/List.vue"),
+      component: DocenteList,
       meta: {
         rol: "docente.notes.view",
       },
@@ -17,7 +25,7 @@ export const NotesRoute: RouteRecordRaw = {
     {
       path: "docente/:id",
       name: "notes-docente-student",
-      component: () => import("./pages/Docentes/StudentsNote.vue"),
+      component: StudentsNote,
       meta: {
         rol: "docente.notes.view",
       },
@@ -25,7 +33,7 @@ export const NotesRoute: RouteRecordRaw = {
     {
       path: "student/history",
       name: "notes-student-history",
-      component: () => import("./pages/Alumnos/List.vue"),
+      component: AlumnoList,
       meta: {
         rol: "ROL_ESTUDIANTE_LIST_HISTORY",
       },
@@ -33,7 +41,7 @@ export const NotesRoute: RouteRecordRaw = {
     {
       path: "student",
       name: "notes-student",
-      component: () => import("./pages/Alumnos/List.vue"),
+      component: AlumnoList,
       meta: {
         rol: "student.notes.view",
       },
@@ -41,7 +49,15 @@ export const NotesRoute: RouteRecordRaw = {
     {
       path: "students/history",
       name: "notes-student-history",
-      component: () => import("./pages/Alumnos/History.vue"),
+      component: AlumnoHistory,
+      meta: {
+        rol: "student.notes.view",
+      },
+    },
+    {
+      path: "student-egreso",
+      name: "notes-student-egreso",
+      component: AlumnoEgreso,
       meta: {
         rol: "student.notes.view",
       },
