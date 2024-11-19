@@ -1,41 +1,47 @@
-  import type { RouteRecordRaw } from "vue-router";
+import type { RouteRecordRaw } from "vue-router";
 
 export const NAME_ROUTE = "/pensum";
 
+import Asesoria from "./pages/Asesoria.vue";
+import Layout from "@/shared/LayoutComponent.vue";
+import Pensum from "./pages/Admin/Pensum.vue";
+import PensumList from "./pages/PensumList.vue";
+
 export const PensumRoute: RouteRecordRaw = {
   path: NAME_ROUTE,
-  component: () => import("@/shared/LayoutComponent.vue"),
+  component: Layout,
   children: [
     {
       path: "asesor",
       name: "pensum-asesor",
-      component: () => import("./pages/Admin/Pensum.vue"),
+      component: Pensum,
       meta: {
-        rol: 'admin.asesoria.aprobar.registro'
-      }
-    },{
+        rol: "admin.asesoria.aprobar.registro",
+      },
+    },
+    {
       path: "pagador",
       name: "pensum-pagador",
-      component: () => import("./pages/Admin/Pensum.vue"),
+      component: Pensum,
       meta: {
-        rol: 'admin.asesoria.aprobar.pagaduria'
-      }
+        rol: "admin.asesoria.aprobar.pagaduria",
+      },
     },
     {
       path: "student",
       name: "pensum-student",
-      component: () => import("./pages/PensumList.vue"),
+      component: PensumList,
       meta: {
-        rol: 'student.pensum.view'
-      }
+        rol: "student.pensum.view",
+      },
     },
     {
       path: "asesoria",
       name: "pensum-asesoria",
-      component: () => import("./pages/Asesoria.vue"),
+      component: Asesoria,
       meta: {
-        rol: 'student.pensum.create'
-      }
+        rol: "student.pensum.create",
+      },
     },
     // {
     //   path: "asesoria/view",
