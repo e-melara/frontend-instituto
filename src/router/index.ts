@@ -6,7 +6,7 @@ import LoginPage from "@/pages/athenticate/LoginPage.vue";
 
 // @ts-ignore
 import HomeView from "@/pages/HomeView.vue";
-
+import Layout from "@/shared/LayoutComponent.vue";
 // routes de los modulos
 import { NotesRoute } from "@/notes/router";
 import { PensumRoute } from "@/pensum/router";
@@ -27,15 +27,15 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: () => import("@/shared/LayoutComponent.vue"),
+      component: Layout,
       children: [
-        { 
-          path: "/dashboard", 
-          name: "dasbhoard", 
-          component: HomeView, 
+        {
+          path: "/dashboard",
+          name: "dasbhoard",
+          component: HomeView,
           meta: {
-            rol: 'dashboard.view'
-          }
+            rol: "dashboard.view",
+          },
         },
       ],
     },
@@ -54,7 +54,7 @@ router.beforeEach((to, _, next) => {
   const loggedIn = storage.getItemFn({ key: "token" });
   const publicPages = ["/authenticate/login"];
 
-  if (publicPages.includes(path)) {    
+  if (publicPages.includes(path)) {
     return next();
   }
 
