@@ -30,11 +30,17 @@
         <TableAsesoria
           emptyText="No hay materias disponibles para seleccionar"
           @validar="handlerValidation"
-          :asesorias="academicNotEnrolled" 
+          :asesorias="academicNotEnrolled"
+          :type="TypeTable.ENROLLED_PUSH"
         />
       </b-col>
       <b-col>
-        {{ academicEnrolled }}
+        <TableAsesoria
+          emptyText="Debe seleccionar por lo menos una materia para poder continuar"
+          @delete="handlerDeleteSubject"
+          :asesorias="academicEnrolled"
+          :type="TypeTable.ENROLLED_DELETE"
+        />
       </b-col>
     </b-row>
   </b-modal>
@@ -44,6 +50,7 @@
 import { onMounted, ref } from "vue";
 
 import { usePensumStore } from '@/stores/usePensum';
+import { TypeTable } from '@/pensum/interfaces'
 
 // @ts-ignore
 import BreadCumbs from "@/shared/BreadCumbs.vue";
@@ -68,6 +75,10 @@ onMounted(() => {
 const handlerValidation = (item: any) => {
   store.pushAcademicLoad(item);
 };
+
+const handlerDeleteSubject = (item: any) => {
+  store.deleteAcademicLoad(item);
+}
 
 const goToEnrolled = () => {
   open.value = true;

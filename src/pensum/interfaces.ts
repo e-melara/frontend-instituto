@@ -158,3 +158,10 @@ export interface PensumEnrolled {
   enrolled: SubjectEnrolled;
   student: Student;
 }
+
+// enums
+export enum TypeTable {
+  ENROLLED_PUSH,
+  ENROLLED_DELETE
+}
+

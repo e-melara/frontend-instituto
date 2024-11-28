@@ -1,6 +1,5 @@
-import { computed, ref } from "vue";
 import { defineStore } from "pinia";
-import {  } from 'lodash'
+import { computed, ref } from "vue";
 
 import type {
   Enrolled,
@@ -43,6 +42,15 @@ export const usePensumStore = defineStore("usePensumStore", () => {
   const carrera = ref<ICarrera>();
   const pensumEnrolled = ref<any[]>([]);
 
+  const filterVisibleOrHidden = (code, haveToShow = false) => {
+    academicLoads.value = academicLoads.value.map((load) => {
+      if(load.subject_code === code) {
+        load.enrolled = haveToShow;
+      }
+      return load;
+    });
+  }
+
   return {
     // state
     pensumList,
@@ -72,12 +80,14 @@ export const usePensumStore = defineStore("usePensumStore", () => {
     pushAcademicLoad(item: any) {
       const { subject_code } = item;
       pensumEnrolled.value?.push(item);
-      academicLoads.value = academicLoads.value.map((load) => {
-        if(load.subject_code === subject_code) {
-          load.enrolled = true;
-        }
-        return load;
+      filterVisibleOrHidden(subject_code, true);
+    },
+    deleteAcademicLoad(item: any) {
+      const { subject_code } = item;
+      pensumEnrolled.value = pensumEnrolled.value.filter((load) => {
+        return load.subject_code !== subject_code;
       });
+      filterVisibleOrHidden(subject_code, false);
     }
   }
 
