@@ -21,9 +21,9 @@
       <b-spinner type="grow" style="width: 6rem; height: 6rem;" variant="primary" label="Cargando..."  />
     </div>
   </div>
-  <b-modal v-model="open" size="xxl" title="Crear asesoria" 
+  <b-modal v-model="open" size="xxl" title="Crear asesoria"
       :no-close-on-backdrop="true"
-      :no-close-on-esc="true"
+      :no-close-on-esc="true" @ok="handlerSubmit"
     >
     <b-row>
       <b-col>
@@ -83,4 +83,8 @@ const handlerDeleteSubject = (item: any) => {
 const goToEnrolled = () => {
   open.value = true;
 };
+
+const handlerSubmit = () => {
+  store.submitEnrolledSubject();
+}
 </script>

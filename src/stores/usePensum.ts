@@ -34,6 +34,10 @@ const pensumAsyncSendFn = async (ids:  Array<number> = []) => {
   return await authApi.post<Subject>("v1/pensum", { ids });
 };
 
+const getSubmitEnrolledAsyn = async (ids: Array<number> = [] ) => {
+  return await authApi.post<any>('v1/pensum/enrolled', {ids});
+}
+
 export const usePensumStore = defineStore("usePensumStore", () => {
   const academicLoads = ref<Academic[]>([]);
   const activeAdvice = ref<boolean>(false);
@@ -88,6 +92,17 @@ export const usePensumStore = defineStore("usePensumStore", () => {
         return load.subject_code !== subject_code;
       });
       filterVisibleOrHidden(subject_code, false);
+    },
+    async submitEnrolledSubject() {
+      loading.value = true;
+      try {
+        const ids = pensumEnrolled.value.map(({id}) => id);
+        const { data } = await getSubmitEnrolledAsyn(ids);
+      } catch (e) {
+        console.log(e)
+      } finally {
+        loading.value = false;
+      }
     }
   }
 
