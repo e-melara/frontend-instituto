@@ -98,8 +98,10 @@ export const usePensumStore = defineStore("usePensumStore", () => {
       try {
         const ids = pensumEnrolled.value.map(({id}) => id);
         const { data } = await getSubmitEnrolledAsyn(ids);
+        return Promise.resolve(data);
       } catch (e) {
         console.log(e)
+        return Promise.reject(e);
       } finally {
         loading.value = false;
       }

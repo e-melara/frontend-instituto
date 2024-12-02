@@ -85,6 +85,8 @@ const goToEnrolled = () => {
 };
 
 const handlerSubmit = () => {
-  store.submitEnrolledSubject();
+  store.submitEnrolledSubject().then((response) => {
+    console.log(response)
+  }).catch(e => console.log(e))
 }
 </script>
