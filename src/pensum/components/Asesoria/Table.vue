@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header" style="padding: 0 0 30px 0 !important;">
-      <b-alert show :variant="type === TypeTable.ENROLLED_PUSH ? 'primary' : 'success'">
+      <b-alert show :variant="type === TypeTable.ENROLLED_PUSH ? 'primary' : 'success'" v-if="!isTypeShow">
         <h4 class="alert-heading">Materias</h4>
         <p v-if="type == TypeTable.ENROLLED_PUSH">
           Listado de materias disponibles para selección en el ciclo actual.
@@ -23,7 +23,7 @@
           {{ item?.teacher_names?.toUpperCase() }}, {{ item?.teacher_lasts?.toUpperCase() }}
         </template>
         <template #cell(actions)="{item}">
-          <b-button size="sm" @click="handlerSelection(item)">
+          <b-button size="sm" @click="handlerSelection(item)" v-if="!isTypeShow">
             <vue-feather :type="props.type == TypeTable.ENROLLED_PUSH ? 'check-circle' : 'trash'" />
           </b-button>
         </template>
@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs, ref } from "vue";
+import {toRefs, ref, computed} from "vue";
 import { TypeTable } from '@/pensum/interfaces'
 
 const fields = ref([
@@ -48,7 +48,10 @@ const fields = ref([
 
 interface Props {
   asesorias: any[];
-  emptyText?: string;
+  emptyText?: {
+    type: string,
+    default: '',
+  };
   type: {
     type: string,
     default: TypeTable.ENROLLED_PUSH
@@ -58,6 +61,10 @@ interface Props {
 const emits = defineEmits(["validar", "delete"]);
 const props = defineProps<Props>();
 const { asesorias } = toRefs(props);
+
+const isTypeShow = computed(() => {
+  return TypeTable.ENROLLED_SHOW === props.type;
+})
 
 const handlerSelection = (item: any) => {
   if(props.type === TypeTable.ENROLLED_PUSH) {

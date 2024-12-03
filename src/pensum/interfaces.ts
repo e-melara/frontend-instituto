@@ -162,6 +162,7 @@ export interface PensumEnrolled {
 // enums
 export enum TypeTable {
   ENROLLED_PUSH,
-  ENROLLED_DELETE
+  ENROLLED_DELETE,
+  ENROLLED_SHOW
 }
 

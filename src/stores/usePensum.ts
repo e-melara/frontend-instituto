@@ -11,6 +11,8 @@ import type {
 } from "@/pensum/interfaces";
 import { authApi } from "@/api/base";
 
+import { useUtil } from '@/composables'
+
 const getPaginationAxios = async (params = {}): Promise<Enrolled> => {
   // @ts-ignore
   return await authApi.get<Enrolled>("/pensum/paginate", { params });
@@ -39,6 +41,8 @@ const getSubmitEnrolledAsyn = async (ids: Array<number> = [] ) => {
 }
 
 export const usePensumStore = defineStore("usePensumStore", () => {
+  const util = useUtil();
+
   const academicLoads = ref<Academic[]>([]);
   const activeAdvice = ref<boolean>(false);
   const loading = ref<boolean>(false);
@@ -59,14 +63,25 @@ export const usePensumStore = defineStore("usePensumStore", () => {
     // state
     pensumList,
     carrera,
-    activeAdvice,
     academicLoads,
     // getters
     loading: computed(() => loading.value),
+    activeAdvice: computed(() => activeAdvice.value),
     academicEnrolled: computed(() => pensumEnrolled.value),
     academicNotEnrolled: computed(() => academicLoads.value.filter((load) => !load.enrolled)),
+    getTextoAsesoriaText: computed(() => {
+        const status = activeAdvice.value.status || 'STUDENT_IS_STUDYING';
+        if(status === 'STUDENT_IS_STUDYING') {
+          return null;
+        }
+        return activeAdvice.value.text;
+    }),
+    utilAsesoriaBtnModalTitle: computed(() => activeAdvice.value.status === 'STUDENT_CAN_ENROLL'),
     // actions
-    async fetchPensum() {
+    emptyAsesoria() {
+      pensumEnrolled.value = [];
+    },
+    async fetchPensum(): void {
       loading.value = true;
       try {
         // @ts-ignore
@@ -74,41 +89,58 @@ export const usePensumStore = defineStore("usePensumStore", () => {
         pensumList.value = data?.pensum;
         carrera.value = data?.carrera;
         academicLoads.value = data?.academicLoads;
-        activeAdvice.value = !!data?.activeAdvice;
+        activeAdvice.value = data?.activeAdvice;
       } catch (e) {
         console.log(e);
       } finally {
         loading.value = false;
       }
     },
-    pushAcademicLoad(item: any) {
+    pushAcademicLoad(item: any) : void  {
       const { subject_code } = item;
       pensumEnrolled.value?.push(item);
       filterVisibleOrHidden(subject_code, true);
     },
-    deleteAcademicLoad(item: any) {
+    deleteAcademicLoad(item: any) : void {
       const { subject_code } = item;
       pensumEnrolled.value = pensumEnrolled.value.filter((load) => {
         return load.subject_code !== subject_code;
       });
       filterVisibleOrHidden(subject_code, false);
     },
-    async submitEnrolledSubject() {
+    async submitEnrolledSubject() : void  {
       loading.value = true;
       try {
         const ids = pensumEnrolled.value.map(({id}) => id);
-        const { data } = await getSubmitEnrolledAsyn(ids);
-        return Promise.resolve(data);
+        if(ids.length === 0) {
+          util.showAlert({
+            detail: 'Debe seleccionar por lo menos una materia para poder continuar',
+            severity: "error",
+            summary: "error",
+          })
+          return;
+        }
+        const { message } = await getSubmitEnrolledAsyn(ids);
+        util.showAlert({
+          detail: message,
+          severity: 'success',
+          summary: 'success'
+        });
+        this.emptyAsesoria();
+        await this.fetchPensum();
       } catch (e) {
-        console.log(e)
-        return Promise.reject(e);
+        const { message } = e?.response?.data;
+        util.showAlert({
+          detail: message,
+          severity: 'error',
+          summary: 'error'
+        })
       } finally {
         loading.value = false;
       }
     }
   }
 
-  // const util = useUtil();
   //
   // const list = ref<Pensum>();
   // const open = ref<boolean>(false);

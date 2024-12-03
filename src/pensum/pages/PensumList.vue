@@ -5,8 +5,8 @@
       <div>
         <div class="header-top">
           <h5 class="m-0">Materias</h5>
-          <div class="" style="float: right" v-if="activeAdvice">
-            <b-button @click="goToEnrolled">Iniciar asesoria</b-button>
+          <div class="" style="float: right" v-if="getTextoAsesoriaText">
+            <b-button @click="goToEnrolled">{{ getTextoAsesoriaText }}</b-button>
           </div>
         </div>
       </div>
@@ -21,11 +21,11 @@
       <b-spinner type="grow" style="width: 6rem; height: 6rem;" variant="primary" label="Cargando..."  />
     </div>
   </div>
-  <b-modal v-model="open" size="xxl" title="Crear asesoria"
-      :no-close-on-backdrop="true"
-      :no-close-on-esc="true" @ok="handlerSubmit"
+  <b-modal v-model="open" size="xxl" :title="utilAsesoriaBtnModalTitle ? 'CREAR ASESORIA' : 'VER ASESORIA'"
+      :no-close-on-backdrop="true" :ok-disabled="!utilAsesoriaBtnModalTitle"
+      :no-close-on-esc="true" @ok="handlerSubmit" ok-title="Crear asesoria" cancel-title="Cerrar"
     >
-    <b-row>
+    <b-row v-if="utilAsesoriaBtnModalTitle">
       <b-col>
         <TableAsesoria
           emptyText="No hay materias disponibles para seleccionar"
@@ -40,6 +40,14 @@
           @delete="handlerDeleteSubject"
           :asesorias="academicEnrolled"
           :type="TypeTable.ENROLLED_DELETE"
+        />
+      </b-col>
+    </b-row>
+    <b-row v-else>
+      <b-col>
+        <TableAsesoria
+            :asesorias="activeAdvice.enrolled"
+            :type="TypeTable.ENROLLED_SHOW"
         />
       </b-col>
     </b-row>
@@ -66,7 +74,7 @@ import { storeToRefs } from "pinia";
 const open = ref<boolean>(false);
 const store = usePensumStore();
 
-const { pensumList, loading, carrera, activeAdvice, academicNotEnrolled, academicEnrolled } =  storeToRefs(store);
+const { pensumList, loading, utilAsesoriaBtnModalTitle, carrera, academicNotEnrolled, academicEnrolled, getTextoAsesoriaText, activeAdvice } =  storeToRefs(store);
 
 onMounted(() => {
   store.fetchPensum();
@@ -85,8 +93,6 @@ const goToEnrolled = () => {
 };
 
 const handlerSubmit = () => {
-  store.submitEnrolledSubject().then((response) => {
-    console.log(response)
-  }).catch(e => console.log(e))
+  store.submitEnrolledSubject();
 }
 </script>
