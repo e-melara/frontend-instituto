@@ -9,26 +9,53 @@ import BreadCumbs from "@/shared/BreadCumbs.vue";
 import TableAsesoria from "../../components/Asesoria/TableAsesoria.vue";
 import TableAsesoriaAdmin from "../../components/Asesoria/Admin/TableAsesoria.vue";
 
-import Pensum from "../../components/Pensum/List.vue";
+import Pensum from "@/pensum/components/Pensum/List.vue";
 import { usePensumStore } from "@/stores/usePensum";
 
 const route = useRoute();
+const table = ref(null);
+const store = usePensumStore();
+const item = ref<number>(0);
+const open = ref<boolean>(false);
+const estado = ref<number | null>(null);
 
-const routeNameParams = ()  => {  
-  estado.value = route.name === 'pensum-asesor' ? '9' : '10';
+const { pensumList, activeAdvice, carrera, student } = storeToRefs(store);
+
+watch(
+  () => route.name,
+  () => routeNameParams()
+);
+
+const routeNameParams = () => {
+  estado.value = route.name === "pensum-asesor" ? 7 : 8;
   // @ts-ignore
   table.value?.refresh({ estado: estado.value });
-}
+};
 
-watch(() => route.name, () => routeNameParams());
+const handlerViewPensum = ({ carnet, id }: any) => {
+  store.fetchPensum(carnet).then(() => {
+    open.value = true;
+    item.value = id;
+  });
+};
 
-const table = ref(null);
-const estado = ref<string | null>(null);
+const handlerValidar = (status: string) => {
+  store.validarAsesoria(item.value, status).then(() => {
+    open.value = false;
+    item.value = 0;
+    table.value?.refresh({ estado: estado.value });
+  });
+};
+
+const handlerAprobar = (id: number) => {
+  store.validarAsesoria(id, '009').then(() => {
+    table.value?.refresh({ estado: estado.value });
+  });
+};
 
 onMounted(() => {
   routeNameParams();
 });
-
 </script>
 
 <template>
@@ -42,15 +69,17 @@ onMounted(() => {
               <b-card-body>
                 <b-row>
                   <b-col cols="12">
-                    <table-asesoria 
+                    <table-asesoria
                       v-if="estado"
-                      ref="table" 
-                      :per_page="5" 
+                      ref="table"
+                      :per_page="5"
                       :estado="estado"
+                      @view-pensum="handlerViewPensum"
+                      @aprobar-asesoria="handlerAprobar"
                     />
                   </b-col>
                 </b-row>
-              </b-card-body>              
+              </b-card-body>
             </b-card>
           </b-card-text>
         </b-tab>
@@ -64,16 +93,22 @@ onMounted(() => {
     no-close-on-backdrop
     size="xll"
     scrollable
+    v-model="open"
   >
     <div class="container-fluid">
-      <div class="row py-5">
-        <div class="col-5">
-          <div
-            class="card"
-          >
+      <div class="row">
+        <div class="col-6">
+          <div class="card">
+            <table-asesoria-admin
+              :student="student"
+              :carrera="carrera"
+              @validar="handlerValidar"
+              :enrolled="activeAdvice?.enrolled"
+            />
           </div>
         </div>
-        <div class="col-7">
+        <div class="col-6">
+          <pensum v-if="open" :items="pensumList" />
         </div>
       </div>
     </div>
@@ -82,7 +117,7 @@ onMounted(() => {
 
 <style>
 .modal-dialog.modal-xll {
-  max-width: 95%;
+  max-width: 99%;
 }
 .tabs-student {
   .card-header {

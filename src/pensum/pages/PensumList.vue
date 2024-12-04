@@ -49,6 +49,13 @@
             :asesorias="activeAdvice.enrolled"
             :type="TypeTable.ENROLLED_SHOW"
         />
+        <b-alert variant="success" show>
+          {{
+            activeAdvice.estado === 7
+              ? "¡Proceso completado con éxito! La asesoría ha sido creada y se ha enviado para revisión administrativa."
+              : "La asesoría ha sido aprobada y remitida a la pagaduría para su revisión."
+          }}
+        </b-alert>
       </b-col>
     </b-row>
   </b-modal>

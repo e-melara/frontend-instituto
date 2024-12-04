@@ -36,7 +36,7 @@ const pensumAsyncSendFn = async (ids:  Array<number> = []) => {
   return await authApi.post<Subject>("v1/pensum", { ids });
 };
 
-const getSubmitEnrolledAsyn = async (ids: Array<number> = [] ) => {
+const getSubmitEnrolledAsyn = async (ids: Array<number> = [] ) : any => {
   return await authApi.post<any>('v1/pensum/enrolled', {ids});
 }
 
@@ -48,9 +48,10 @@ export const usePensumStore = defineStore("usePensumStore", () => {
   const loading = ref<boolean>(false);
   const pensumList = ref<Pensum[]>();
   const carrera = ref<ICarrera>();
+  const student = ref<any>({});
   const pensumEnrolled = ref<any[]>([]);
 
-  const filterVisibleOrHidden = (code, haveToShow = false) => {
+  const filterVisibleOrHidden = (code: any, haveToShow = false) => {
     academicLoads.value = academicLoads.value.map((load) => {
       if(load.subject_code === code) {
         load.enrolled = haveToShow;
@@ -62,7 +63,8 @@ export const usePensumStore = defineStore("usePensumStore", () => {
   return {
     // state
     pensumList,
-    carrera,
+    student,
+    carrera: computed(() => carrera.value),
     academicLoads,
     // getters
     loading: computed(() => loading.value),
@@ -70,26 +72,29 @@ export const usePensumStore = defineStore("usePensumStore", () => {
     academicEnrolled: computed(() => pensumEnrolled.value),
     academicNotEnrolled: computed(() => academicLoads.value.filter((load) => !load.enrolled)),
     getTextoAsesoriaText: computed(() => {
-        const status = activeAdvice.value.status || 'STUDENT_IS_STUDYING';
+        const status = activeAdvice.value?.status || 'STUDENT_IS_STUDYING';
         if(status === 'STUDENT_IS_STUDYING') {
           return null;
         }
-        return activeAdvice.value.text;
+        return activeAdvice.value?.text;
     }),
-    utilAsesoriaBtnModalTitle: computed(() => activeAdvice.value.status === 'STUDENT_CAN_ENROLL'),
+    utilAsesoriaBtnModalTitle: computed(() => activeAdvice.value?.status === 'STUDENT_CAN_ENROLL'),
     // actions
     emptyAsesoria() {
       pensumEnrolled.value = [];
     },
-    async fetchPensum(): void {
+    async fetchPensum(carnet = 'me') {
       loading.value = true;
       try {
         // @ts-ignore
-        const { data } = await pensumAsynFn();
+        const { data } = await pensumAsynFn(carnet);
         pensumList.value = data?.pensum;
         carrera.value = data?.carrera;
         academicLoads.value = data?.academicLoads;
         activeAdvice.value = data?.activeAdvice;
+        if(data?.student) {
+          student.value = data.student;
+        }
       } catch (e) {
         console.log(e);
       } finally {
@@ -108,7 +113,27 @@ export const usePensumStore = defineStore("usePensumStore", () => {
       });
       filterVisibleOrHidden(subject_code, false);
     },
-    async submitEnrolledSubject() : void  {
+    async validarAsesoria(id: number, status: string = '004') {
+      loading.value = true;
+      try {
+        const { message } = await updateStatusEnrolled(id, { status });
+        util.showAlert({
+          detail: message,
+          severity: 'success',
+          summary: 'success'
+        });
+      } catch (e: any) {
+        const { message } = e?.response?.data;
+        util.showAlert({
+          detail: message,
+          severity: 'error',
+          summary: 'error'
+        })
+      } finally {
+        loading.value = false;
+      }
+    },
+    async submitEnrolledSubject()   {
       loading.value = true;
       try {
         const ids = pensumEnrolled.value.map(({id}) => id);
@@ -128,7 +153,8 @@ export const usePensumStore = defineStore("usePensumStore", () => {
         });
         this.emptyAsesoria();
         await this.fetchPensum();
-      } catch (e) {
+      } catch (e: any) {
+        console.log(e)
         const { message } = e?.response?.data;
         util.showAlert({
           detail: message,
@@ -139,117 +165,5 @@ export const usePensumStore = defineStore("usePensumStore", () => {
         loading.value = false;
       }
     }
-  }
-
-  //
-  // const list = ref<Pensum>();
-  // const open = ref<boolean>(false);
-  //
-  // const enrolleds = ref<Enrolled>();
-  // const pensumEnrolled = ref<PensumEnrolled | any>();
-  //
-  // const generatePensum = (pensum: PensumItem[] | any | undefined) => {
-  //   const order = groupBy(pensum, "semestre");
-  //   const entries = toPairs(order);
-  //
-  //   const keys = new Array<string>();
-  //   const items = new Array<PensumItem[]>();
-  //
-  //   entries.forEach(([key, ...rest]) => {
-  //     keys.push(key);
-  //     items.push(rest[0]);
-  //   });
-  //
-  //   return {
-  //     keys,
-  //     items,
-  //   };
-  // };
-  //
-  // return {
-  //   // state
-  //   list,
-  //   enrolleds,
-  //   pensumEnrolled,
-  //   open,
-  //   // getters
-  //   carrera: computed(() => list.value?.carrera),
-  //   enrolled: computed(() => !!list.value?.enrolled),
-  //   pensumList: computed(() => generatePensum(list.value?.pensum)),
-  //   pensumEnrolledGenerate: computed(() =>
-  //     generatePensum(pensumEnrolled.value?.pensum)
-  //   ),
-  //   asesoria: computed<CargasAcademica[]>(() => {
-  //     return list.value?.cargas_academicas.map((item) => {
-  //       return {
-  //         ...item,
-  //         visible: true,
-  //       };
-  //     }) || [];
-  //   }),
-  //   enrolledSubjects: computed(() => {
-  //     return list.value?.asesoria_detalle;
-  //   }),
-  //   estado_asesoria: computed(() => list.value?.aseroria?.estado),
-  //   //  actions
-  //   setListPensum(newList: Pensum) {
-  //     list.value = newList;
-  //   },
-  //   setSubjectEnrolled(newValues: SubjectEnrolled) {
-  //     if (list.value?.enrolled === null) {
-  //       list.value = {
-  //         ...list.value,
-  //         enrolled: { ...newValues },
-  //       };
-  //     }
-  //   },
-  //   clearList() {
-  //     list.value = undefined;
-  //   },
-  //   // listado de asesoria para los asesores
-  //   async getPagination(params = {}) {
-  //     try {
-  //       util.setLoading(true);
-  //       const data = await getPaginationAxios(params);
-  //       enrolleds.value = data;
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       util.setLoading(false);
-  //     }
-  //   },
-  //   async getPensumAsesoriaStudent(carnet: string) {
-  //     try {
-  //       util.setLoading(true);
-  //       const data = await getSearchAxios(carnet);
-  //       pensumEnrolled.value = data;
-  //       open.value = true;
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       util.setLoading(false);
-  //     }
-  //   },
-  //   async updateStatusEnrolled(id: number, params = {}) {
-  //     try {
-  //       util.setLoading(true);
-  //       await updateStatusEnrolled(id, params);
-  //       open.value = false;
-  //       util.showAlert({
-  //         detail: 'Se ha actualizado el estado de la asesoria correctamente.',
-  //         severity: "success",
-  //         summary: "Exito",
-  //       });
-  //     } catch (error) {
-  //       console.log(error);
-  //       util.showAlert({
-  //         detail: 'Error al actualizar el estado de la asesoria.',
-  //         severity: "error",
-  //         summary: "Error",
-  //       })
-  //     } finally {
-  //       util.setLoading(false);
-  //     }
-  //   },
-  // };
+  };
 });
