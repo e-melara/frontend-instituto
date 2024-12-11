@@ -23,7 +23,7 @@
   </div>
   <b-modal v-model="open" size="xxl" :title="utilAsesoriaBtnModalTitle ? 'CREAR ASESORIA' : 'VER ASESORIA'"
       :no-close-on-backdrop="true" :ok-disabled="!utilAsesoriaBtnModalTitle"
-      :no-close-on-esc="true" @ok="handlerSubmit" ok-title="Crear asesoria" cancel-title="Cerrar"
+      :no-close-on-esc="true" @ok="handlerSubmit" ok-title="CREAR INSCRIPCIÓN" cancel-title="Cerrar"
     >
     <b-row v-if="utilAsesoriaBtnModalTitle">
       <b-col>
@@ -52,8 +52,8 @@
         <b-alert variant="success" show>
           {{
             activeAdvice.estado === 7
-              ? "¡Proceso completado con éxito! La asesoría ha sido creada y se ha enviado para revisión administrativa."
-              : "La asesoría ha sido aprobada y remitida a la pagaduría para su revisión."
+              ? "¡Proceso realizado con éxito¡, La inscripción se completará después de ser validado por Administración Académica y Unidad Financiera"
+              : "La asesoría ha sido validada por Administración Académica y remitida a la Unidad Financiera para su respectiva revisión."
           }}
         </b-alert>
       </b-col>

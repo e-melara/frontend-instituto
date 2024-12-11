@@ -6,7 +6,7 @@
         <p v-if="type == TypeTable.ENROLLED_PUSH">
           Listado de materias disponibles para selección en el ciclo actual.
           <strong>
-            Nota: Los estudiantes pueden seleccionar un máximo de 5 materias. Asegúrate de que los horarios no se superpongan entre sí.
+            Nota: Asegúrate de que los horarios no se superpongan entre sí.
           </strong>
         </p>
         <p v-else>
