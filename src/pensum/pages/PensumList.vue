@@ -12,6 +12,13 @@
       </div>
     </div>
     <div class="card-body">
+      <section v-if="activeAdvice.status === 'STUDENT_HAVE_SUBJECTS_FAILED'" class="mb-4">
+        <b-row>
+          <b-alert variant="danger" show style="font-weight: bold">
+            No se puede completar la inscripción. <br> Por favor, dirígete al departamento de Registro Académico para realizar los trámites necesarios y continuar con el proceso. <br> Gracias por tu comprensión.
+          </b-alert>
+        </b-row>
+      </section>
       <Leyenda :carrera="carrera" />
       <List :items="pensumList" />
     </div>

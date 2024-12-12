@@ -14,7 +14,7 @@
     </main>
     <article class="row">
       <div class="col-6">
-        {{ subject?.requisitos === "0" ? "Bachillerato" : subject?.requisitos }}
+        {{ subject?.requisitos === "0" ? "B" : subject?.requisitos }}
       </div>
       <div class="col-6">{{ subject?.uv }} UV</div>
     </article>

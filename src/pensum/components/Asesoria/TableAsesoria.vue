@@ -53,7 +53,7 @@
         >Ver pensum</b-button
       >
       <b-button variant="primary" v-else @click="handlerAprobar(data)">
-        Aprobar
+        Arrancel pagado
       </b-button>
     </template>
   </b-table>
@@ -81,7 +81,7 @@ const headers = [
   { key: "id", label: "#" },
   { key: "carnet", label: "Carnet" },
   { key: "nombres", label: "Nombres y apellidos" },
-  { key: "pensum", label: "Apellido" },
+  { key: "pensum", label: "Pensum" },
   { key: "carrera", label: "Carrera" },
   { key: "actions", label: "" },
 ];
