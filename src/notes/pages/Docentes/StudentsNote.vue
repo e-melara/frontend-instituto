@@ -142,7 +142,7 @@ watch(data, (async (value) => {
 const headers = [
   { key: "carnet", label: "Carnet", sortable: false },
   { key: "estudiante", label: "Estudiante", sortable: false, class:'text-left' },
-  { key: "nota_final", label: "Nota", sortable: false, class:'text-center' },
+  { key: "nota_final", label: "Nota final", sortable: false, class:'text-center' },
   { key: "estado", label: "", sortable: false, class:'text-center', variant: 'info', stickyColumn: true,},
 ];
 

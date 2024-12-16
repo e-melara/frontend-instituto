@@ -43,6 +43,7 @@ const fields = ref([
   { key: "subject_code", label: "Codigo de la materia", class: "text-uppercase" },
   { key: "subject_name", label: "Nombre de la materia", class: "text-uppercase" },
   { key: "teacher_names", label: "Nombre del docente", class: "text-uppercase" },
+  { key: "horario", label: "Seccion", class: "text-uppercase" },
   { key: "actions", label: "" },
 ]);
 

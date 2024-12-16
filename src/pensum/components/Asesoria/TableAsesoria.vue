@@ -81,6 +81,8 @@ const headers = [
   { key: "id", label: "#" },
   { key: "carnet", label: "Carnet" },
   { key: "nombres", label: "Nombres y apellidos" },
+  { key: "seccion", label: "Seccion" },
+  { key: "nivel", label: "Nivel" },
   { key: "pensum", label: "Pensum" },
   { key: "carrera", label: "Carrera" },
   { key: "actions", label: "" },

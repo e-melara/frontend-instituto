@@ -27,12 +27,14 @@ export const useAsesoria = defineStore("useAsesoria", () => {
       try {
         const response = await getPaginationAxios(params);
         results.value = response.data.map(function({ id, alumno }: { id:number, alumno: any }) {
-          const { carnet, nombres, apellidos, pensum } = alumno;
+          const { carnet, nombres, apellidos, pensum, idnivel, seccion } = alumno;
           const [ {nombre: nombrePensum, carrera } ] = pensum;
           
           return {
             id,
             carnet,
+            seccion,
+            nivel: idnivel,
             nombres: `${nombres?.trim()} ${apellidos?.trim()}`,
             pensum: nombrePensum,
             carrera: carrera.nombre,

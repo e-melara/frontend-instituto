@@ -13,6 +13,7 @@
               {{ student?.nombres }} {{ student?.apellidos }}
             </h2>
             <h4 class="text-black">Carnet: {{ student?.carnet }}</h4>
+            <h4 class="text-black">Seccion: {{ student?.seccion }} - Nivel: {{ student?.idnivel }}</h4>
             <h5 class="text-black">Carrera: {{ carrera?.nombre }}</h5>
           </p>
         </div>
