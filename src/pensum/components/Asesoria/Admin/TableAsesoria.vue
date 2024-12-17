@@ -47,6 +47,7 @@ const headers = [
   { key: "subject_code", align: "center", label: "Codigo", sortable: false },
   { key: "subject_name", label: "Nombre de la materia", sortable: false },
   { key: "teacher_names", label: "Nombrel docente", sortable: false },
+  { key: "horario", label: "Seccion", sortable: false },
 ];
 
 const props = defineProps<Props>();
